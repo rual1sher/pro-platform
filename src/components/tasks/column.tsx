@@ -11,7 +11,7 @@ export function TaskColumn({
   color: string;
 }) {
   return (
-    <div className="flex-1 min-w-90 overflow-auto">
+    <div className="flex-1 md:min-w-90 overflow-auto">
       <div className="bg-gray-900/50 rounded-xl border border-gray-800 p-4">
         <div className="flex items-center gap-2 mb-4">
           <div className={`w-3 h-3 rounded-full ${color}`}></div>

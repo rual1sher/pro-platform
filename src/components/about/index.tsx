@@ -15,7 +15,7 @@ export function AboutComponent() {
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
+          <h1 className="text-4xl md:text-7xl font-black mb-6 leading-tight">
             <span className="bg-linear-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent animate-pulse">
               ProPlatformu
             </span>
@@ -27,7 +27,7 @@ export function AboutComponent() {
             </span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed">
             Современная платформа для управления задачами, которая экономит ваше
             время и упрощает работу команды. Забудьте о сложных системах — здесь
             только то, что действительно работает.
@@ -67,13 +67,13 @@ export function AboutComponent() {
       <div id="features" className="py-20 relative">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black mb-4">
+            <h2 className="text-3xl md:text-5xl font-black mb-4">
               Возможности, которые{" "}
               <span className="bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
                 упрощают жизнь
               </span>
             </h2>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
               Всё, что нужно для эффективного управления задачами в одном месте
             </p>
           </div>
@@ -86,12 +86,14 @@ export function AboutComponent() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div
-                  className={`inline-flex w-16 h-16 rounded-2xl bg-linear-to-br ${feature.color} items-center justify-center mb-6 text-white shadow-lg group-hover:scale-110 transition-transform`}
+                  className={`inline-flex w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-linear-to-br ${feature.color} items-center justify-center mb-6 text-white shadow-lg group-hover:scale-110 transition-transform`}
                 >
                   {feature.icon}
                 </div>
-                <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
-                <p className="text-slate-400 text-lg leading-relaxed">
+                <h3 className="text-xl md:text-2xl font-bold mb-4">
+                  {feature.title}
+                </h3>
+                <p className="text-slate-400 text-sm md:text-lg leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -103,7 +105,7 @@ export function AboutComponent() {
       <div id="benefits" className="py-20 relative">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black mb-4">
+            <h2 className="text-3xl md:text-5xl font-black mb-4">
               Почему ProPlatformu — это просто{" "}
               <span className="bg-linear-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
                 любовь
@@ -117,9 +119,11 @@ export function AboutComponent() {
                 key={index}
                 className="p-6 bg-linear-to-br from-slate-900/80 to-slate-900/40 backdrop-blur-sm rounded-2xl border border-slate-800 hover:border-cyan-500 transition-all hover:scale-102"
               >
-                <div className="text-5xl mb-4">{benefit.icon}</div>
+                <div className="text-4xl md:text-5xl mb-4">{benefit.icon}</div>
                 <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
-                <p className="text-slate-400">{benefit.text}</p>
+                <p className="text-slate-400 text-sm md:text-lg">
+                  {benefit.text}
+                </p>
               </div>
             ))}
           </div>
@@ -129,7 +133,7 @@ export function AboutComponent() {
       <div className="py-20 relative">
         <div className="container mx-auto">
           <div className="bg-linear-to-br from-purple-900/50 to-cyan-900/50 backdrop-blur-sm rounded-3xl border border-purple-500/50 p-12 text-center">
-            <h2 className="text-4xl md:text-5xl font-black mb-8">
+            <h2 className="text-3xl md:text-5xl font-black mb-8">
               Для кого создан{" "}
               <span className="text-cyan-400">ProPlatformu?</span>
             </h2>
@@ -138,7 +142,7 @@ export function AboutComponent() {
               <div className="p-6 bg-white/5 rounded-2xl backdrop-blur-sm">
                 <div className="text-4xl mb-4">🏢</div>
                 <h3 className="text-xl font-bold mb-2">Бизнес</h3>
-                <p className="text-slate-300">
+                <p className="text-slate-300 text-sm md:text-lg">
                   Малый и средний бизнес в Ташкенте и по всему Узбекистану
                 </p>
               </div>
@@ -146,7 +150,7 @@ export function AboutComponent() {
               <div className="p-6 bg-white/5 rounded-2xl backdrop-blur-sm">
                 <div className="text-4xl mb-4">💼</div>
                 <h3 className="text-xl font-bold mb-2">Фрилансеры</h3>
-                <p className="text-slate-300">
+                <p className="text-slate-300 text-sm md:text-lg">
                   Команды, уставшие от таблиц, Trello или сложных CRM
                 </p>
               </div>
@@ -154,7 +158,7 @@ export function AboutComponent() {
               <div className="p-6 bg-white/5 rounded-2xl backdrop-blur-sm">
                 <div className="text-4xl mb-4">⚡</div>
                 <h3 className="text-xl font-bold mb-2">Быстрый старт</h3>
-                <p className="text-slate-300">
+                <p className="text-slate-300 text-sm md:text-lg">
                   Те, кому нужен контроль без гемора
                 </p>
               </div>
@@ -172,10 +176,7 @@ export function AboutComponent() {
             Создайте свою первую задачу уже сегодня. Никаких кредитных карт,
             никаких обязательств.
           </p>
-          <Button
-            onClick={() => navigate("/tasks")}
-            className="group px-10 py-5 bg-linear-to-r from-purple-600 to-cyan-600 rounded-2xl font-bold text-xl hover:shadow-2xl hover:shadow-purple-500/50 transition-all hover:scale-102 flex items-center gap-3 mx-auto"
-          >
+          <Button onClick={() => navigate("/tasks")} className="mx-auto">
             Начать бесплатно
             <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
           </Button>

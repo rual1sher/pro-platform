@@ -7,7 +7,7 @@ export function Header() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   return (
-    <header className="border-b border-zinc-800 bg-black/50 backdrop-blur-lg fixed top-0 left-0 right-0 z-10">
+    <header className="border-b border-zinc-800 bg-black/50 backdrop-blur-lg fixed top-0 left-0 right-0 z-20">
       <Container>
         <div className="flex items-center justify-between h-16">
           <div

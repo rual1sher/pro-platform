@@ -21,22 +21,22 @@ export function HeaderComponent() {
       <Container>
         <section className="relative pt-32 pb-20">
           <div className="grid xl:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
+            <div className="space-y-6 md:space-y-8">
               <div className="inline-block px-4 py-2 bg-purple-500/20 rounded-full border border-purple-500/50 backdrop-blur-sm">
                 <span className="text-sm font-semibold text-purple-300">
                   🚀 Управление задачами нового поколения
                 </span>
               </div>
 
-              <h1 className="font-black text-6xl md:text-7xl bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight">
+              <h1 className="font-black text-5xl md:text-7xl bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight">
                 PeakDay
               </h1>
 
-              <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+              <h2 className="text-2xl md:text-4xl font-bold text-white leading-tight">
                 Платформа для совместного управления задачами
               </h2>
 
-              <p className="text-xl text-gray-400 leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-400 leading-relaxed">
                 Представляем систему для современной разработки программного
                 обеспечения. Оптимизируйте процессы, проекты и планы развития
                 продукта. Работайте эффективно в команде и достигайте целей
@@ -67,7 +67,7 @@ export function HeaderComponent() {
 
             <div className="relative">
               <div className="relative space-y-6">
-                <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-700 rounded-3xl p-8 shadow-2xl shadow-purple-500/30">
+                <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-700 rounded-3xl p-4 md:p-8 shadow-2xl shadow-purple-500/30">
                   <div className="flex items-center justify-between mb-6">
                     <div>
                       <h3 className="text-white font-bold text-2xl">
@@ -103,9 +103,6 @@ export function HeaderComponent() {
                             </p>
                           </div>
                         </div>
-                        <span className="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">
-                          В работе
-                        </span>
                       </div>
                       <div className="flex items-center gap-4 text-sm text-gray-400">
                         <span className="flex items-center gap-1">
@@ -140,9 +137,6 @@ export function HeaderComponent() {
                             </p>
                           </div>
                         </div>
-                        <span className="px-3 py-1 bg-green-500/20 text-green-400 text-xs font-semibold rounded-full">
-                          Готово
-                        </span>
                       </div>
                       <div className="flex items-center gap-4 text-sm text-gray-400">
                         <span className="flex items-center gap-1">
@@ -179,13 +173,13 @@ export function HeaderComponent() {
 
         <section className="relative py-20">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
               Всё, что нужно для{" "}
               <span className="bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
                 эффективной работы
               </span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
               Мощные инструменты для управления проектами и задачами в одном
               месте
             </p>
@@ -200,10 +194,10 @@ export function HeaderComponent() {
                 <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-purple-600 to-cyan-600 flex items-center justify-center mb-6 text-white shadow-lg group-hover:scale-102 transition-transform">
                   {feature.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-400 leading-relaxed">
+                <p className="text-gray-400 leading-relaxed text-sm md:text-lg">
                   {feature.description}
                 </p>
               </div>
@@ -212,11 +206,11 @@ export function HeaderComponent() {
         </section>
 
         <section className="relative">
-          <div className="bg-linear-to-br from-purple-900/50 to-cyan-900/50 backdrop-blur-sm rounded-3xl border border-purple-500/50 py-12 md:p-16 text-center">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
+          <div className="bg-linear-to-br from-purple-900/50 to-cyan-900/50 backdrop-blur-sm rounded-3xl border border-purple-500/50 p-10 md:p-16 text-center">
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-6">
               Готовы повысить продуктивность?
             </h2>
-            <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
               Присоединяйтесь к тысячам команд, которые уже используют PeakDay
               для управления своими проектами
             </p>

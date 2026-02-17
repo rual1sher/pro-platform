@@ -7,6 +7,7 @@ import { create } from "../../../service/task.service";
 import { useAuth } from "../../../store/auth.store";
 import { useTask } from "../../../store/task.store";
 import * as Yup from "yup";
+import { Button } from "../../helper/button";
 
 export function CreateTask() {
   const [open, setOpen] = useState(false);
@@ -48,13 +49,10 @@ export function CreateTask() {
     <>
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-bold text-2xl text-gray-100">Мои задачи:</h1>
-        <button
-          onClick={() => setOpen(true)}
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-all cursor-pointer shadow-lg shadow-blue-500/20 flex items-center gap-2"
-        >
+        <Button size="md" variant="primary" onClick={() => setOpen(true)}>
           <Plus size={16} />
           Новая задача
-        </button>
+        </Button>
       </div>
 
       {open && (
@@ -133,21 +131,23 @@ export function CreateTask() {
                   </div>
 
                   <div className="flex gap-3 pt-4">
-                    <button
+                    <Button
                       type="button"
+                      variant="ghost"
+                      className="w-full!"
                       disabled={loader}
                       onClick={() => setOpen(false)}
-                      className="flex-1 px-4 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg font-medium transition-all duration-200"
                     >
                       Отмена
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       type="submit"
+                      variant="success"
+                      className="w-full!"
                       disabled={loader}
-                      className="flex-1 px-4 py-3 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg font-medium transition-all duration-200 transform hover:scale-[1.02] shadow-lg shadow-blue-500/20"
                     >
                       Создать
-                    </button>
+                    </Button>
                   </div>
                 </Form>
               )}

@@ -2,28 +2,28 @@ import { CheckCircle, FileText, Filter, Zap } from "lucide-react";
 
 export const features = [
   {
-    icon: <Zap className="w-8 h-8" />,
+    icon: <Zap className="w-6 h-6 md:w-8 md:h-8" />,
     title: "Создание задач за секунды",
     description:
       "Всё интуитивно: название, описание, дедлайн, исполнитель, приоритет — и готово. Без лишних полей и бесконечных форм.",
     color: "from-yellow-400 to-orange-500",
   },
   {
-    icon: <CheckCircle className="w-8 h-8" />,
+    icon: <CheckCircle className="w-6 h-6 md:w-8 md:h-8" />,
     title: "Умное управление статусами",
     description:
       "Переключайте статусы одним кликом или просто перетащите задачу между колонками.",
     color: "from-green-400 to-emerald-500",
   },
   {
-    icon: <FileText className="w-8 h-8" />,
+    icon: <FileText className="w-6 h-6 md:w-8 md:h-8" />,
     title: "Профессиональные отчёты",
     description:
       "Один клик — и готовый отчёт в Word. Идеально для презентаций клиентам или отчётов руководству.",
     color: "from-blue-400 to-cyan-500",
   },
   {
-    icon: <Filter className="w-8 h-8" />,
+    icon: <Filter className="w-6 h-6 md:w-8 md:h-8" />,
     title: "Всё под контролем",
     description:
       "Мощные фильтры, быстрый поиск, умные уведомления и адаптивная мобильная версия.",
