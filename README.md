@@ -1,75 +1,26 @@
-# React + TypeScript + Vite
+# ProPlatformu
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Простая и быстрая платформа для управления задачами — без лишнего, только то, что нужно твоей команде.
 
-Currently, two official plugins are available:
+## Основные фичи
+- **Создание задач за секунды** — название, описание, дедлайн, исполнитель, приоритет.
+- **Управление статусами** одной кнопкой или drag-and-drop:
+  - Pending → ждёт
+  - In Progress → в работе
+  - Success → выполнено успешно
+  - Reject → отклонено (с комментарием/причиной)
+- **Экспорт в Word** — готовые отчёты, списки задач за день/неделю/месяц (красиво, для печати или отправки).
+- **Интерфейс мечты**:
+  - Простой — открыл и сразу всё понятно
+  - Быстрый — летает даже на мобильном
+  - Аккуратный и красивый — чистый дизайн, приятные цвета
+  - Удобный — мобильная версия, тёмная тема, поиск, фильтры, уведомления
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Для кого
+- Малый/средний бизнес в Ташкенте и Узбекистане
+- Фрилансеры, команды, кто устал от Trello/Excel/Google Sheets
+- Те, кому нужен контроль без сложностей
 
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Как начать
+1. Зарегистрируйся бесплатно
+2. Создай первую задачу за 10 секунд
