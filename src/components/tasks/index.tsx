@@ -21,8 +21,6 @@ export function TasksComponent() {
   };
 
   useEffect(() => {
-    console.log("asd");
-
     user && loadTasks(user);
   }, [user, tasks]);
 

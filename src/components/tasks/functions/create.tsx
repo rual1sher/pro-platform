@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from "formik";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { ITaskRequest } from "../../../types/type";
 import { Plus, X } from "lucide-react";
 import { InputField } from "../../helper/field-input";
@@ -10,10 +10,11 @@ import * as Yup from "yup";
 import { Button } from "../../helper/button";
 
 export function CreateTask() {
-  const [open, setOpen] = useState(false);
   const [loader, setLoader] = useState(false);
   const { user } = useAuth();
   const { setTask } = useTask();
+
+  const ref = useRef<HTMLDialogElement>(null);
 
   const validate = Yup.object().shape({
     title: Yup.string()
@@ -33,13 +34,24 @@ export function CreateTask() {
     user_id: user?.id,
   };
 
+  const handleClose = () => {
+    ref.current?.close();
+    setLoader(false);
+  };
+
+  const handlShow = () => {
+    ref.current?.showModal();
+    setLoader(false);
+  };
+
   const onSubmit = async (data: ITaskRequest, { resetForm }: any) => {
+    setLoader(true);
     const res = await create(data);
 
     if (res) {
       resetForm();
-      setOpen(false);
       setTask(res);
+      handleClose();
     }
 
     setLoader(false);
@@ -49,19 +61,19 @@ export function CreateTask() {
     <>
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-bold text-2xl text-gray-100">Мои задачи:</h1>
-        <Button size="md" variant="primary" onClick={() => setOpen(true)}>
+        <Button size="md" variant="primary" onClick={handlShow}>
           <Plus size={16} />
           Новая задача
         </Button>
       </div>
 
-      {open && (
+      <dialog ref={ref} onClose={handleClose}>
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-gray-900 rounded-2xl border border-gray-800 max-w-md w-full shadow-2xl">
             <div className="flex items-center justify-between p-6 border-b border-gray-800">
               <h2 className="text-2xl font-bold text-gray-100">Новая задача</h2>
               <button
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
                 className="p-2 text-gray-500 hover:text-gray-300 hover:bg-gray-800 rounded-lg transition-all duration-200"
               >
                 <X size={18} />
@@ -136,7 +148,7 @@ export function CreateTask() {
                       variant="ghost"
                       className="w-full!"
                       disabled={loader}
-                      onClick={() => setOpen(false)}
+                      onClick={handleClose}
                     >
                       Отмена
                     </Button>
@@ -154,7 +166,7 @@ export function CreateTask() {
             </Formik>
           </div>
         </div>
-      )}
+      </dialog>
     </>
   );
 }
