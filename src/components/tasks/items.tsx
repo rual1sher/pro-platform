@@ -1,8 +1,12 @@
 import type { ITaskResponce } from "../../types/type";
 import { RemoveTask } from "./functions/remove";
-import { Update } from "./functions/update";
+import { useDraggable } from "@dnd-kit/react";
 
 export function TaskItem({ task }: { task: ITaskResponce }) {
+  const { ref } = useDraggable({
+    id: task.id,
+  });
+
   const getPriorityColor = (priority: string) => {
     if (priority === "2") return "bg-red-500/20 text-red-400 border-red-500/30";
     if (priority === "1")
@@ -17,26 +21,27 @@ export function TaskItem({ task }: { task: ITaskResponce }) {
   };
 
   return (
-    <div className="bg-gray-800/50 rounded-lg border border-gray-700 p-4 hover:border-gray-600 transition-all">
-      <div className="flex items-center justify-between mb-2 gap-2">
-        <h3 className="text-gray-100 font-medium">{task.title}</h3>
-        <span className="flex items-center gap-1">
-          <RemoveTask id={task.id} />
-          <Update id={task.id} order={task.order} />
-        </span>
-      </div>
-      {task.description && (
-        <p className="text-sm text-gray-400 mb-3">{task.description}</p>
-      )}
-      <div className="flex items-center justify-between">
-        <span
-          className={`inline-block px-2 py-1 rounded text-xs font-medium border ${getPriorityColor(task.preority)}`}
-        >
-          {getPriorityText(task.preority)}
-        </span>
-        {task.date && (
-          <span className="text-gray-400 text-sm">{task.date}</span>
+    <div ref={ref} className="not-first:pt-2">
+      <div className="bg-gray-800/50 rounded-lg border border-gray-700 p-4 hover:border-gray-600 transition-all">
+        <div className="flex items-center justify-between mb-2 gap-2">
+          <h3 className="text-gray-100 font-medium">{task.title}</h3>
+          <span className="flex items-center gap-1">
+            <RemoveTask id={task.id} />
+          </span>
+        </div>
+        {task.description && (
+          <p className="text-sm text-gray-400 mb-3">{task.description}</p>
         )}
+        <div className="flex items-center justify-between">
+          <span
+            className={`inline-block px-2 py-1 rounded text-xs font-medium border ${getPriorityColor(task.preority)}`}
+          >
+            {getPriorityText(task.preority)}
+          </span>
+          {task.date && (
+            <span className="text-gray-400 text-sm">{task.date}</span>
+          )}
+        </div>
       </div>
     </div>
   );

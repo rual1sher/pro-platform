@@ -1,26 +1,30 @@
 import { useEffect, useState } from "react";
-import { findAll } from "../../service/task.service";
-import type { IUser } from "../../types/type";
-import { TaskColumn } from "./column";
+import { findAll, update } from "../../service/task.service";
+import type { ITaskResponce, IUser } from "../../types/type";
+import { Column } from "./column";
 import { useAuth } from "../../store/auth.store";
+import { DragDropProvider } from "@dnd-kit/react";
+import { TaskItem } from "./items";
 import { useTask } from "../../store/task.store";
 
 export function TasksComponent() {
   const [loading, setLoading] = useState(true);
-
-  const { tasks, setTasks } = useTask();
+  const [itemOrder, setItemOrder] = useState<ITaskResponce[]>([]);
   const { user } = useAuth();
+  const { tasks } = useTask();
+
+  const loadTasks = async (user: IUser) => {
+    const tasks = await findAll({ user_id: user.id });
+    setItemOrder(tasks);
+
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const loadTasks = async (user: IUser) => {
-      const data = await findAll({ user_id: user.id });
-      setTasks(data);
-
-      setLoading(false);
-    };
+    console.log("asd");
 
     user && loadTasks(user);
-  }, [user]);
+  }, [user, tasks]);
 
   const columns = [
     { id: "0", title: "Ожидает", color: "bg-gray-400" },
@@ -30,7 +34,7 @@ export function TasksComponent() {
   ];
 
   const getTasksByOrder = (order: string) => {
-    return tasks.filter((task) => task.order === order);
+    return itemOrder.filter((task) => task.order === order);
   };
 
   if (loading) {
@@ -41,16 +45,44 @@ export function TasksComponent() {
     );
   }
 
+  const updateTasks = async (id: number, newOrder: string) => {
+    setItemOrder((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, order: newOrder } : t)),
+    );
+
+    try {
+      const updated = await update(id, { order: newOrder });
+      setItemOrder((prev) => prev.map((t) => (t.id === id ? updated : t)));
+    } catch (error) {
+      console.error("Ошибка обновления задачи:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row gap-4 overflow-x-auto pb-4">
-      {columns.map((column) => (
-        <TaskColumn
-          key={column.id}
-          title={column.title}
-          color={column.color}
-          tasks={getTasksByOrder(column.id)}
-        />
-      ))}
+      <DragDropProvider
+        onDragEnd={(e) => {
+          const id = Number(e.operation.source?.id) as number | undefined;
+          const order = e.operation.target?.id as string | undefined;
+          if (id && order) {
+            updateTasks(id, order);
+          }
+        }}
+      >
+        {columns.map((column) => (
+          <Column
+            key={column.id}
+            id={column.id}
+            count={getTasksByOrder(column.id).length}
+            title={column.title}
+            color={column.color}
+          >
+            {getTasksByOrder(column.id).map((t) => (
+              <TaskItem task={t} key={t.id} />
+            ))}
+          </Column>
+        ))}
+      </DragDropProvider>
     </div>
   );
 }
