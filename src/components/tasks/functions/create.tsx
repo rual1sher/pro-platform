@@ -46,7 +46,7 @@ export function CreateTask() {
 
   const onSubmit = async (data: ITaskRequest, { resetForm }: any) => {
     setLoader(true);
-    const res = await create(data);
+    const res = await create({ ...data, user_id: user?.id });
 
     if (res) {
       resetForm();
