@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int                  @id @default(autoincrement())
+  email        String               @unique
+  name         String
+  password     String
+  avatar       String?
+  role         String               @default("MEMBER") // ADMIN, MEMBER
+  memberships  OrganizationMember[]
+  assignedTasks Task[]              @relation("AssignedTasks")
+  createdTasks  Task[]              @relation("CreatedTasks")
+  messages      Message[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+}
+
+model Organization {
+  id          Int                  @id @default(autoincrement())
+  name        String
+  description String?
+  members     OrganizationMember[]
+  tasks       Task[]
+  messages    Message[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+}
+
+model OrganizationMember {
+  id             Int          @id @default(autoincrement())
+  role           String       @default("MEMBER") // OWNER, ADMIN, MEMBER
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId Int
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         Int
+  createdAt      DateTime     @default(now())
+
+  @@unique([organizationId, userId])
+}
+
+model Task {
+  id             Int          @id @default(autoincrement())
+  title          String
+  description    String?
+  status         String       @default("0") // 0: Ожидает (Backlog/Todo), 1: В работе (In Progress), 2: Готово (Done), 3: Отклонено (Rejected)
+  priority       String       @default("1") // 0: Низкий (Low), 1: Средний (Medium), 2: Высокий (High)
+  dueDate        String?
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId Int
+  assignee       User?        @relation("AssignedTasks", fields: [assigneeId], references: [id], onDelete: SetNull)
+  assigneeId     Int?
+  creator        User?        @relation("CreatedTasks", fields: [creatorId], references: [id], onDelete: SetNull)
+  creatorId      Int?
+  messages       Message[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Message {
+  id             Int           @id @default(autoincrement())
+  content        String
+  type           String // "TASK_COMMENT" | "ORG_CHAT"
+  task           Task?         @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId         Int?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId Int?
+  author         User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId       Int
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([taskId])
+  @@index([organizationId])
+}
