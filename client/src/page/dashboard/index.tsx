@@ -1,7 +1,7 @@
-import { Container } from "../../components/helper/container";
 import { DashboardComponent } from "../../components/dashboard";
-import { useAuthGuard } from "../../components/helper/use-auth-guard";
 import { AuthLoading } from "../../components/helper/auth-loading";
+import { Container } from "../../components/helper/container";
+import { useAuthGuard } from "../../components/helper/use-auth-guard";
 
 export function DashboardPage() {
   const { checking } = useAuthGuard();

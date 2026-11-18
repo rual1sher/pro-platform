@@ -10,15 +10,9 @@ import {
 import { useAuth } from "../../store/auth.store";
 import { findAll } from "../../service/task.service";
 import { computeTaskStats } from "../helper/task-stats";
-import { Button } from "../helper/button";
+import { Button } from "../ui/button";
+import { StatCards, STAT_CARDS } from "./stat-cards";
 import type { ITaskResponce } from "../../types";
-
-const STAT_CARDS = [
-  { key: "pending" as const, label: "Ожидает", color: "#757575", dot: "bg-[#757575]" },
-  { key: "inProgress" as const, label: "В работе", color: "#2196F3", dot: "bg-[#2196F3]" },
-  { key: "done" as const, label: "Готово", color: "#4CAF50", dot: "bg-[#4CAF50]" },
-  { key: "rejected" as const, label: "Отклонено", color: "#CF6679", dot: "bg-[#CF6679]" },
-];
 
 export function DashboardComponent() {
   const navigate = useNavigate();
@@ -102,22 +96,7 @@ export function DashboardComponent() {
       ) : (
         <>
           {/* Stat cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-            {STAT_CARDS.map((card) => (
-              <div
-                key={card.key}
-                className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-4 space-y-1.5"
-              >
-                <span className="flex items-center gap-1.5 text-xs font-semibold text-[#9E9E9E]">
-                  <span className={`w-2 h-2 rounded-full ${card.dot}`}></span>
-                  {card.label}
-                </span>
-                <p className="text-2xl font-black text-[#E3E3E3]">
-                  {stats[card.key]}
-                </p>
-              </div>
-            ))}
-          </div>
+          <StatCards stats={stats} />
 
           <div className="grid lg:grid-cols-[2fr_1fr] gap-4">
             {/* Priority tasks */}
@@ -126,12 +105,14 @@ export function DashboardComponent() {
                 <h2 className="text-sm font-bold text-[#E3E3E3]">
                   Приоритетные задачи
                 </h2>
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => navigate("/tasks")}
-                  className="text-xs font-bold text-[#BB86FC] hover:text-[#a871ea] flex items-center gap-1"
+                  className="text-xs font-bold text-[#BB86FC] hover:text-[#a871ea] p-1 h-auto"
                 >
                   Все задачи <ArrowRight size={13} />
-                </button>
+                </Button>
               </div>
 
               {priorityTasks.length === 0 ? (
@@ -202,13 +183,15 @@ export function DashboardComponent() {
                 ))}
               </div>
 
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => navigate(`/organizations/${activeOrg.id}`)}
-                className="w-full text-xs font-bold text-[#03DAC6] hover:text-[#02c0ae] flex items-center justify-center gap-1.5 pt-2 border-t border-[#2C2C2C]"
+                className="w-full text-xs font-bold text-[#03DAC6] hover:text-[#02c0ae] gap-1.5 pt-2 border-t border-[#2C2C2C] rounded-none h-auto"
               >
                 <Users size={13} />
                 Профиль организации
-              </button>
+              </Button>
             </div>
           </div>
         </>

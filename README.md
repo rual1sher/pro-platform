@@ -46,10 +46,14 @@ client/   # React 19 + Vite + Tailwind клиент
 api/      # Fastify + Prisma сервер
 ```
 
-Корневой `package.json` содержит только общие скрипты (`dev`, `dev:api`, `dev:all`,
-`build`, `build:api`, `db:seed`, `db:studio`), которые проксируют вызовы в `client/`
-и `api/` через `--prefix`. Устанавливайте зависимости в каждом пакете отдельно:
-`npm install` в корне, `client/` и `api/`.
+Корневой `package.json` содержит только общие скрипты (`install:all`, `run:all`, `dev:all`,
+`build:all`, `dev`, `dev:api`, `build`, `build:api`, `db:seed`, `db:studio`), которые
+проксируют вызовы в `client/` и `api/` через `--prefix`.
+
+Для быстрой установки всех зависимостей (в корне, клиенте и сервере) одной командой:
+```bash
+npm run install:all
+```
 
 ---
 
@@ -57,7 +61,8 @@ api/      # Fastify + Prisma сервер
 
 ### Запуск всего проекта (клиент + сервер одновременно):
 ```bash
-npm run dev:all
+npm run run:all
+# или npm run dev:all
 ```
 - Клиент откроется на: `http://localhost:5173`
 - API сервер откроется на: `http://localhost:3001`

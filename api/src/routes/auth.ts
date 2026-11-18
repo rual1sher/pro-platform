@@ -1,8 +1,8 @@
-import { FastifyInstance } from "fastify";
 import bcrypt from "bcryptjs";
+import { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { prisma } from "../lib/prisma.js";
 import { authenticate, TokenPayload } from "../lib/auth.js";
+import { prisma } from "../lib/prisma.js";
 
 const registerSchema = z.object({
   email: z.string().email(),
@@ -140,59 +140,6 @@ export async function authRoutes(fastify: FastifyInstance) {
     });
   });
 
-  // Alias for compatibility with existing frontend /auth endpoint
-  fastify.post("/auth", async (request, reply) => {
-    const parseResult = loginSchema.safeParse(request.body);
-    if (!parseResult.success) {
-      return reply.status(400).send({
-        error: "Ошибка валидации",
-        details: parseResult.error.errors,
-      });
-    }
-
-    const { email, password } = parseResult.data;
-
-    const user = await prisma.user.findUnique({
-      where: { email },
-      include: {
-        memberships: {
-          include: {
-            organization: true,
-          },
-        },
-      },
-    });
-
-    if (!user) {
-      return reply.status(401).send({
-        error: "Неверный email или пароль",
-      });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return reply.status(401).send({
-        error: "Неверный email или пароль",
-      });
-    }
-
-    const token = fastify.jwt.sign({
-      id: user.id,
-      email: user.email,
-    } as TokenPayload);
-
-    return reply.send({
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        avatar: user.avatar,
-      },
-      token,
-    });
-  });
-
   // Current user info
   fastify.get("/me", { preHandler: [authenticate] }, async (request, reply) => {
     const payload = request.user as TokenPayload;
@@ -225,55 +172,5 @@ export async function authRoutes(fastify: FastifyInstance) {
         role: m.role,
       })),
     });
-  });
-
-  // Alias for compatibility with existing frontend /auth_me endpoint
-  fastify.get("/auth_me", { preHandler: [authenticate] }, async (request, reply) => {
-    const payload = request.user as TokenPayload;
-
-    const user = await prisma.user.findUnique({
-      where: { id: payload.id },
-      include: {
-        memberships: {
-          include: {
-            organization: true,
-          },
-        },
-      },
-    });
-
-    if (!user) {
-      return reply.status(404).send({ error: "Пользователь не найден" });
-    }
-
-    return reply.send({
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      avatar: user.avatar,
-      role: user.role,
-      organizations: user.memberships.map((m) => ({
-        id: m.organization.id,
-        name: m.organization.name,
-        description: m.organization.description,
-        role: m.role,
-      })),
-    });
-  });
-
-  // List all users (workers)
-  fastify.get("/users", { preHandler: [authenticate] }, async (_request, reply) => {
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        avatar: true,
-        role: true,
-      },
-      orderBy: { name: "asc" },
-    });
-
-    return reply.send(users);
   });
 }

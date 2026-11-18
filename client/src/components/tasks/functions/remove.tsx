@@ -2,7 +2,7 @@ import { Trash, X } from "lucide-react";
 import { remove } from "../../../service/task.service";
 import { useTask } from "../../../store/task.store";
 import { useRef } from "react";
-import { Button } from "../../helper/button";
+import { Button } from "../../ui/button";
 
 export function RemoveTask({ id }: { id: number }) {
   const { setTasks, tasks } = useTask();

@@ -1,16 +1,6 @@
-import type { ITaskResponce } from "../../types";
+import type { ITaskResponce, ITaskStats } from "../../types";
 
-export interface ITaskStats {
-  total: number;
-  pending: number;
-  inProgress: number;
-  done: number;
-  rejected: number;
-  pendingPct: number;
-  inProgressPct: number;
-  donePct: number;
-  rejectedPct: number;
-}
+export type { ITaskStats };
 
 export function computeTaskStats(tasks: ITaskResponce[]): ITaskStats {
   const total = tasks.length || 1;

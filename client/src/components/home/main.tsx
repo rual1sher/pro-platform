@@ -16,7 +16,7 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import { Button } from "../helper/button";
+import { Button } from "../ui/button";
 import {
   features,
   stats,
@@ -368,9 +368,10 @@ export function HeaderComponent() {
                 key={index}
                 className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl overflow-hidden"
               >
-                <button
+                <Button
+                  variant="ghost"
                   onClick={() => setOpenFaq(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between gap-4 p-4 text-left"
+                  className="w-full justify-between gap-4 p-4 text-left h-auto font-normal rounded-none hover:bg-[#252525]"
                 >
                   <span className="text-sm font-bold text-[#E3E3E3]">
                     {item.question}
@@ -381,7 +382,7 @@ export function HeaderComponent() {
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
-                </button>
+                </Button>
                 {isOpen && (
                   <p className="px-4 pb-4 text-xs text-[#9E9E9E] leading-relaxed font-normal">
                     {item.answer}

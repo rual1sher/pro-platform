@@ -1,17 +1,10 @@
 import axios from "axios";
-import type { ITaskRequest, ITaskResponce } from "../types";
+import type { ITaskRequest, ITaskResponce, TaskQueryParams } from "../types";
 import { env } from "../config/env.config";
 import { toast } from "react-toastify";
 import { getToken } from "../components/helper/tokens";
 
-export interface TaskQueryParams {
-  organizationId?: number;
-  user_id?: number;
-  assigneeId?: number;
-  status?: string;
-  order?: string;
-  search?: string;
-}
+export type { TaskQueryParams };
 
 function getHeaders() {
   const token = getToken();

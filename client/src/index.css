@@ -26,6 +26,28 @@
 
     --border-light: #2C2C2C;
     --border-focus: #BB86FC;
+
+    /* shadcn/ui CSS variables — mapped to project palette */
+    --background: 18 18 18;       /* #121212 */
+    --foreground: 227 227 227;    /* #E3E3E3 */
+    --card: 30 30 30;             /* #1E1E1E */
+    --card-foreground: 227 227 227;
+    --popover: 30 30 30;
+    --popover-foreground: 227 227 227;
+    --primary: 187 134 252;       /* #BB86FC */
+    --primary-foreground: 18 18 18;
+    --secondary: 37 37 37;        /* #252525 */
+    --secondary-foreground: 227 227 227;
+    --muted: 37 37 37;
+    --muted-foreground: 158 158 158; /* #9E9E9E */
+    --accent: 3 218 198;          /* #03DAC6 */
+    --accent-foreground: 18 18 18;
+    --destructive: 207 102 121;   /* #CF6679 */
+    --destructive-foreground: 18 18 18;
+    --border: 44 44 44;           /* #2C2C2C */
+    --input: 44 44 44;
+    --ring: 187 134 252;          /* #BB86FC */
+    --radius: 0.75rem;
   }
 
   body {

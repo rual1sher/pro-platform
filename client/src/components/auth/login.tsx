@@ -5,7 +5,7 @@ import { login } from "../../service/auth.service";
 import { NavLink, useNavigate } from "react-router";
 import { InputField } from "../helper/field-input";
 import { addToken } from "../helper/tokens";
-import { Button } from "../helper/button";
+import { Button } from "../ui/button";
 import { useAuth } from "../../store/auth.store";
 import * as Yup from "yup";
 import { LogIn, Sparkles, UserCheck } from "lucide-react";
@@ -75,41 +75,47 @@ export function LoginComponent() {
           <span>Быстрый демо-вход (1 клик)</span>
         </div>
         <div className="grid grid-cols-1 gap-2">
-          <button
+          <Button
             type="button"
+            variant="dark"
+            size="sm"
             onClick={() => quickLogin("admin@pro.dev")}
-            className="flex items-center justify-between px-3 py-2 rounded-xl bg-[#1E1E1E] hover:border-[#BB86FC] border border-[#2C2C2C] text-xs text-[#E3E3E3] font-semibold transition-all text-left shadow-2xs"
+            className="w-full justify-between px-3 py-2 rounded-xl text-left font-normal"
           >
             <div className="flex items-center gap-2">
               <UserCheck size={14} className="text-[#BB86FC]" />
-              <span>Алексей Иванов (Владелец)</span>
+              <span className="text-xs font-semibold">Алексей Иванов (Владелец)</span>
             </div>
             <span className="text-[10px] text-[#9E9E9E]">admin@pro.dev</span>
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            variant="dark"
+            size="sm"
             onClick={() => quickLogin("maria@pro.dev")}
-            className="flex items-center justify-between px-3 py-2 rounded-xl bg-[#1E1E1E] hover:border-[#03DAC6] border border-[#2C2C2C] text-xs text-[#E3E3E3] font-semibold transition-all text-left shadow-2xs"
+            className="w-full justify-between px-3 py-2 rounded-xl text-left font-normal hover:border-[#03DAC6]"
           >
             <div className="flex items-center gap-2">
               <UserCheck size={14} className="text-[#03DAC6]" />
-              <span>Мария Смирнова (Frontend)</span>
+              <span className="text-xs font-semibold">Мария Смирнова (Frontend)</span>
             </div>
             <span className="text-[10px] text-[#9E9E9E]">maria@pro.dev</span>
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            variant="dark"
+            size="sm"
             onClick={() => quickLogin("dmitry@pro.dev")}
-            className="flex items-center justify-between px-3 py-2 rounded-xl bg-[#1E1E1E] hover:border-[#BB86FC] border border-[#2C2C2C] text-xs text-[#E3E3E3] font-semibold transition-all text-left shadow-2xs"
+            className="w-full justify-between px-3 py-2 rounded-xl text-left font-normal"
           >
             <div className="flex items-center gap-2">
               <UserCheck size={14} className="text-[#BB86FC]" />
-              <span>Дмитрий Сидоров (Backend)</span>
+              <span className="text-xs font-semibold">Дмитрий Сидоров (Backend)</span>
             </div>
             <span className="text-[10px] text-[#9E9E9E]">dmitry@pro.dev</span>
-          </button>
+          </Button>
         </div>
       </div>
 

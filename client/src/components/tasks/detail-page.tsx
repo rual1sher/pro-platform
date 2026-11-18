@@ -23,6 +23,7 @@ import { MessageList } from "../helper/message-list";
 import { MessageInput } from "../helper/message-input";
 import { ConfirmModal } from "../helper/confirm-modal";
 import { EditTaskModal } from "./functions/edit";
+import { Button } from "../ui/button";
 
 // How often to re-fetch comments while the page is open. Deliberately plain
 // polling instead of a WebSocket — see AGENTS.md section 6 (resource budget).
@@ -143,15 +144,17 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
 
   return (
     <div className="max-w-6xl mx-auto space-y-4">
-      <button
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={onBack}
-        className="flex items-center gap-1.5 text-xs font-bold text-[#9E9E9E] hover:text-[#E3E3E3] transition-colors"
+        className="text-[#9E9E9E] hover:text-[#E3E3E3] p-0 h-auto gap-1.5"
       >
         <ArrowLeft size={15} />
         Назад к задачам
-      </button>
+      </Button>
 
-      <div className="grid lg:grid-cols-2 gap-5 bg-amber-500">
+      <div className="grid lg:grid-cols-2 gap-5">
         {/* LEFT: Settings / details */}
         <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-4xl p-6 md:p-8 space-y-5 text-[#E3E3E3]">
           <div className="flex items-start justify-between gap-3">
@@ -159,20 +162,24 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
               {task.title}
             </h1>
             <div className="flex items-center gap-1 shrink-0">
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setEditOpen(true)}
                 title="Редактировать"
-                className="p-1.5 text-[#9E9E9E] hover:text-[#BB86FC] hover:bg-[#252525] rounded-full transition-colors"
+                className="w-8 h-8 p-0 rounded-full text-[#9E9E9E] hover:text-[#BB86FC] hover:bg-[#252525]"
               >
                 <Edit2 size={15} />
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setDeleteConfirmOpen(true)}
                 title="Удалить"
-                className="p-1.5 text-[#CF6679] hover:bg-[#CF6679]/10 rounded-full transition-colors"
+                className="w-8 h-8 p-0 rounded-full text-[#CF6679] hover:bg-[#CF6679]/10"
               >
                 <Trash2 size={15} />
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -228,17 +235,14 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
             </div>
           </div>
 
-          <button
+          <Button
+            variant={isDone ? "success" : "primary"}
             onClick={handleToggleStatus}
-            className={`w-full py-3 rounded-full font-black text-xs flex items-center justify-center gap-2 transition-all shadow-md active:scale-98 ${
-              isDone
-                ? "bg-[#4CAF50] hover:bg-[#43a047] text-[#121212]"
-                : "bg-[#BB86FC] hover:bg-[#a871ea] text-[#121212]"
-            }`}
+            className="w-full py-3 rounded-full font-black text-xs h-auto shadow-md"
           >
             <CheckCircle2 size={15} />
             <span>{isDone ? "Задача выполнена! Вернуть в работу" : "Отметить выполненной"}</span>
-          </button>
+          </Button>
         </div>
 
         {/* RIGHT: Chat / comments */}

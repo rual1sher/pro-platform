@@ -6,16 +6,10 @@ import { useTask } from "../../../store/task.store";
 import { findAll } from "../../../service/task.service";
 import { getOrganizationMembers } from "../../../service/organization.service";
 import { computeTaskStats } from "../../helper/task-stats";
-import { Button } from "../../helper/button";
+import { Button } from "../../ui/button";
 import { MembersModal } from "../org-modal";
+import { STAT_CARDS } from "../../dashboard/stat-cards";
 import type { ITaskResponce } from "../../../types";
-
-const STAT_CARDS = [
-  { key: "pending" as const, label: "Ожидает", color: "#757575", dot: "bg-[#757575]" },
-  { key: "inProgress" as const, label: "В работе", color: "#2196F3", dot: "bg-[#2196F3]" },
-  { key: "done" as const, label: "Готово", color: "#4CAF50", dot: "bg-[#4CAF50]" },
-  { key: "rejected" as const, label: "Отклонено", color: "#CF6679", dot: "bg-[#CF6679]" },
-];
 
 interface OrgProfileProps {
   organizationId: number;
@@ -147,12 +141,14 @@ export function OrgProfileComponent({ organizationId }: OrgProfileProps) {
                 Участники ({members.length})
               </h2>
               {canManage && (
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setMembersOpen(true)}
-                  className="text-xs font-bold text-[#BB86FC] hover:text-[#a871ea]"
+                  className="text-xs font-bold text-[#BB86FC] hover:text-[#a871ea] p-1 h-auto"
                 >
                   Управление
-                </button>
+                </Button>
               )}
             </div>
 

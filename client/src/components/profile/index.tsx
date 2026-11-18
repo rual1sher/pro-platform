@@ -4,6 +4,8 @@ import { Building2, Mail, Plus, ShieldCheck } from "lucide-react";
 import { useAuth } from "../../store/auth.store";
 import { findAll } from "../../service/task.service";
 import { CreateOrgModal } from "../organization/org-modal";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 import type { ITaskResponce } from "../../types";
 
 const ROLE_LABEL: Record<string, string> = {
@@ -133,13 +135,15 @@ export function ProfileComponent() {
         <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-[28px] p-5 space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold text-[#E3E3E3]">Мои организации</h2>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setCreateOrgOpen(true)}
-              className="text-xs font-bold text-[#BB86FC] hover:text-[#a871ea] flex items-center gap-1"
+              className="text-[#BB86FC] hover:text-[#a871ea] p-1 h-auto font-bold"
             >
               <Plus size={13} />
               Создать
-            </button>
+            </Button>
           </div>
 
           {organizations.length === 0 ? (
@@ -149,13 +153,14 @@ export function ProfileComponent() {
           ) : (
             <div className="space-y-2">
               {organizations.map((org) => (
-                <button
+                <Button
                   key={org.id}
+                  variant="dark"
                   onClick={() => {
                     setActiveOrgById(org.id);
                     navigate(`/organizations/${org.id}`);
                   }}
-                  className="w-full flex items-center justify-between gap-3 p-3 rounded-xl bg-[#252525] hover:bg-[#2c2c2c] border border-[#2C2C2C] transition-colors text-left"
+                  className="w-full justify-between gap-3 p-3 rounded-xl text-left h-auto font-normal hover:bg-[#2c2c2c]"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className="w-8 h-8 rounded-xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shrink-0">
@@ -171,12 +176,12 @@ export function ProfileComponent() {
                     </div>
                   </div>
                   {org.role && (
-                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#BB86FC]/15 text-[#BB86FC] border border-[#BB86FC]/30 flex items-center gap-1 shrink-0">
+                    <Badge variant="default" className="text-[10px] px-2 py-0.5 shrink-0">
                       <ShieldCheck size={11} />
                       {ROLE_LABEL[org.role] || org.role}
-                    </span>
+                    </Badge>
                   )}
-                </button>
+                </Button>
               ))}
             </div>
           )}

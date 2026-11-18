@@ -1,5 +1,13 @@
-import { AlertTriangle, X } from "lucide-react";
-import { Button } from "./button";
+import { AlertTriangle } from "lucide-react";
+import { Button } from "../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "../ui/dialog";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -24,12 +32,10 @@ export function ConfirmModal({
   onConfirm,
   onClose,
 }: ConfirmModalProps) {
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-[28px] w-full max-w-sm p-6 shadow-2xl space-y-4 text-[#E3E3E3]">
-        <div className="flex items-start justify-between gap-3">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-sm" hideClose>
+        <DialogHeader className="border-none pb-0">
           <div className="flex items-center gap-3">
             <div
               className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
@@ -40,25 +46,13 @@ export function ConfirmModal({
             >
               <AlertTriangle size={18} />
             </div>
-            <h2 className="text-base font-extrabold text-[#E3E3E3] leading-snug">
-              {title}
-            </h2>
+            <DialogTitle>{title}</DialogTitle>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 text-[#9E9E9E] hover:text-[#E3E3E3] rounded-full hover:bg-[#252525] transition-colors shrink-0"
-          >
-            <X size={16} />
-          </button>
-        </div>
+        </DialogHeader>
 
-        {message && (
-          <p className="text-xs text-[#9E9E9E] leading-relaxed font-medium">
-            {message}
-          </p>
-        )}
+        {message && <DialogDescription className="mt-2">{message}</DialogDescription>}
 
-        <div className="flex justify-end gap-2.5 pt-2">
+        <DialogFooter className="border-none pt-2">
           <Button type="button" variant="ghost" onClick={onClose} disabled={loading}>
             {cancelLabel}
           </Button>
@@ -70,8 +64,8 @@ export function ConfirmModal({
           >
             {loading ? "Подождите..." : confirmLabel}
           </Button>
-        </div>
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,14 +1,15 @@
-import "dotenv/config";
-import Fastify from "fastify";
 import cors from "@fastify/cors";
 import jwt from "@fastify/jwt";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
+import "dotenv/config";
+import Fastify from "fastify";
 
 import { authRoutes } from "./routes/auth.js";
+import { messageRoutes } from "./routes/messages.js";
 import { organizationRoutes } from "./routes/organizations.js";
 import { taskRoutes } from "./routes/tasks.js";
-import { messageRoutes } from "./routes/messages.js";
+import { userRoutes } from "./routes/users.js";
 
 const fastify = Fastify({
   logger: true,
@@ -66,17 +67,11 @@ fastify.get("/api/health", async () => {
 });
 
 // Register API Routes
-await fastify.register(authRoutes, { prefix: "/api" });
 await fastify.register(authRoutes, { prefix: "/api/auth" });
+await fastify.register(userRoutes, { prefix: "/api/users" });
 await fastify.register(organizationRoutes, { prefix: "/api/organizations" });
 await fastify.register(taskRoutes, { prefix: "/api/tasks" });
 await fastify.register(messageRoutes, { prefix: "/api" });
-
-// Backwards compatibility aliases for root level endpoints
-await fastify.register(authRoutes);
-await fastify.register(authRoutes, { prefix: "/auth" });
-await fastify.register(taskRoutes, { prefix: "/tasks" });
-await fastify.register(organizationRoutes, { prefix: "/organizations" });
 
 // Global Error Handler
 fastify.setErrorHandler((error: any, request, reply) => {

@@ -1,3 +1,14 @@
+export interface TaskQueryParams {
+  status?: string;
+  order?: string;
+  priority?: string;
+  preority?: string;
+  assigneeId?: number;
+  user_id?: number;
+  organizationId?: number;
+  search?: string;
+}
+
 export interface ITaskResponce {
   id: number;
   title: string;

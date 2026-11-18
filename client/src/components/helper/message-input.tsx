@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { cn } from "../../lib/utils";
 
 interface MessageInputProps {
   onSend: (content: string) => Promise<unknown> | void;
@@ -28,23 +31,25 @@ export function MessageInput({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`flex gap-1.5 ${className}`}>
-      <input
+    <form onSubmit={handleSubmit} className={cn("flex gap-1.5", className)}>
+      <Input
         type="text"
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={sending}
         autoFocus={autoFocus}
-        className="flex-1 px-3 py-2 bg-[#252525] border border-[#2C2C2C] rounded-full text-xs text-[#E3E3E3] placeholder-[#616161] focus:outline-none focus:border-[#BB86FC] disabled:opacity-60"
+        className="flex-1 rounded-full text-xs py-2 px-3"
       />
-      <button
+      <Button
         type="submit"
+        variant="primary"
+        size="sm"
         disabled={!value.trim() || sending}
-        className="px-4 py-2 bg-[#BB86FC] hover:bg-[#a871ea] disabled:opacity-30 text-[#121212] font-black text-xs rounded-full transition-colors"
+        className="rounded-full font-black text-xs"
       >
         +
-      </button>
+      </Button>
     </form>
   );
 }

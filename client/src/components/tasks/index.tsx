@@ -7,6 +7,8 @@ import { DragDropProvider } from "@dnd-kit/react";
 import { TaskItem } from "./items";
 import { useTask } from "../../store/task.store";
 import { CreateTask } from "./functions/create";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import {
   Search,
   Filter,
@@ -170,26 +172,22 @@ export function TasksComponent() {
         <div className="flex items-center gap-2.5">
           {/* View tabs pill */}
           <div className="flex items-center bg-[#252525] p-1 rounded-full border border-[#2C2C2C] shadow-xs">
-            <button
+            <Button
+              variant={activeViewTab === "board" ? "primary" : "ghost"}
+              size="sm"
               onClick={() => setActiveViewTab("board")}
-              className={`px-3.5 py-1 text-xs font-bold rounded-full transition-all ${
-                activeViewTab === "board"
-                  ? "bg-[#BB86FC] text-[#121212] shadow-xs"
-                  : "text-[#9E9E9E] hover:text-[#E3E3E3]"
-              }`}
+              className="px-3.5 py-1 text-xs font-bold rounded-full h-auto"
             >
               Доска
-            </button>
-            <button
+            </Button>
+            <Button
+              variant={activeViewTab === "list" ? "primary" : "ghost"}
+              size="sm"
               onClick={() => setActiveViewTab("list")}
-              className={`px-3.5 py-1 text-xs font-bold rounded-full transition-all ${
-                activeViewTab === "list"
-                  ? "bg-[#BB86FC] text-[#121212] shadow-xs"
-                  : "text-[#9E9E9E] hover:text-[#E3E3E3]"
-              }`}
+              className="px-3.5 py-1 text-xs font-bold rounded-full h-auto"
             >
               Список
-            </button>
+            </Button>
           </div>
 
           <CreateTask />
@@ -201,12 +199,12 @@ export function TasksComponent() {
         {/* Search input */}
         <div className="relative flex-1 min-w-[200px] max-w-sm">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E9E9E]" />
-          <input
+          <Input
             type="text"
             placeholder="Поиск задач или исполнителей..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 bg-[#252525] border border-[#2C2C2C] rounded-xl text-xs text-[#E3E3E3] placeholder-[#616161] focus:outline-none focus:border-[#BB86FC] transition-colors font-medium"
+            className="pl-8 text-xs py-1.5 rounded-xl font-medium"
           />
         </div>
 
@@ -255,17 +253,19 @@ export function TasksComponent() {
 
           {/* Reset button */}
           {(selectedWorkerFilter !== null || selectedPriorityFilter !== null || searchQuery) && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => {
                 setSelectedWorkerFilter(null);
                 setSelectedPriorityFilter(null);
                 setSearchQuery("");
               }}
-              className="text-[11px] font-bold text-[#03DAC6] hover:bg-[#252525] px-2 py-1 rounded-lg transition-colors flex items-center gap-1"
+              className="text-[11px] font-bold text-[#03DAC6] hover:bg-[#252525] px-2 py-1 rounded-lg gap-1 h-auto"
             >
               <X size={12} />
               <span>Сброс</span>
-            </button>
+            </Button>
           )}
         </div>
       </div>

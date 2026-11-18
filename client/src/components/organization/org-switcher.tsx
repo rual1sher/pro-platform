@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../store/auth.store";
 import { Building2, ChevronDown, Plus, Users, Check } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface OrgSwitcherProps {
   onOpenCreateOrg: () => void;
@@ -24,22 +25,26 @@ export function OrgSwitcher({ onOpenCreateOrg, onOpenMembers }: OrgSwitcherProps
 
   if (!activeOrg && organizations.length === 0) {
     return (
-      <button
+      <Button
+        variant="primary"
+        size="sm"
         onClick={onOpenCreateOrg}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#BB86FC] text-[#121212] hover:bg-[#a871ea] text-xs font-bold transition-all shadow-xs"
+        className="rounded-xl"
       >
         <Plus size={15} />
         <span>Создать орг</span>
-      </button>
+      </Button>
     );
   }
 
   return (
     <div className="relative" ref={dropdownRef}>
       <div className="flex items-center gap-1.5">
-        <button
+        <Button
+          variant="dark"
+          size="sm"
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-[#252525] border border-[#2C2C2C] hover:border-[#BB86FC] text-[#E3E3E3] transition-all text-xs group"
+          className="rounded-2xl hover:border-[#BB86FC] text-[#E3E3E3] text-xs font-normal"
         >
           <div className="w-5 h-5 rounded-lg bg-[#BB86FC] text-[#121212] flex items-center justify-center font-bold text-xs">
             <Building2 size={12} />
@@ -55,16 +60,18 @@ export function OrgSwitcher({ onOpenCreateOrg, onOpenMembers }: OrgSwitcherProps
               isOpen ? "rotate-180" : ""
             }`}
           />
-        </button>
+        </Button>
 
-        <button
+        <Button
+          variant="dark"
+          size="sm"
           onClick={onOpenMembers}
           title="Сотрудники организации"
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-2xl bg-[#252525] border border-[#2C2C2C] hover:border-[#BB86FC] text-[#03DAC6] hover:bg-[#1E1E1E] transition-all text-xs font-bold"
+          className="rounded-2xl hover:border-[#BB86FC] text-[#03DAC6] hover:bg-[#1E1E1E] text-xs font-bold"
         >
           <Users size={13} />
           <span className="hidden sm:inline">Команда</span>
-        </button>
+        </Button>
       </div>
 
       {isOpen && (
@@ -100,16 +107,18 @@ export function OrgSwitcher({ onOpenCreateOrg, onOpenMembers }: OrgSwitcherProps
           </div>
 
           <div className="border-t border-[#2C2C2C] mt-1 pt-1 px-1">
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => {
                 setIsOpen(false);
                 onOpenCreateOrg();
               }}
-              className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs text-[#BB86FC] hover:bg-[#252525] rounded-xl transition-colors font-bold"
+              className="w-full justify-start text-[#BB86FC] hover:bg-[#252525] rounded-xl font-bold h-auto py-1.5"
             >
               <Plus size={14} />
               <span>Создать организацию</span>
-            </button>
+            </Button>
           </div>
         </div>
       )}

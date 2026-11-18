@@ -1,268 +1,272 @@
-# AGENTS.md — правила работы над Pro Platform
+# AGENTS.md — Полное руководство и правила разработки Pro Platform
 
-Этот файл обязателен к прочтению для **любого** агента (Claude Code, Antigravity/Gemini CLI,
-любой другой AI-инструмент) перед тем, как вносить изменения в этот репозиторий. Если
-инструкция агента и этот файл противоречат друг другу — приоритет у этого файла, если
-пользователь явно не сказал иное в моменте.
+> ⚠️ **ГЛАВНЫЙ ЗАКОН ДЛЯ ВСЕХ AI-АГЕНТОВ (Claude Code, Antigravity, Cursor, Gemini CLI и др.):**
+>
+> 1. **ОБЯЗАТЕЛЬНОЕ ПРОЧТЕНИЕ**: Каждый AI-агент обязан **целиком прочитать этот файл ДО начала работы** над любой задачей. Запрещено угадывать пути, названия файлов, роуты, стили или архитектурные паттерны — всё описано здесь.
+> 2. **ОБЯЗАТЕЛЬНАЯ АКТУАЛИЗАЦИЯ**: При внесении **любых важных изменений** (новый эндпоинт, модель БД в Prisma, UI-компонент, страница, сервис, глобальный тип или изменение архитектуры) AI-агент **ОБЯЗАН сразу же зафиксировать эти изменения в этом файле (`AGENTS.md`)**. Этот документ — единый живой источник правды (Single Source of Truth) проекта.
 
-## 1. Что это за продукт
+---
 
-Pro Platform — **самостоятельный** task-менеджер для IT-команд и разработчиков (не внутренний
-инструмент одной компании, а продукт, который смогут ставить/хостить у себя разные команды).
-Ключевые нефункциональные требования, которые важнее любой конкретной фичи:
+## 1. О продукте и ключевых принципах
 
-1. **Низкое потребление ресурсов** — CPU, RAM, диск. Проект должен запускаться и работать
-   комфортно на слабом железе (дешёвый VPS, ноутбук разработчика). Это ограничение сильнее,
-   чем "у популярного фреймворка больше возможностей" — см. раздел 6.
-2. **Чистый, предсказуемый, модульный код** — новый разработчик должен понять, где искать
-   код конкретной фичи, не читая весь проект.
-3. **Модульная архитектура** и на клиенте, и на API — см. раздел 4.
+Pro Platform — самостоятельный быстрый task-менеджер для IT-команд и разработчиков (self-hosted продукт).
 
-## 2. Доменная модель
+1. **Низкое потребление ресурсов** (CPU, RAM, диск) — проект должен летать на дешёвом VPS (1 vCPU, 512MB RAM) и ноутбуке.
+2. **Единая дизайн-система**: **СТРОГО ЗАПРЕЩЕНО** использовать нативные HTML-теги `<button>`, `<input>`, `<textarea>`, `<dialog>` в компонентах страниц и фич. Всегда использовать готовые компоненты из `client/src/components/ui/`.
+3. **Модульность**: Один домен = один файл роутов на API, одна папка в `components/<domain>/` на клиенте, свой сервис и store.
+4. **Никаких догадок по путям**: структура проекта строго описана ниже.
 
-### 2.1 Реализовано сейчас (v1 полностью закрыт)
+---
 
-| Модуль | Что делает | Prisma-модели |
-|---|---|---|
-| **Auth** | регистрация, логин, JWT (Bearer), `/me` | `User` |
-| **Organization** (org/team) | рабочее пространство команды, роли участников (`OWNER`/`ADMIN`/`MEMBER`) | `Organization`, `OrganizationMember` |
-| **Task** | задачи с приоритетом/статусом/дедлайном/исполнителем, drag&drop доска | `Task` |
-| **Message** | комментарии внутри конкретной задачи (показаны в `DetailPopover`) | `Message` (`type: "TASK_COMMENT"`) |
-| **Org-chat** | общий чат команды, отдельная страница `/chat` | `Message` (`type: "ORG_CHAT"`) |
+## 2. Карта репозитория и структура папок
 
-### 2.2 Схема Message/Org-chat
-
-Обе фичи используют **одну таблицу `Message`** с полем-дискриминатором `type`, а не две
-отдельных таблицы — чтобы не дублировать CRUD/валидацию/realtime-логику:
-
-```prisma
-model Message {
-  id             Int           @id @default(autoincrement())
-  content        String
-  type           String        // "TASK_COMMENT" | "ORG_CHAT"
-  task           Task?         @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId         Int?
-  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  organizationId Int?
-  author         User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId       Int
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-}
+```
+pro-platform/
+├── package.json              # Корневые скрипты (install:all, run:all, build:all)
+├── AGENTS.md                 # Настоящий файл — правила и архитектура
+├── README.md                 # Публичная документация
+│
+├── api/                      # Backend (Fastify 5 + Prisma 6 + SQLite)
+│   ├── prisma/
+│   │   ├── schema.prisma     # Prisma-модели (User, Organization, OrganizationMember, Task, Message)
+│   │   ├── seed.ts           # Начальные тестовые данные
+│   │   └── dev.db            # Файл SQLite БД
+│   └── src/
+│       ├── index.ts          # Точка входа, регистрация роутов Fastify с префиксом /api/<domain>
+│       ├── lib/
+│       │   ├── auth.ts       # authenticate() hook, getMembership(), JWT типы
+│       │   └── prisma.ts     # Singleton PrismaClient
+│       └── routes/
+│           ├── auth.ts       # /api/auth (register, login, me)
+│           ├── users.ts      # /api/users (список воркеров)
+│           ├── organizations.ts # /api/organizations (CRUD, members)
+│           ├── tasks.ts      # /api/tasks (CRUD, фильтрация)
+│           └── messages.ts   # /api/tasks/:id/messages, /api/organizations/:id/chat, /api/messages/:id
+│
+└── client/                   # Frontend (React 19 + Vite 7 + Tailwind CSS v4)
+    └── src/
+        ├── App.tsx           # Корневой лейаут (AppSidebar + Header + Routes)
+        ├── main.tsx          # Рендер React приложения
+        ├── index.css         # Базовые стили, палитра CSS-переменных, скроллбары
+        ├── components/
+        │   ├── ui/           # БАЗОВЫЕ UI-КОМПОНЕНТЫ (ИСПОЛЬЗОВАТЬ ИХ ВМЕСТО HTML-ТЕГОВ):
+        │   │   ├── button.tsx    # Button (варианты: primary, secondary, dark, ghost, danger, success, outline, sand)
+        │   │   ├── input.tsx     # Input (текстовые поля)
+        │   │   ├── textarea.tsx  # Textarea (многострочный ввод)
+        │   │   ├── label.tsx     # Label (подписи полей на Radix UI)
+        │   │   ├── dialog.tsx    # Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter
+        │   │   ├── select.tsx    # Select на Radix UI (Select, SelectTrigger, SelectContent, SelectItem)
+        │   │   ├── badge.tsx     # Badge (default, secondary, destructive, success, warning, accent, outline)
+        │   │   └── avatar.tsx    # Avatar, AvatarImage, AvatarFallback
+        │   ├── sidebar/
+        │   │   └── index.tsx     # AppSidebar — глобальный сайдбар навигации (сворачивание/раскрытие)
+        │   ├── header/
+        │   │   └── index.tsx     # Верхняя шапка (логотип, профиль, переключатель сайдбара, выход)
+        │   ├── helper/           # Бизнес-хелперы и обертки
+        │   │   ├── confirm-modal.tsx  # ConfirmModal (диалог подтверждения опасных действий)
+        │   │   ├── field-input.tsx    # InputField (обертка для Formik поверх ui/input и ui/label)
+        │   │   ├── message-list.tsx   # MessageList (общий список сообщений задачи и чата)
+        │   │   ├── message-input.tsx  # MessageInput (инпут отправки сообщений)
+        │   │   ├── task-stats.ts      # computeTaskStats() — расчёт процентов и метрик
+        │   │   ├── container.tsx      # Container (ограничитель ширины)
+        │   │   └── tokens.tsx         # getToken(), addToken(), removeToken()
+        │   ├── dashboard/        # Компоненты дашборда (stat-cards.tsx, index.tsx)
+        │   ├── tasks/            # Доска задач (column.tsx, items.tsx, sidebar.tsx, functions/*)
+        │   ├── organization/     # Чат (chat/*), профиль орг, switcher, модалки
+        │   ├── profile/          # Профиль пользователя
+        │   └── auth/             # Формы login.tsx, register.tsx
+        ├── page/                 # Тонкие route-обертки страниц
+        ├── service/              # HTTP-сервисы Axios (auth, task, organization, message, chat)
+        ├── store/                # Zustand-сторы (auth, task, message, chat)
+        └── types/                # ЕДИНЫЙ ИСТОЧНИК ТИПОВ:
+            ├── index.ts          # Реэкспорт всех типов
+            ├── common.types.ts   # ITaskStats, IStatCardItem, OrgRole, TaskStatusValue, IBaseModalProps...
+            ├── auth.types.ts     # IUser, ILogin, IRegister
+            ├── task.types.ts     # ITaskResponce, ITaskRequest, TaskQueryParams
+            ├── organization.types.ts # IOrganization, IOrganizationMember
+            └── message.types.ts  # IMessage, MessageType, IMessageRequest
 ```
 
-Ровно один из `taskId` / `organizationId` заполнен — проверяется в application-слое
-(Zod-схема + явная проверка в роуте), не в БД (SQLite не поддерживает CHECK-констрейнты через
-Prisma). На уровне продукта/UI/роутов это остаются **два разных модуля**, реализованные так:
+---
 
-- **Сервер**: один файл `api/src/routes/messages.ts` с двумя группами роутов
-  (`/tasks/:taskId/messages` и `/organizations/:orgId/chat`) + общий `DELETE /messages/:id`.
-  Проверка членства — через `getMembership()` из `lib/auth.ts` (раздел 5.3), обязательна на
-  каждом роуте.
-- **Клиент**: `service/message.service.ts` (комментарии задачи) и `service/chat.service.ts`
-  (общий чат) — раздельные сервисы, `chat.service.ts` переиспользует `removeMessage` из
-  `message.service.ts` вместо дублирования DELETE-запроса. Аналогично `store/message.store.ts`
-  (комментарии, хранятся по `taskId`) и `store/chat.store.ts` (сообщения активной организации).
-  Комментарии встроены в `components/tasks/detail-popover.tsx`, общий чат — отдельная страница
-  `page/chat/` + `components/organization/chat/index.tsx`, доступна через кнопку в хедере.
-- **Переиспользуемый UI**: `components/helper/message-list.tsx` и `message-input.tsx` — общий
-  список сообщений и инпут для обоих модулей, чтобы не дублировать разметку.
-- **Realtime**: короткий polling (5с для комментариев задачи, 4с для чата) пока открыт
-  соответствующий экран — см. раздел 6.4, WebSocket сознательно не использован в v1.
-
-## 3. Стек
+## 3. Стек технологий и версии
 
 ### Клиент (`client/`)
-- **React 19** + **Vite 7** + TypeScript (strict) — быстрый dev-сервер, маленький бандл.
-- **React Compiler** (`babel-plugin-react-compiler`) включён — не расставляйте `useMemo`/
-  `useCallback`/`memo` вручную без явной причины, компилятор делает это сам.
-- **Tailwind CSS 4** — без отдельного CSS-в-JS решения (лишний рантайм-вес).
-- **Zustand 5** — глобальное состояние. Не Redux/Redux Toolkit — сознательно, ради размера
-  бандла и простоты. Один store на домен (`auth.store.ts`, `task.store.ts`, ...).
-- **react-router 7**, **axios**, **formik + yup**, **@dnd-kit** (drag&drop доски),
-  **react-toastify** (уведомления об ошибках/успехе вместо кастомных модалок),
-  **lucide-react** (иконки, tree-shakeable).
+- **React 19** + **Vite 7** + **TypeScript (strict)**.
+- **React Compiler** (`babel-plugin-react-compiler`) включён — **не писать ручные `useMemo`/`useCallback`**, компилятор оптимизирует их автоматически.
+- **Tailwind CSS v4** — `@tailwindcss/vite`, переменные в `src/index.css`.
+- **Radix UI** primitives: `@radix-ui/react-dialog`, `@radix-ui/react-select`, `@radix-ui/react-avatar`, `@radix-ui/react-label`, `@radix-ui/react-slot`.
+- **Вспомогательные утилиты стилей**: `clsx`, `tailwind-merge`, `class-variance-authority` (функция `cn()` в `src/lib/utils.ts`).
+- **Zustand 5** — глобальные сторы без лишних middleware.
+- **React Router 7**, **Axios**, **Formik + Yup**, **@dnd-kit**, **Lucide React**.
 
 ### Сервер (`api/`)
-- **Fastify 5** — сознательно вместо Express/NestJS: ниже потребление памяти, выше RPS,
-  минимум магии/DI-контейнеров, что проще читать junior/middle разработчику.
-- **Prisma 6** + **SQLite** — zero-config БД, не требует отдельного процесса/контейнера БД.
-  Это намеренное решение ради требования "мало ресурсов": SQLite достаточно для
-  self-hosted продукта с одним инстансом сервера. См. раздел 7, когда от неё стоит уйти.
-- **@fastify/jwt** (Bearer-токены) + **bcryptjs** (хэш паролей).
-- **zod** — валидация тела запроса/query на границе API.
-- **@fastify/swagger** + **swagger-ui** — документация на `/docs`, обновляется вместе с роутами.
+- **Fastify 5** — легковесный, быстрый, строгий фреймворк.
+- **Prisma 6** + **SQLite** (`file:./dev.db`) — zero-config база данных.
+- **@fastify/jwt** + **bcryptjs**.
+- **Zod** — строгая валидация входящих тел запросов.
+- **Swagger / OpenAPI** на `/docs`.
 
-### Монорепо без Nx/Turborepo
-Три `package.json`: корневой (общие скрипты типа `dev:all`, проксирующие вызовы через
-`--prefix client`/`--prefix api`), `client/` и `api/`. Связаны через `npm run dev:all`
-(`concurrently`). Намеренно не используется Nx/Turborepo/pnpm workspaces — лишний
-инструмент ради двух пакетов не оправдан, а `concurrently` — это одна маленькая зависимость.
+---
 
-## 4. Модульная архитектура — обязательные паттерны
+## 4. UI-компоненты: правила и использование
 
-### 4.1 Сервер: один домен = один файл роутов
+> ⚠️ **ЖЕЛЕЗНОЕ ПРАВИЛО:**
+> Никогда не писать `<button className="...">`, `<input className="...">`, `<textarea ...>`, нативные модальные оверлеи.
+> Всегда импортировать из `components/ui/`!
 
-```
-api/src/
-  index.ts              # регистрация всех *.routes на префиксы /api/<domain>
-  lib/
-    auth.ts              # authenticate() preHandler, TokenPayload
-    prisma.ts             # singleton PrismaClient
-  routes/
-    auth.ts               # /api/auth/*
-    organizations.ts       # /api/organizations/*
-    tasks.ts                # /api/tasks/*
-    messages.ts              # /api/tasks/:id/messages, /api/organizations/:id/chat, /api/messages/:id
-```
+### 4.1 Кнопки (`Button`)
+Импорт: `import { Button } from "@/components/ui/button";` (или относительный путь `../ui/button`).
+Доступные варианты (`variant`):
+- `primary`: Акцентная фиолетовая кнопка (`#BB86FC` текст `#121212`) — для главных действий (Создать, Сохранить, Войти).
+- `secondary`: Бирюзовая кнопка (`#03DAC6` текст `#121212`).
+- `dark`: Тёмная кнопка с бордером (`bg-[#252525] border-[#2C2C2C] hover:border-[#BB86FC]/50`).
+- `ghost`: Прозрачная кнопка с подсветкой при наведении.
+- `danger`: Розово-красная кнопка удаления/ошибки (`#CF6679`).
+- `success`: Зеленая кнопка успеха (`#4CAF50`).
+- `outline`: Прозрачная с фиолетовым бордером.
 
-Правила при добавлении нового домена (например `messages.ts`):
-1. Один файл — одна Fastify-плагин-функция `export async function xRoutes(fastify) {...}`.
-2. `fastify.addHook("preHandler", authenticate)` в начале, если весь модуль требует авторизации.
-3. Zod-схема на каждый `POST`/`PATCH`-body, вынесена в константу вверху файла.
-4. **Обязательна проверка прав** на уровне организации/задачи (см. раздел 5.3) — не полагаться
-   только на то, что юзер авторизован.
-5. Регистрация в `index.ts` **одной строкой**, один префикс — без "алиасов для обратной
-   совместимости" (см. раздел 5.1, это долг, а не паттерн для копирования).
-6. Добавить эндпоинты в таблицу README.md.
+Размеры (`size`): `sm`, `md` (дефолт), `lg`, `xl`.
 
-### 4.2 Клиент: один домен = папка `components/<domain>/` + `service` + `store`
-
-```
-client/src/
-  page/<domain>/index.tsx        # тонкая route-обёртка, только композиция
-  components/<domain>/
-    index.tsx                     # основной "умный" компонент модуля
-    <feature>.tsx                 # презентационные части (column.tsx, sidebar.tsx...)
-    functions/
-      create.tsx                  # обработчики действий (create/edit/remove)
-      edit.tsx
-      remove.tsx
-  service/<domain>.service.ts     # тонкая обёртка над axios, домен = файл
-  store/<domain>.store.ts         # один zustand-store на домен
-  types/<domain>.types.ts         # типы домена
-  types/index.ts                  # ре-экспорт всех types/*.types.ts — импортировать отсюда
+```tsx
+// Пример:
+<Button variant="primary" size="sm" onClick={handleSave}>
+  Сохранить
+</Button>
+<Button variant="dark" size="sm" className="w-8 h-8 p-0 rounded-full">
+  <Icon size={15} />
+</Button>
 ```
 
-Пример модуля, реализованного строго по этой конвенции: Message/Org-chat —
-`service/message.service.ts` + `service/chat.service.ts`, `store/message.store.ts` +
-`store/chat.store.ts`, `types/message.types.ts`, `components/organization/chat/index.tsx`,
-`page/chat/index.tsx`. Используйте как референс при добавлении следующего домена.
+### 4.2 Поля ввода (`Input`, `Textarea`, `Label`)
+```tsx
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
 
-Конвенция `service/*.ts` (соблюдать для новых модулей):
-- Каждая функция — один HTTP-вызов, `async function`, без классов.
-- Ошибки не пробрасываются наверх исключением — ловятся внутри, показывается
-  `toast.error(...)`, функция возвращает `null`/`[]`/`false`. Компонент не обязан оборачивать
-  вызов в `try/catch`.
-- Заголовок авторизации собирается через локальный `getHeaders()` + `getToken()` из
-  `components/helper/tokens.tsx`.
+<div className="space-y-1.5">
+  <Label htmlFor="title">Название задачи</Label>
+  <Input id="title" placeholder="Введите название..." value={title} onChange={...} />
+</div>
+```
+Для форм Formik используется готовый компонент:
+```tsx
+import { InputField } from "../helper/field-input";
+<InputField name="email" title="Email" type="email" />
+```
 
-Конвенция `store/*.ts`:
-- `zustand` без middleware (без persist/devtools) — минимум рантайм-веса. Если нужен persist
-  (например, для активной организации) — обсуждать отдельно, не добавлять по умолчанию.
+### 4.3 Модальные окна (`Dialog`, `ConfirmModal`)
+- Для простого подтверждения действия (удаление, выход):
+  ```tsx
+  import { ConfirmModal } from "../helper/confirm-modal";
+  <ConfirmModal
+    isOpen={open}
+    title="Удалить задачу?"
+    message="Действие необратимо"
+    variant="danger"
+    onConfirm={handleDelete}
+    onClose={() => setOpen(false)}
+  />
+  ```
+- Для кастомных форм: использовать `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogFooter` из `../ui/dialog`.
 
-## 5. Известные недостатки (технический долг, не копировать паттерн дальше)
+### 4.4 Бейджи и Аватары
+```tsx
+import { Badge } from "../ui/badge";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
-Эти вещи уже есть в коде. Не воспроизводите их в новых модулях; по возможности чините
-по пути, если трогаете соседний код.
+<Badge variant="default">Владелец</Badge>
+<Badge variant="accent">В работе</Badge>
 
-1. **Дублирующиеся роуты "для обратной совместимости"** в `api/src/index.ts`
-   (`authRoutes` зарегистрирован 4 раза на разных префиксах, `/organizations` и `/tasks` без
-   `/api`). Увеличивает поверхность атаки и путает. Новые модули регистрировать один раз,
-   на одном префиксе `/api/<domain>`.
-2. **Дублирующиеся поля в Task API** (`order`/`status`, `preority`/`priority`, `date`/`dueDate`,
-   `user_id`/`assigneeId`) — легаси после рефакторинга. Новый код (Message/OrgChat и любые
-   правки Task) должен использовать только канонические имена: `status`, `priority`,
-   `dueDate`, `assigneeId`.
-3. **Хардкоженный fallback JWT-секрета** в `api/src/index.ts`
-   (`process.env.JWT_SECRET || "super-secret-key-pro-platform-2026"`). Работает только
-   потому что это dev-заглушка — в проде обязателен `.env` с реальным секретом. Не копировать
-   паттерн "дефолтный секрет в коде" на новые секреты.
-4. **Нет проверки прав участника** на мутирующих org-scoped эндпоинтах `organizations.ts`
-   (`POST/DELETE /organizations/:id/members`) и `tasks.ts` (`PATCH/DELETE /tasks/:id`) — любой
-   авторизованный пользователь может менять чужую организацию/задачу, если знает ID. Это дыра,
-   не архитектурное решение. `routes/messages.ts` уже делает эту проверку правильно
-   (см. 5.3) — используйте его как референс, когда будете чинить `organizations.ts`/`tasks.ts`.
-5. `removeToken()` в `components/helper/tokens.tsx` делает `localStorage.clear()` +
-   `sessionStorage.clear()` — стирает вообще всё хранилище браузера для этого origin, а не
-   только токен. Опасно, если позже появятся другие ключи (черновики, настройки UI).
-6. Опечатка в имени файла/роута: `client/src/page/auth/regisnter.tsx` (правильно — `register`).
-   Чинить можно попутно, но переименование файла — отдельный маленький коммит, не мешать
-   с фичей.
-7. Тестов нет вообще (ни клиент, ни сервер). Не блокирует разработку v1, но перед тем как
-   проект станет "продуктом для разработчиков", минимум happy-path тесты на auth/permissions
-   в сервере обязательны (см. раздел 8).
+<Avatar className="w-8 h-8 ring-2 ring-[#BB86FC]">
+  <AvatarImage src={user.avatar} />
+  <AvatarFallback>{user.name[0]}</AvatarFallback>
+</Avatar>
+```
 
-### 5.3 Правило проверки прав (обязательно для новых мутирующих эндпоинтов)
+---
 
-Каждый роут, который меняет данные, принадлежащие организации (task, message, member),
-обязан явно проверить, что `request.user.id` состоит в этой организации (и, если нужно,
-имеет нужную роль), **до** обращения к Prisma на запись. Шаблон:
+## 5. Цветовая палитра проекта
 
+Соблюдать HEX-коды темной темы (не изобретать свои случайные цвета):
+- Фон страницы: `#121212` (`--bg-main`)
+- Карточки и модалки: `#1E1E1E` (`--bg-surface`)
+- Инпуты, плашки, ховеры: `#252525` (`--bg-overlay`)
+- Границы (borders): `#2C2C2C` (`--border-light`)
+- Главный акцент (фиолетовый): `#BB86FC` (`--brand-primary`)
+- Вторичный акцент (бирюзовый): `#03DAC6` (`--brand-secondary`)
+- Текст основной: `#E3E3E3` (`--text-primary`)
+- Текст приглушенный: `#9E9E9E` (`--text-secondary`)
+- Ошибки / Удаление: `#CF6679` (`--status-error`)
+- Успех: `#4CAF50` (`--status-success`)
+- Статусы колонок:
+  - 0: Ожидает (`#757575`, серая точка)
+  - 1: В работе (`#2196F3`, синяя точка)
+  - 2: Готово (`#4CAF50`, зеленая точка)
+  - 3: Отклонено (`#CF6679`, розовая точка)
+
+---
+
+## 6. Правила API и эндпоинты
+
+Все эндпоинты сервера строго монтируются с префиксом `/api/<domain>`:
+- `/api/auth` — `POST /register`, `POST /login`, `GET /me`
+- `/api/users` — `GET /` (список воркеров платформы для назначения)
+- `/api/organizations` — `GET /`, `POST /`, `GET /:id`, `GET /:id/members`, `POST /:id/members`, `DELETE /:id/members/:userId`
+- `/api/tasks` — `GET /` (query: `organizationId`, `assigneeId`, `status`, `search`), `POST /`, `GET /:id`, `PATCH /:id`, `DELETE /:id`
+- `/api/tasks/:taskId/messages` — комментарии к конкретной задаче
+- `/api/organizations/:orgId/chat` — общий чат команды
+- `/api/messages/:id` — удаление сообщения
+
+**Правило проверки прав (5.3):**
+Любой мутирующий роут (создание/изменение/удаление задачи, участника, сообщения) обязан проверить членство `request.user.id` в организации:
 ```ts
-const membership = await prisma.organizationMember.findUnique({
-  where: { organizationId_userId: { organizationId: orgId, userId: payload.id } },
-});
+const membership = await getMembership(orgId, payload.id);
 if (!membership) {
   return reply.status(403).send({ error: "Нет доступа к этой организации" });
 }
 ```
 
-## 6. Ресурсный бюджет — обязательные правила для агентов
+---
 
-1. Перед добавлением новой npm-зависимости (клиент или сервер) — спросить себя: решает ли
-   встроенная возможность платформы/уже используемой библиотеки эту задачу? Если да —
-   не добавлять зависимость.
-2. Явно запрещено без отдельного обсуждения с пользователем: Redux/Redux Toolkit, Next.js/
-   Nest.js (замена текущего Vite/Fastify), Socket.IO (если понадобится realtime — использовать
-   `@fastify/websocket`, он легче и не тянет polling-фоллбэк), UI-кит целиком (MUI/AntD и т.п. —
-   тянут много CSS/JS, у нас Tailwind + свои компоненты в `components/helper/`).
-3. SQLite остаётся БД по умолчанию для v1. Переходить на Postgres только если появится
-   реальная причина: несколько инстансов сервера за балансировщиком (SQLite не любит
-   параллельную запись с нескольких процессов) или потребность в сложных запросах/полнотекстовом
-   поиске, которых SQLite не тянет. Не менять БД "про запас".
-4. Realtime для Message/OrgChat начинать с самого дешёвого решения, которое закрывает UX
-   (например, короткий polling раз в N секунд при открытом чате/задаче), и переходить на
-   WebSocket только когда polling реально станет узким местом или UX это потребует
-   (мгновенная доставка). Не тащить websocket-инфраструктуру заранее "на будущее".
-5. Если задача про докеризацию/деплой — использовать multi-stage `node:*-alpine` образ,
-   не тянуть в финальный образ dev-зависимости и Prisma CLI.
+## 7. Управление зависимостями и команды сборки
 
-## 7. Намеренные решения (не менять без обсуждения с пользователем)
+Корневой `package.json` содержит канонические скрипты:
+- `npm run install:all` — установка зависимостей в корне, `client/` и `api/`.
+- `npm run run:all` — одновременный запуск фронтенда (Vite 5173) и бэкенда (Fastify 3001) через `concurrently`.
+- `npm run build:all` — одновременная сборка фронтенда (`tsc -b && vite build`) и бэкенда (`tsc`).
+- `npm run db:seed` — запуск сида базы данных.
+- `npm run db:studio` — веб-интерфейс Prisma Studio для просмотра БД.
 
-- **Fastify, не Express/NestJS** — ниже потребление памяти, меньше boilerplate.
-- **SQLite, не Postgres** — zero-config, отдельный процесс БД не нужен (см. раздел 6.3).
-- **Zustand, не Redux/Context** — минимальный рантайм, один store на домен читается легко.
-- **React Compiler включён** — не писать ручные `useMemo`/`useCallback` "на всякий случай".
-- **Толстый клиент, тонкий сервер по формату ответа**: сервер форматирует ответ под нужды
-  клиента (`formatTask()` в `tasks.ts`) вместо того, чтобы клиент делал мэппинг — осознанный
-  выбор, чтобы клиентский код оставался максимально простым.
-- **Сервисный слой глотает ошибки и показывает toast**, а не прокидывает исключения выше —
-  компоненты не обязаны знать про HTTP/axios.
-- **npm + concurrently вместо monorepo-инструментов** — два пакета не оправдывают Nx/Turborepo.
+Перед любым коммитом **ОБЯЗАТЕЛЬНО** проверить:
+1. `cd client && npm run build` — сборка клиента без ошибок TS.
+2. `cd api && npm run build` — сборка сервера без ошибок TS.
 
-## 8. Возможные улучшения (бэклог, не делать без запроса)
+---
 
-- Rate limiting на `/api/auth/*` (`@fastify/rate-limit`) — сейчас нет защиты от brute-force.
-- Refresh-токены / истечение access-токена (сейчас JWT, судя по всему, без `expiresIn`).
-- Пагинация для `GET /tasks` (сейчас всё в одном ответе) и `GET /organizations/:id/chat`
-  (сейчас жёстко ограничено последними 200 сообщениями без курсора/подгрузки истории).
-- Приглашение в организацию по ссылке/email-инвайту, а не только по точному email/userId.
-- Полнотекстовый поиск задач/сообщений (упирается в лимиты SQLite `LIKE`, см. раздел 6.3).
-- Docker-compose для one-command self-host (клиент + сервер + volume под `dev.db`).
-- Минимальный тестовый каркас: vitest (клиент), node:test или vitest (сервер) — начать с
-  auth и permission-проверок (раздел 5.3), это зона максимального риска.
-- i18n, если продукт нацелен не только на русскоязычные команды (сейчас все строки UI и
-  ошибок сервера захардкожены на русском).
+## 8. Типизация (`client/src/types/`)
 
-## 9. Чек-лист перед коммитом (для агентов)
+Все типы строго выносить в папку `client/src/types/`:
+- Не объявлять интерфейсы моделей в коде компонентов или сервисов.
+- `types/index.ts` реэкспортирует всё:
+  - `common.types.ts`: `ITaskStats`, `IStatCardItem`, `OrgRole`, `TaskStatusValue`, `TaskPriorityValue`, `IBaseModalProps`, `IInputField`.
+  - `task.types.ts`: `ITaskResponce`, `ITaskRequest`, `TaskQueryParams`.
+  - `organization.types.ts`: `IOrganization`, `IOrganizationMember`.
+  - `auth.types.ts`: `IUser`, `ILogin`, `IRegister`.
+  - `message.types.ts`: `IMessage`, `MessageType`, `IMessageRequest`.
+- В компонентах импортировать: `import type { ITaskResponce, ITaskStats } from "../../types";`.
 
-1. `npm run build` (клиент) и `npm run build:api` (сервер) проходят без ошибок TS.
-2. Новый мутирующий роут — есть проверка прав (раздел 5.3)?
-3. Новые поля/модели — обновлена `api/prisma/schema.prisma` **и** `api/prisma/seed.ts`,
-   если сид на них полагается.
-4. Новый домен — заведены все слои по конвенции раздела 4 (route/service/store/types/
-   components), не только часть.
-5. README.md — обновлена таблица эндпоинтов, если менялся публичный API.
-6. Если решение противоречит разделу 5 (известный долг) или разделу 7 (намеренные решения) —
-   обновить этот файл в том же коммите, а не оставлять расхождение молча.
+---
+
+## 9. Чек-лист для AI-агентов перед завершением задачи
+
+Перед тем как сообщить пользователю о готовности задачи, AI-агент **ОБЯЗАН** выполнить:
+1. **Сборка без ошибок**:
+   - `cd client && npm run build` (tsc -b && vite build) — 0 ошибок TS.
+   - `cd api && npm run build` (tsc) — 0 ошибок TS.
+2. **Дизайн-система**:
+   - Проверить, что не добавлены нативные `<button>`, `<input>`, `<textarea>`, `<dialog>` — вместо них строго `components/ui/`.
+3. **Безопасность API**:
+   - Если создан мутирующий роут (POST/PATCH/DELETE) — добавлена проверка членства в организации через `getMembership()`.
+4. **Актуализация AGENTS.md**:
+   - Если добавлены новые страницы, UI-компоненты, эндпоинты, таблицы БД или типы — **внести их в карту репозитория и таблицы AGENTS.md прямо в текущей задаче**.

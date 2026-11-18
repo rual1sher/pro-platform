@@ -1,49 +1,47 @@
 import { Field } from "formik";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { cn } from "../../lib/utils";
+import type { IInputField } from "../../types";
 
-interface IInput {
-  name: string;
-  type: string;
-  title: string;
-}
+export type { IInputField };
 
-export function InputField(data: IInput) {
-  const isCheckbox = data.type === "checkbox";
+export function InputField({ name, type, title }: IInputField) {
+  const isCheckbox = type === "checkbox";
+  const isTextarea = type === "textarea";
 
   return (
-    <div
-      className={
-        isCheckbox
-          ? "flex items-center justify-start gap-2 mb-2"
-          : "mb-3"
-      }
-    >
-      {!isCheckbox && (
-        <label
-          htmlFor={data.name}
-          className="block text-xs font-bold text-[#E3E3E3] mb-1.5 uppercase tracking-wider"
-        >
-          {data.title}
-        </label>
-      )}
+    <div className={isCheckbox ? "flex items-center justify-start gap-2 mb-2" : "mb-3 space-y-1.5"}>
+      {!isCheckbox && <Label htmlFor={name}>{title}</Label>}
 
-      <Field
-        as={data.type === "textarea" ? "textarea" : "input"}
-        id={data.name}
-        name={data.name}
-        type={data.type}
-        placeholder={`Введите ${data.title.toLowerCase()}...`}
-        className={`px-3.5 py-2.5 bg-[#252525] border border-[#2C2C2C] rounded-2xl focus:border-[#BB86FC] focus:ring-1 focus:ring-[#BB86FC] outline-none transition-all duration-200 text-[#E3E3E3] placeholder-[#616161] text-xs font-medium ${
-          data.type === "textarea" ? "h-24 resize-none" : ""
-        } ${isCheckbox ? "w-4 h-4 rounded accent-[#BB86FC]" : "w-full"}`}
-      />
+      <Field name={name}>
+        {({ field }: { field: React.InputHTMLAttributes<HTMLInputElement> }) =>
+          isTextarea ? (
+            <Textarea
+              id={name}
+              {...(field as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
+              placeholder={`Введите ${title.toLowerCase()}...`}
+              className="h-24"
+            />
+          ) : (
+            <Input
+              id={name}
+              type={type}
+              {...field}
+              placeholder={isCheckbox ? undefined : `Введите ${title.toLowerCase()}...`}
+              className={cn(
+                isCheckbox && "w-4 h-4 rounded accent-[#BB86FC] p-0"
+              )}
+            />
+          )
+        }
+      </Field>
 
       {isCheckbox && (
-        <label
-          htmlFor={data.name}
-          className="text-xs font-semibold text-[#E3E3E3] cursor-pointer"
-        >
-          {data.title}
-        </label>
+        <Label htmlFor={name} className="normal-case tracking-normal text-xs font-semibold cursor-pointer">
+          {title}
+        </Label>
       )}
     </div>
   );

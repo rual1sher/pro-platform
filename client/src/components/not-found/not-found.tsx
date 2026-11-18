@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { Button } from "../helper/button";
+import { Button } from "../ui/button";
 
 export function NotFound() {
   const navigate = useNavigate();

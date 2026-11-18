@@ -4,12 +4,9 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "npm run dev --prefix client",
-    "dev:api": "npm run dev --prefix api",
-    "dev:all": "concurrently -n \"CLIENT,API\" -c \"cyan,magenta\" \"npm run dev\" \"npm run dev:api\"",
-    "build": "npm run build --prefix client",
-    "build:api": "npm run build --prefix api",
-    "build:all": "concurrently -n \"CLIENT,API\" -c \"cyan,magenta\" \"npm run build\" \"npm run build:api\"",
+    "install:all": "npm install && npm install --prefix client && npm install --prefix api",
+    "dev:all": "concurrently -n \"CLIENT,API\" -c \"cyan,magenta\" \"npm run dev --prefix client\" \"npm run dev --prefix api\"",
+    "build:all": "concurrently -n \"CLIENT,API\" -c \"cyan,magenta\" \"npm run build --prefix client\" \"npm run build --prefix api\"",
     "db:seed": "npm run db:seed --prefix api",
     "db:studio": "npm run db:studio --prefix api"
   },

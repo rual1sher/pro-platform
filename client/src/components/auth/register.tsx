@@ -5,7 +5,7 @@ import { register } from "../../service/auth.service";
 import { NavLink, useNavigate } from "react-router";
 import { InputField } from "../helper/field-input";
 import { addToken } from "../helper/tokens";
-import { Button } from "../helper/button";
+import { Button } from "../ui/button";
 import { useAuth } from "../../store/auth.store";
 import * as Yup from "yup";
 import { UserPlus } from "lucide-react";
