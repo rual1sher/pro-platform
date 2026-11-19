@@ -20,7 +20,11 @@ interface SidebarProps {
   onOpenCreateTask: () => void;
 }
 
-export function Sidebar({ onOpenCreateOrg, onOpenMembers, onOpenCreateTask }: SidebarProps) {
+export function Sidebar({
+  onOpenCreateOrg,
+  onOpenMembers,
+  onOpenCreateTask,
+}: SidebarProps) {
   const { tasks, updateTaskInStore } = useTask();
   const { activeOrg, organizations, setActiveOrgById } = useAuth();
 
@@ -122,7 +126,11 @@ export function Sidebar({ onOpenCreateOrg, onOpenMembers, onOpenCreateTask }: Si
         <div className="grid grid-cols-7 text-center text-xs gap-y-1.5">
           {calendarDays.map((d, idx) => {
             if (d === null) {
-              return <div key={idx} className="py-1 text-transparent">-</div>;
+              return (
+                <div key={idx} className="py-1 text-transparent">
+                  -
+                </div>
+              );
             }
 
             const isSelected = d === selectedDay;
@@ -139,8 +147,8 @@ export function Sidebar({ onOpenCreateOrg, onOpenMembers, onOpenCreateTask }: Si
                   isSelected
                     ? "bg-[#BB86FC] text-[#121212] shadow-sm font-black scale-105"
                     : isToday
-                    ? "border border-[#03DAC6] text-[#03DAC6]"
-                    : "text-[#E3E3E3]/80 hover:bg-[#252525] hover:text-[#E3E3E3]"
+                      ? "border border-[#03DAC6] text-[#03DAC6]"
+                      : "text-[#E3E3E3]/80 hover:bg-[#252525] hover:text-[#E3E3E3]"
                 }`}
               >
                 {d}
@@ -212,9 +220,7 @@ export function Sidebar({ onOpenCreateOrg, onOpenMembers, onOpenCreateTask }: Si
           <h3 className="font-bold text-sm text-[#E3E3E3] tracking-wide">
             Статистика задач
           </h3>
-          <span className="text-xs font-bold text-[#BB86FC]">
-            {tasks.length} всего
-          </span>
+          <span className="text-xs font-bold text-[#BB86FC]">{tasks.length} всего</span>
         </div>
 
         <div className="space-y-3 text-xs">
@@ -222,10 +228,11 @@ export function Sidebar({ onOpenCreateOrg, onOpenMembers, onOpenCreateTask }: Si
           <div>
             <div className="flex justify-between text-[#E3E3E3] mb-1 font-medium">
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#2196F3]"></span>
-                В работе
+                <span className="w-2 h-2 rounded-full bg-[#2196F3]"></span>В работе
               </span>
-              <span className="text-[#2196F3] font-bold">{inProgressCount} ({inProgressPct}%)</span>
+              <span className="text-[#2196F3] font-bold">
+                {inProgressCount} ({inProgressPct}%)
+              </span>
             </div>
             <div className="w-full bg-[#252525] h-1.5 rounded-full overflow-hidden">
               <div
@@ -242,7 +249,9 @@ export function Sidebar({ onOpenCreateOrg, onOpenMembers, onOpenCreateTask }: Si
                 <span className="w-2 h-2 rounded-full bg-[#4CAF50]"></span>
                 Готово
               </span>
-              <span className="text-[#4CAF50] font-bold">{doneCount} ({donePct}%)</span>
+              <span className="text-[#4CAF50] font-bold">
+                {doneCount} ({donePct}%)
+              </span>
             </div>
             <div className="w-full bg-[#252525] h-1.5 rounded-full overflow-hidden">
               <div
@@ -259,7 +268,9 @@ export function Sidebar({ onOpenCreateOrg, onOpenMembers, onOpenCreateTask }: Si
                 <span className="w-2 h-2 rounded-full bg-[#757575]"></span>
                 Ожидает
               </span>
-              <span className="text-[#9E9E9E] font-bold">{pendingCount} ({pendingPct}%)</span>
+              <span className="text-[#9E9E9E] font-bold">
+                {pendingCount} ({pendingPct}%)
+              </span>
             </div>
             <div className="w-full bg-[#252525] h-1.5 rounded-full overflow-hidden">
               <div
@@ -277,7 +288,9 @@ export function Sidebar({ onOpenCreateOrg, onOpenMembers, onOpenCreateTask }: Si
                   <span className="w-2 h-2 rounded-full bg-[#CF6679]"></span>
                   Отклонено
                 </span>
-                <span className="text-[#CF6679] font-bold">{rejectedCount} ({rejectedPct}%)</span>
+                <span className="text-[#CF6679] font-bold">
+                  {rejectedCount} ({rejectedPct}%)
+                </span>
               </div>
               <div className="w-full bg-[#252525] h-1.5 rounded-full overflow-hidden">
                 <div
@@ -308,8 +321,8 @@ export function Sidebar({ onOpenCreateOrg, onOpenMembers, onOpenCreateTask }: Si
                 {activeOrg?.role === "OWNER"
                   ? "Владелец"
                   : activeOrg?.role === "ADMIN"
-                  ? "Админ"
-                  : "Участник"}
+                    ? "Админ"
+                    : "Участник"}
               </p>
             </div>
           </div>

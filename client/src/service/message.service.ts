@@ -13,7 +13,10 @@ function getHeaders() {
 
 export async function getTaskMessages(taskId: number): Promise<IMessage[]> {
   try {
-    const { data } = await axios.get(`${env.baseUrl}/tasks/${taskId}/messages`, getHeaders());
+    const { data } = await axios.get(
+      `${env.baseUrl}/tasks/${taskId}/messages`,
+      getHeaders(),
+    );
     return data || [];
   } catch (err: any) {
     console.error("Ошибка загрузки комментариев:", err);
@@ -21,12 +24,21 @@ export async function getTaskMessages(taskId: number): Promise<IMessage[]> {
   }
 }
 
-export async function createTaskMessage(taskId: number, message: IMessageRequest): Promise<IMessage | null> {
+export async function createTaskMessage(
+  taskId: number,
+  message: IMessageRequest,
+): Promise<IMessage | null> {
   try {
-    const { data } = await axios.post(`${env.baseUrl}/tasks/${taskId}/messages`, message, getHeaders());
+    const { data } = await axios.post(
+      `${env.baseUrl}/tasks/${taskId}/messages`,
+      message,
+      getHeaders(),
+    );
     return data;
   } catch (err: any) {
-    toast.error(err.response?.data?.error || err.message || "Не удалось отправить комментарий");
+    toast.error(
+      err.response?.data?.error || err.message || "Не удалось отправить комментарий",
+    );
     return null;
   }
 }
@@ -36,7 +48,9 @@ export async function removeMessage(id: number): Promise<boolean> {
     await axios.delete(`${env.baseUrl}/messages/${id}`, getHeaders());
     return true;
   } catch (err: any) {
-    toast.error(err.response?.data?.error || err.message || "Не удалось удалить сообщение");
+    toast.error(
+      err.response?.data?.error || err.message || "Не удалось удалить сообщение",
+    );
     return false;
   }
 }

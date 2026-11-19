@@ -4,7 +4,10 @@ import { prisma } from "../lib/prisma.js";
 import { authenticate, getMembership, TokenPayload } from "../lib/auth.js";
 
 const createMessageSchema = z.object({
-  content: z.string().min(1, "Сообщение не может быть пустым").max(4000, "Слишком длинное сообщение"),
+  content: z
+    .string()
+    .min(1, "Сообщение не может быть пустым")
+    .max(4000, "Слишком длинное сообщение"),
 });
 
 const authorSelect = {
@@ -39,7 +42,10 @@ export async function messageRoutes(fastify: FastifyInstance) {
       return reply.status(400).send({ error: "Некорректный ID задачи" });
     }
 
-    const task = await prisma.task.findUnique({ where: { id }, select: { organizationId: true } });
+    const task = await prisma.task.findUnique({
+      where: { id },
+      select: { organizationId: true },
+    });
     if (!task) {
       return reply.status(404).send({ error: "Задача не найдена" });
     }
@@ -69,10 +75,15 @@ export async function messageRoutes(fastify: FastifyInstance) {
 
     const parse = createMessageSchema.safeParse(request.body);
     if (!parse.success) {
-      return reply.status(400).send({ error: "Ошибка валидации", details: parse.error.errors });
+      return reply
+        .status(400)
+        .send({ error: "Ошибка валидации", details: parse.error.errors });
     }
 
-    const task = await prisma.task.findUnique({ where: { id }, select: { organizationId: true } });
+    const task = await prisma.task.findUnique({
+      where: { id },
+      select: { organizationId: true },
+    });
     if (!task) {
       return reply.status(404).send({ error: "Задача не найдена" });
     }
@@ -132,7 +143,9 @@ export async function messageRoutes(fastify: FastifyInstance) {
 
     const parse = createMessageSchema.safeParse(request.body);
     if (!parse.success) {
-      return reply.status(400).send({ error: "Ошибка валидации", details: parse.error.errors });
+      return reply
+        .status(400)
+        .send({ error: "Ошибка валидации", details: parse.error.errors });
     }
 
     const membership = await getMembership(id, payload.id);
@@ -182,7 +195,10 @@ export async function messageRoutes(fastify: FastifyInstance) {
       return reply.status(403).send({ error: "Нет доступа к этой организации" });
     }
 
-    const canDelete = message.authorId === payload.id || membership.role === "OWNER" || membership.role === "ADMIN";
+    const canDelete =
+      message.authorId === payload.id ||
+      membership.role === "OWNER" ||
+      membership.role === "ADMIN";
     if (!canDelete) {
       return reply.status(403).send({ error: "Можно удалять только свои сообщения" });
     }

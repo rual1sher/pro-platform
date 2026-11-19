@@ -12,7 +12,11 @@ export function InputField({ name, type, title }: IInputField) {
   const isTextarea = type === "textarea";
 
   return (
-    <div className={isCheckbox ? "flex items-center justify-start gap-2 mb-2" : "mb-3 space-y-1.5"}>
+    <div
+      className={
+        isCheckbox ? "flex items-center justify-start gap-2 mb-2" : "mb-3 space-y-1.5"
+      }
+    >
       {!isCheckbox && <Label htmlFor={name}>{title}</Label>}
 
       <Field name={name}>
@@ -30,16 +34,17 @@ export function InputField({ name, type, title }: IInputField) {
               type={type}
               {...field}
               placeholder={isCheckbox ? undefined : `Введите ${title.toLowerCase()}...`}
-              className={cn(
-                isCheckbox && "w-4 h-4 rounded accent-[#BB86FC] p-0"
-              )}
+              className={cn(isCheckbox && "w-4 h-4 rounded accent-[#BB86FC] p-0")}
             />
           )
         }
       </Field>
 
       {isCheckbox && (
-        <Label htmlFor={name} className="normal-case tracking-normal text-xs font-semibold cursor-pointer">
+        <Label
+          htmlFor={name}
+          className="normal-case tracking-normal text-xs font-semibold cursor-pointer"
+        >
           {title}
         </Label>
       )}

@@ -32,7 +32,8 @@ await fastify.register(swagger, {
   openapi: {
     info: {
       title: "Pro Platform API",
-      description: "API для управления организациями, сотрудниками (воркерами) и задачами",
+      description:
+        "API для управления организациями, сотрудниками (воркерами) и задачами",
       version: "1.0.0",
     },
     servers: [

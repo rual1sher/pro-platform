@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -16,23 +14,24 @@ import {
   Users,
   Zap,
 } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { benefits, benefitTags, faq, features, stats, statuses } from "../../data/data";
 import { Button } from "../ui/button";
-import {
-  features,
-  stats,
-  benefits,
-  benefitTags,
-  statuses,
-  faq,
-} from "../../data/data";
 
-const HERO_CHECKS = ["Гибкая настройка", "Высокая производительность", "Надёжная защита данных"];
+const HERO_CHECKS = [
+  "Гибкая настройка",
+  "Высокая производительность",
+  "Надёжная защита данных",
+];
 
 // Small illustrative previews under each feature card — plain divs, no images/deps.
 const FEATURE_PREVIEWS = [
   <div className="flex items-center gap-2 bg-[#1E1E1E] border border-[#2C2C2C] rounded-xl px-3 py-2.5">
     <Plus size={13} className="text-[#BB86FC] shrink-0" />
-    <span className="text-[11px] text-[#616161] font-medium">Что необходимо сделать?</span>
+    <span className="text-[11px] text-[#616161] font-medium">
+      Что необходимо сделать?
+    </span>
   </div>,
   <div className="flex items-center gap-1.5">
     {["Ожидает", "В работе", "Готово"].map((s, i) => (
@@ -80,7 +79,7 @@ export function HeaderComponent() {
   };
 
   return (
-    <div className="min-h-screen text-[#E3E3E3]">
+    <div className="w-full text-[#E3E3E3]">
       {/* Hero Section */}
       <section className="relative pt-16 pb-10 overflow-hidden">
         {/* Ambient glow */}
@@ -97,13 +96,12 @@ export function HeaderComponent() {
           <h1 className="font-black text-4xl sm:text-5xl md:text-6xl text-[#E3E3E3] leading-[1.1] tracking-tight">
             Управляйте каждой задачей
             <br />
-            на пути к{" "}
-            <span className="text-[#BB86FC]">результату команды</span>
+            на пути к <span className="text-[#BB86FC]">результату команды</span>
           </h1>
 
           <p className="text-base md:text-lg text-[#9E9E9E] leading-relaxed font-normal max-w-xl mx-auto">
-            Self-hosted task-менеджер для IT-команд: доска задач, роли, чат и
-            прогресс организации — в одном лёгком инструменте.
+            Self-hosted task-менеджер для IT-команд: доска задач, роли, чат и прогресс
+            организации — в одном лёгком инструменте.
           </p>
 
           {/* Checks row */}
@@ -210,9 +208,7 @@ export function HeaderComponent() {
             <Target size={26} />
           </div>
           <div className="space-y-3">
-            <h2 className="text-2xl md:text-3xl font-black text-[#E3E3E3]">
-              Наша цель
-            </h2>
+            <h2 className="text-2xl md:text-3xl font-black text-[#E3E3E3]">Наша цель</h2>
             <p className="text-sm md:text-base text-[#9E9E9E] leading-relaxed font-normal max-w-3xl">
               Дать IT-командам и разработчикам самостоятельный, лёгкий в развёртывании
               task-менеджер — без переплаты за корпоративные SaaS-подписки и без лишней
@@ -252,7 +248,8 @@ export function HeaderComponent() {
             Гибкие решения под любую задачу
           </h2>
           <p className="text-sm md:text-base text-[#9E9E9E] font-medium max-w-xl mx-auto">
-            Интуитивный интерфейс, продуманный до мелочей: от drag-and-drop до распределения ролей
+            Интуитивный интерфейс, продуманный до мелочей: от drag-and-drop до
+            распределения ролей
           </p>
         </div>
 
@@ -314,8 +311,8 @@ export function HeaderComponent() {
               Новый уровень порядка и продуктивности команды
             </h2>
             <p className="text-sm md:text-base text-[#9E9E9E] leading-relaxed font-normal max-w-md">
-              Открываем платформу — и сразу понятно, что делать: без обучения,
-              без лишних настроек, без потерянных задач.
+              Открываем платформу — и сразу понятно, что делать: без обучения, без лишних
+              настроек, без потерянных задач.
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
               {benefitTags.map((tag) => (

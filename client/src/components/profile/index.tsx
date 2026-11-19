@@ -33,8 +33,8 @@ export function ProfileComponent() {
 
       const perOrgTasks = await Promise.all(
         organizations.map((org) =>
-          findAll({ organizationId: org.id, assigneeId: user.id })
-        )
+          findAll({ organizationId: org.id, assigneeId: user.id }),
+        ),
       );
 
       const merged = perOrgTasks

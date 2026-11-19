@@ -179,9 +179,7 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
     setRemoveTarget(null);
   };
 
-  const availableUsers = allUsers.filter(
-    (u) => !members.some((m) => m.userId === u.id)
-  );
+  const availableUsers = allUsers.filter((u) => !members.some((m) => m.userId === u.id));
 
   return (
     <>
@@ -204,7 +202,10 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
 
           {/* Add member form */}
           <div className="px-6 pt-4 flex-shrink-0">
-            <form onSubmit={handleAddMember} className="bg-[#252525] border border-[#2C2C2C] rounded-2xl p-4 space-y-3">
+            <form
+              onSubmit={handleAddMember}
+              className="bg-[#252525] border border-[#2C2C2C] rounded-2xl p-4 space-y-3"
+            >
               <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-[#BB86FC]">
                 <UserPlus size={14} />
                 <span>Добавить воркера в команду</span>
@@ -212,7 +213,9 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <Label className="normal-case tracking-normal text-[11px] text-[#9E9E9E]">Выбрать пользователя</Label>
+                  <Label className="normal-case tracking-normal text-[11px] text-[#9E9E9E]">
+                    Выбрать пользователя
+                  </Label>
                   <select
                     value={selectedUserId}
                     onChange={(e) => {
@@ -231,7 +234,9 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <Label className="normal-case tracking-normal text-[11px] text-[#9E9E9E]">Или ввести Email</Label>
+                  <Label className="normal-case tracking-normal text-[11px] text-[#9E9E9E]">
+                    Или ввести Email
+                  </Label>
                   <Input
                     type="email"
                     placeholder="worker@company.com"
@@ -277,9 +282,13 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
             </div>
 
             {loading ? (
-              <div className="py-6 text-center text-xs text-[#9E9E9E]">Загрузка списка...</div>
+              <div className="py-6 text-center text-xs text-[#9E9E9E]">
+                Загрузка списка...
+              </div>
             ) : members.length === 0 ? (
-              <div className="py-6 text-center text-xs text-[#9E9E9E]">В организации пока нет участников</div>
+              <div className="py-6 text-center text-xs text-[#9E9E9E]">
+                В организации пока нет участников
+              </div>
             ) : (
               members.map((m: IOrganizationMember) => {
                 const isCurrentUser = m.userId === user?.id;
@@ -300,9 +309,13 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
                       </Avatar>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-[#E3E3E3]">{m.name}</span>
+                          <span className="text-sm font-bold text-[#E3E3E3]">
+                            {m.name}
+                          </span>
                           {isCurrentUser && (
-                            <Badge variant="default" className="text-[10px] px-2 py-0.5">Вы</Badge>
+                            <Badge variant="default" className="text-[10px] px-2 py-0.5">
+                              Вы
+                            </Badge>
                           )}
                         </div>
                         <p className="text-xs text-[#9E9E9E]">{m.email}</p>

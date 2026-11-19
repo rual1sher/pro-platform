@@ -58,7 +58,10 @@ export async function remove(id: number): Promise<boolean> {
   }
 }
 
-export async function update(id: number, data: Partial<ITaskRequest>): Promise<ITaskResponce | null> {
+export async function update(
+  id: number,
+  data: Partial<ITaskRequest>,
+): Promise<ITaskResponce | null> {
   try {
     const res = await axios.patch(`${env.baseUrl}/tasks/${id}`, data, getHeaders());
     return res.data;

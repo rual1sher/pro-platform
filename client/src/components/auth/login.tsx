@@ -23,9 +23,7 @@ export function LoginComponent() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Введите email").email("Неверная почта"),
-    password: Yup.string()
-      .required("Введите пароль")
-      .min(6, "Минимум 6 символов"),
+    password: Yup.string().required("Введите пароль").min(6, "Минимум 6 символов"),
   });
 
   const onSubmit = async (value: ILogin) => {
@@ -124,7 +122,9 @@ export function LoginComponent() {
           <div className="w-full border-t border-[#2C2C2C]"></div>
         </div>
         <div className="relative flex justify-center text-xs">
-          <span className="bg-[#1E1E1E] px-3 font-semibold text-[#9E9E9E]">или обычный логин</span>
+          <span className="bg-[#1E1E1E] px-3 font-semibold text-[#9E9E9E]">
+            или обычный логин
+          </span>
         </div>
       </div>
 
@@ -137,19 +137,24 @@ export function LoginComponent() {
           <Form className="space-y-4">
             <InputField name="email" title="Email" type="email" />
             {errors.email && touched.email && (
-              <div className="text-[#CF6679] text-xs mt-1 font-semibold">{errors.email}</div>
+              <div className="text-[#CF6679] text-xs mt-1 font-semibold">
+                {errors.email}
+              </div>
             )}
             <InputField name="password" title="Пароль" type="password" />
             {errors.password && touched.password && (
-              <div className="text-[#CF6679] text-xs mt-1 font-semibold">{errors.password}</div>
+              <div className="text-[#CF6679] text-xs mt-1 font-semibold">
+                {errors.password}
+              </div>
             )}
-            <InputField
-              name="remember"
-              title="Запомнить меня"
-              type="checkbox"
-            />
+            <InputField name="remember" title="Запомнить меня" type="checkbox" />
 
-            <Button variant="primary" className="w-full mt-2" type="submit" disabled={loading}>
+            <Button
+              variant="primary"
+              className="w-full mt-2"
+              type="submit"
+              disabled={loading}
+            >
               {loading ? "Вход..." : "Войти"}
             </Button>
           </Form>

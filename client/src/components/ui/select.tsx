@@ -15,7 +15,7 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       "flex w-full items-center justify-between gap-2 px-3 py-2.5 bg-[#252525] border border-[#2C2C2C] rounded-xl text-sm text-[#E3E3E3] font-medium focus:outline-none focus:border-[#BB86FC] data-[placeholder]:text-[#616161] disabled:opacity-50 disabled:cursor-not-allowed transition-all",
-      className
+      className,
     )}
     {...props}
   >
@@ -66,7 +66,7 @@ const SelectContent = React.forwardRef<
         "relative z-50 min-w-[8rem] overflow-hidden rounded-xl bg-[#1E1E1E] border border-[#2C2C2C] text-[#E3E3E3] shadow-xl",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-        className
+        className,
       )}
       position={position}
       {...props}
@@ -76,7 +76,7 @@ const SelectContent = React.forwardRef<
         className={cn(
           "p-1",
           position === "popper" &&
-            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
         )}
       >
         {children}
@@ -93,7 +93,10 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    className={cn("px-2 py-1.5 text-xs font-bold text-[#9E9E9E] uppercase tracking-wider", className)}
+    className={cn(
+      "px-2 py-1.5 text-xs font-bold text-[#9E9E9E] uppercase tracking-wider",
+      className,
+    )}
     {...props}
   />
 ));
@@ -107,7 +110,7 @@ const SelectItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex w-full cursor-pointer select-none items-center rounded-lg py-2 pl-8 pr-2 text-sm font-medium text-[#E3E3E3] outline-none focus:bg-[#252525] focus:text-[#E3E3E3] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 transition-colors",
-      className
+      className,
     )}
     {...props}
   >
@@ -145,4 +148,3 @@ export {
   SelectScrollUpButton,
   SelectScrollDownButton,
 };
-

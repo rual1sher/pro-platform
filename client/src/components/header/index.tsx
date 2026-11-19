@@ -1,43 +1,21 @@
-import {
-  CheckSquare,
-  Home,
-  Bell,
-  PanelLeft,
-} from "lucide-react";
-import { Container } from "../helper/container";
+import { Bell, CheckSquare, Home } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../store/auth.store";
-import { Logout } from "./functions/logout";
-import { Button } from "../ui/button";
+import { Container } from "../helper/container";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
+import { Logout } from "./functions/logout";
 
-interface HeaderProps {
-  onToggleSidebar?: () => void;
-  isSidebarCollapsed?: boolean;
-}
-
-export function Header({ onToggleSidebar, isSidebarCollapsed }: HeaderProps) {
+export function Header() {
   const navigate = useNavigate();
   const { user, activeOrg } = useAuth();
 
   return (
-    <header className="sticky top-0 z-30 bg-[#1E1E1E]/95 backdrop-blur-md border-b border-[#2C2C2C] py-2.5">
-      <Container>
-        <div className="flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-30 bg-[#1E1E1E]/95 backdrop-blur-md border-b border-[#2C2C2C] h-16 shrink-0 flex items-center">
+      <Container className="h-full flex items-center py-0! w-full">
+        <div className="flex items-center justify-between gap-4 w-full">
           {/* 1. Left: Toggle Sidebar Button & Brand Logo */}
           <div className="flex items-center gap-3">
-            {user && onToggleSidebar && (
-              <Button
-                variant="dark"
-                size="sm"
-                onClick={onToggleSidebar}
-                title={isSidebarCollapsed ? "Раскрыть меню" : "Скрыть меню"}
-                className="w-9 h-9 p-0 rounded-xl"
-              >
-                <PanelLeft size={17} />
-              </Button>
-            )}
-
             <div
               onClick={() => navigate(user ? "/dashboard" : "/")}
               className="cursor-pointer flex items-center gap-2.5 group shrink-0"
@@ -111,18 +89,10 @@ export function Header({ onToggleSidebar, isSidebarCollapsed }: HeaderProps) {
               </>
             ) : (
               <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => navigate("/login")}
-                >
+                <Button variant="ghost" size="sm" onClick={() => navigate("/login")}>
                   Войти
                 </Button>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => navigate("/register")}
-                >
+                <Button variant="primary" size="sm" onClick={() => navigate("/register")}>
                   Регистрация
                 </Button>
               </div>

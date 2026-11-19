@@ -2,7 +2,11 @@ import { useEffect, useRef } from "react";
 import { MessageCircle, Building2 } from "lucide-react";
 import { useAuth } from "../../../store/auth.store";
 import { useChat } from "../../../store/chat.store";
-import { getOrgChatMessages, sendOrgChatMessage, removeChatMessage } from "../../../service/chat.service";
+import {
+  getOrgChatMessages,
+  sendOrgChatMessage,
+  removeChatMessage,
+} from "../../../service/chat.service";
 import { MessageList } from "../../helper/message-list";
 import { MessageInput } from "../../helper/message-input";
 
@@ -60,7 +64,9 @@ export function OrgChat() {
           <MessageCircle size={18} />
         </div>
         <div className="min-w-0">
-          <h2 className="text-base font-black text-[#E3E3E3] leading-tight">Общий чат команды</h2>
+          <h2 className="text-base font-black text-[#E3E3E3] leading-tight">
+            Общий чат команды
+          </h2>
           <span className="inline-flex items-center gap-1 text-[11px] text-[#03DAC6] font-bold">
             <Building2 size={11} />
             {activeOrg.name}
@@ -69,12 +75,21 @@ export function OrgChat() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4">
-        <MessageList messages={messages} currentUserId={user?.id} emptyText="Пока нет сообщений — напишите первым" onDelete={handleDelete} />
+        <MessageList
+          messages={messages}
+          currentUserId={user?.id}
+          emptyText="Пока нет сообщений — напишите первым"
+          onDelete={handleDelete}
+        />
         <div ref={bottomRef} />
       </div>
 
       <div className="p-3 border-t border-[#2C2C2C]">
-        <MessageInput onSend={handleSend} placeholder="Написать в чат команды..." autoFocus />
+        <MessageInput
+          onSend={handleSend}
+          placeholder="Написать в чат команды..."
+          autoFocus
+        />
       </div>
     </div>
   );

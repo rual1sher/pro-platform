@@ -17,8 +17,11 @@ export const useChat = create<IChatStore>((set) => ({
 
   addMessage: (message) =>
     set((state) => ({
-      messages: state.messages.some((m) => m.id === message.id) ? state.messages : [...state.messages, message],
+      messages: state.messages.some((m) => m.id === message.id)
+        ? state.messages
+        : [...state.messages, message],
     })),
 
-  removeMessage: (id) => set((state) => ({ messages: state.messages.filter((m) => m.id !== id) })),
+  removeMessage: (id) =>
+    set((state) => ({ messages: state.messages.filter((m) => m.id !== id) })),
 }));

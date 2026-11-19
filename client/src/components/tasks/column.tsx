@@ -31,10 +31,10 @@ export function Column({ children, id, title, count }: ColumnProps) {
                 id === "0"
                   ? "bg-[#757575]"
                   : id === "1"
-                  ? "bg-[#2196F3]"
-                  : id === "2"
-                  ? "bg-[#4CAF50]"
-                  : "bg-[#CF6679]"
+                    ? "bg-[#2196F3]"
+                    : id === "2"
+                      ? "bg-[#4CAF50]"
+                      : "bg-[#CF6679]"
               }`}
             ></div>
             <h3 className="font-extrabold text-xs text-[#E3E3E3] tracking-wide uppercase">

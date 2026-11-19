@@ -22,7 +22,9 @@ Pro Platform — самостоятельный быстрый task-менедж
 
 ```
 pro-platform/
-├── package.json              # Корневые скрипты (install:all, run:all, build:all)
+├── package.json              # Корневые скрипты (install:all, dev:all, build:all, format)
+├── .prettierrc               # Глобальная конфигурация Prettier
+├── .prettierignore           # Исключения для Prettier
 ├── AGENTS.md                 # Настоящий файл — правила и архитектура
 ├── README.md                 # Публичная документация
 │
@@ -92,6 +94,7 @@ pro-platform/
 ## 3. Стек технологий и версии
 
 ### Клиент (`client/`)
+
 - **React 19** + **Vite 7** + **TypeScript (strict)**.
 - **React Compiler** (`babel-plugin-react-compiler`) включён — **не писать ручные `useMemo`/`useCallback`**, компилятор оптимизирует их автоматически.
 - **Tailwind CSS v4** — `@tailwindcss/vite`, переменные в `src/index.css`.
@@ -101,6 +104,7 @@ pro-platform/
 - **React Router 7**, **Axios**, **Formik + Yup**, **@dnd-kit**, **Lucide React**.
 
 ### Сервер (`api/`)
+
 - **Fastify 5** — легковесный, быстрый, строгий фреймворк.
 - **Prisma 6** + **SQLite** (`file:./dev.db`) — zero-config база данных.
 - **@fastify/jwt** + **bcryptjs**.
@@ -116,8 +120,10 @@ pro-platform/
 > Всегда импортировать из `components/ui/`!
 
 ### 4.1 Кнопки (`Button`)
+
 Импорт: `import { Button } from "@/components/ui/button";` (или относительный путь `../ui/button`).
 Доступные варианты (`variant`):
+
 - `primary`: Акцентная фиолетовая кнопка (`#BB86FC` текст `#121212`) — для главных действий (Создать, Сохранить, Войти).
 - `secondary`: Бирюзовая кнопка (`#03DAC6` текст `#121212`).
 - `dark`: Тёмная кнопка с бордером (`bg-[#252525] border-[#2C2C2C] hover:border-[#BB86FC]/50`).
@@ -139,6 +145,7 @@ pro-platform/
 ```
 
 ### 4.2 Поля ввода (`Input`, `Textarea`, `Label`)
+
 ```tsx
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -149,13 +156,16 @@ import { Label } from "../ui/label";
   <Input id="title" placeholder="Введите название..." value={title} onChange={...} />
 </div>
 ```
+
 Для форм Formik используется готовый компонент:
+
 ```tsx
 import { InputField } from "../helper/field-input";
-<InputField name="email" title="Email" type="email" />
+<InputField name="email" title="Email" type="email" />;
 ```
 
 ### 4.3 Модальные окна (`Dialog`, `ConfirmModal`)
+
 - Для простого подтверждения действия (удаление, выход):
   ```tsx
   import { ConfirmModal } from "../helper/confirm-modal";
@@ -166,11 +176,12 @@ import { InputField } from "../helper/field-input";
     variant="danger"
     onConfirm={handleDelete}
     onClose={() => setOpen(false)}
-  />
+  />;
   ```
 - Для кастомных форм: использовать `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogFooter` из `../ui/dialog`.
 
 ### 4.4 Бейджи и Аватары
+
 ```tsx
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
@@ -189,6 +200,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 ## 5. Цветовая палитра проекта
 
 Соблюдать HEX-коды темной темы (не изобретать свои случайные цвета):
+
 - Фон страницы: `#121212` (`--bg-main`)
 - Карточки и модалки: `#1E1E1E` (`--bg-surface`)
 - Инпуты, плашки, ховеры: `#252525` (`--bg-overlay`)
@@ -210,6 +222,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 ## 6. Правила API и эндпоинты
 
 Все эндпоинты сервера строго монтируются с префиксом `/api/<domain>`:
+
 - `/api/auth` — `POST /register`, `POST /login`, `GET /me`
 - `/api/users` — `GET /` (список воркеров платформы для назначения)
 - `/api/organizations` — `GET /`, `POST /`, `GET /:id`, `GET /:id/members`, `POST /:id/members`, `DELETE /:id/members/:userId`
@@ -220,6 +233,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 **Правило проверки прав (5.3):**
 Любой мутирующий роут (создание/изменение/удаление задачи, участника, сообщения) обязан проверить членство `request.user.id` в организации:
+
 ```ts
 const membership = await getMembership(orgId, payload.id);
 if (!membership) {
@@ -232,21 +246,27 @@ if (!membership) {
 ## 7. Управление зависимостями и команды сборки
 
 Корневой `package.json` содержит канонические скрипты:
+
 - `npm run install:all` — установка зависимостей в корне, `client/` и `api/`.
 - `npm run run:all` — одновременный запуск фронтенда (Vite 5173) и бэкенда (Fastify 3001) через `concurrently`.
 - `npm run build:all` — одновременная сборка фронтенда (`tsc -b && vite build`) и бэкенда (`tsc`).
+- `npm run format` — глобальное форматирование всего проекта через Prettier (`prettier --write .`).
+- `npm run format:check` — проверка форматирования кода во всем проекте.
 - `npm run db:seed` — запуск сида базы данных.
 - `npm run db:studio` — веб-интерфейс Prisma Studio для просмотра БД.
 
 Перед любым коммитом **ОБЯЗАТЕЛЬНО** проверить:
-1. `cd client && npm run build` — сборка клиента без ошибок TS.
-2. `cd api && npm run build` — сборка сервера без ошибок TS.
+
+1. `npm run format:check` (или `npm run format`) — форматирование соответствует `.prettierrc`.
+2. `cd client && npm run build` — сборка клиента без ошибок TS.
+3. `cd api && npm run build` — сборка сервера без ошибок TS.
 
 ---
 
 ## 8. Типизация (`client/src/types/`)
 
 Все типы строго выносить в папку `client/src/types/`:
+
 - Не объявлять интерфейсы моделей в коде компонентов или сервисов.
 - `types/index.ts` реэкспортирует всё:
   - `common.types.ts`: `ITaskStats`, `IStatCardItem`, `OrgRole`, `TaskStatusValue`, `TaskPriorityValue`, `IBaseModalProps`, `IInputField`.
@@ -261,6 +281,7 @@ if (!membership) {
 ## 9. Чек-лист для AI-агентов перед завершением задачи
 
 Перед тем как сообщить пользователю о готовности задачи, AI-агент **ОБЯЗАН** выполнить:
+
 1. **Сборка без ошибок**:
    - `cd client && npm run build` (tsc -b && vite build) — 0 ошибок TS.
    - `cd api && npm run build` (tsc) — 0 ошибок TS.

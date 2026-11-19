@@ -15,7 +15,11 @@ import {
   UserCog,
 } from "lucide-react";
 import { update, remove } from "../../service/task.service";
-import { getTaskMessages, createTaskMessage, removeMessage } from "../../service/message.service";
+import {
+  getTaskMessages,
+  createTaskMessage,
+  removeMessage,
+} from "../../service/message.service";
 import { useTask } from "../../store/task.store";
 import { useAuth } from "../../store/auth.store";
 import { useMessages } from "../../store/message.store";
@@ -52,9 +56,7 @@ function DetailField({
         <p className="text-[10px] font-bold text-[#9E9E9E] uppercase tracking-wider">
           {label}
         </p>
-        <div className="text-xs font-bold text-[#E3E3E3] mt-0.5 truncate">
-          {value}
-        </div>
+        <div className="text-xs font-bold text-[#E3E3E3] mt-0.5 truncate">{value}</div>
       </div>
     </div>
   );
@@ -63,7 +65,8 @@ function DetailField({
 export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
   const { updateTaskInStore, removeTaskFromStore } = useTask();
   const { user, organizations } = useAuth();
-  const { messagesByTask, setTaskMessages, addTaskMessage, removeTaskMessage } = useMessages();
+  const { messagesByTask, setTaskMessages, addTaskMessage, removeTaskMessage } =
+    useMessages();
   const comments = messagesByTask[task.id] || [];
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
@@ -117,17 +120,17 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
     String(task.priority ?? task.preority) === "2"
       ? "🔴 Высокий"
       : String(task.priority ?? task.preority) === "1"
-      ? "🟡 Средний"
-      : "🟢 Низкий";
+        ? "🟡 Средний"
+        : "🟢 Низкий";
 
   const statusLabel =
     String(task.order ?? task.status) === "2"
       ? "Готово"
       : String(task.order ?? task.status) === "1"
-      ? "В работе"
-      : String(task.order ?? task.status) === "3"
-      ? "Отклонено"
-      : "Ожидает";
+        ? "В работе"
+        : String(task.order ?? task.status) === "3"
+          ? "Отклонено"
+          : "Ожидает";
 
   const orgName = organizations.find((o) => o.id === task.organizationId)?.name || "—";
 
@@ -241,7 +244,9 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
             className="w-full py-3 rounded-full font-black text-xs h-auto shadow-md"
           >
             <CheckCircle2 size={15} />
-            <span>{isDone ? "Задача выполнена! Вернуть в работу" : "Отметить выполненной"}</span>
+            <span>
+              {isDone ? "Задача выполнена! Вернуть в работу" : "Отметить выполненной"}
+            </span>
           </Button>
         </div>
 
@@ -261,7 +266,11 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
           />
           <div ref={bottomRef} />
 
-          <MessageInput onSend={handleSendComment} placeholder="Написать комментарий..." autoFocus />
+          <MessageInput
+            onSend={handleSendComment}
+            placeholder="Написать комментарий..."
+            autoFocus
+          />
         </div>
       </div>
 

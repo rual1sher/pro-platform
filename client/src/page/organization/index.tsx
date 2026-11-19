@@ -14,7 +14,7 @@ export function OrganizationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] text-[#E3E3E3] pb-12 pt-4">
+    <div className="w-full text-[#E3E3E3] pb-12 pt-4">
       <Container className="py-2">
         {Number.isNaN(organizationId) ? (
           <div className="py-16 text-center text-[#9E9E9E] text-sm font-bold">

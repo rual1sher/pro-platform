@@ -1,14 +1,14 @@
-import { useLocation, useNavigate } from "react-router";
 import {
-  LayoutDashboard,
+  Building2,
   Calendar,
-  MessageCircle,
+  CheckSquare,
   ChevronLeft,
   ChevronRight,
+  LayoutDashboard,
+  MessageCircle,
   User,
-  Building2,
-  CheckSquare,
 } from "lucide-react";
+import { useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../store/auth.store";
 import { Button } from "../ui/button";
 
@@ -55,17 +55,17 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
     >
       {/* Верхняя часть: Лого / Заголовок и кнопка скрытия/раскрытия */}
       <div>
-        <div className="flex items-center justify-between p-3.5 border-b border-[#2C2C2C] h-[61px]">
+        <div className="flex items-center justify-between px-3.5 border-b border-[#2C2C2C] h-16 shrink-0">
           {!isCollapsed && (
             <div
               onClick={() => navigate("/dashboard")}
-              className="flex items-center gap-2.5 cursor-pointer overflow-hidden"
+              className="flex items-center gap-2.5 cursor-pointer overflow-hidden group"
             >
-              <div className="w-8 h-8 rounded-xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shrink-0 shadow-sm">
-                <CheckSquare size={18} strokeWidth={2.5} />
+              <div className="w-9 h-9 rounded-2xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                <CheckSquare size={20} strokeWidth={2.5} />
               </div>
               <div className="truncate">
-                <h2 className="text-sm font-black text-[#E3E3E3] leading-none">
+                <h2 className="text-base font-black text-[#E3E3E3] tracking-tight leading-none">
                   PRO Platform
                 </h2>
                 <span className="text-[10px] font-bold text-[#03DAC6] tracking-wider uppercase">
@@ -78,11 +78,11 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
           {isCollapsed && (
             <div
               onClick={() => navigate("/dashboard")}
-              className="mx-auto cursor-pointer"
+              className="mx-auto cursor-pointer group"
               title="PRO Platform"
             >
-              <div className="w-8 h-8 rounded-xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shadow-sm">
-                <CheckSquare size={18} strokeWidth={2.5} />
+              <div className="w-9 h-9 rounded-2xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                <CheckSquare size={20} strokeWidth={2.5} />
               </div>
             </div>
           )}
@@ -94,7 +94,7 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
               size="sm"
               onClick={onToggle}
               title="Скрыть меню"
-              className="p-1.5 w-8 h-8 rounded-xl shrink-0"
+              className="w-8 h-8 rounded-xl shrink-0 p-0 flex items-center justify-center"
             >
               <ChevronLeft size={16} />
             </Button>

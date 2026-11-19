@@ -94,7 +94,9 @@ export function OrgProfileComponent({ organizationId }: OrgProfileProps) {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 space-y-3 bg-[#1E1E1E] rounded-[28px] border border-[#2C2C2C]">
           <div className="w-8 h-8 border-3 border-[#BB86FC] border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-[#E3E3E3] text-xs font-bold">Загрузка данных организации...</p>
+          <p className="text-[#E3E3E3] text-xs font-bold">
+            Загрузка данных организации...
+          </p>
         </div>
       ) : (
         <div className="grid lg:grid-cols-[2fr_1fr] gap-4">
@@ -176,9 +178,7 @@ export function OrgProfileComponent({ organizationId }: OrgProfileProps) {
                       <div className="min-w-0">
                         <p className="text-xs font-bold text-[#E3E3E3] truncate">
                           {m.name}
-                          {isCurrentUser && (
-                            <span className="text-[#BB86FC]"> (Вы)</span>
-                          )}
+                          {isCurrentUser && <span className="text-[#BB86FC]"> (Вы)</span>}
                         </p>
                       </div>
                     </div>

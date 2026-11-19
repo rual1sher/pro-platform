@@ -9,13 +9,7 @@ import { useTask } from "../../store/task.store";
 import { CreateTask } from "./functions/create";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import {
-  Search,
-  Filter,
-  Users,
-  Building2,
-  X,
-} from "lucide-react";
+import { Search, Filter, Users, Building2, X } from "lucide-react";
 
 export function TasksComponent() {
   const [loading, setLoading] = useState(true);
@@ -135,7 +129,9 @@ export function TasksComponent() {
   }, [tasks, selectedWorkerFilter, selectedPriorityFilter, searchQuery]);
 
   const getTasksByOrder = (order: string) => {
-    return filteredTasks.filter((task) => String(task.order ?? task.status ?? "0") === order);
+    return filteredTasks.filter(
+      (task) => String(task.order ?? task.status ?? "0") === order,
+    );
   };
 
   if (loading) {
@@ -198,7 +194,10 @@ export function TasksComponent() {
       <div className="flex flex-wrap items-center justify-between gap-2.5 bg-[#1E1E1E] p-3 rounded-2xl border border-[#2C2C2C]">
         {/* Search input */}
         <div className="relative flex-1 min-w-[200px] max-w-sm">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E9E9E]" />
+          <Search
+            size={14}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E9E9E]"
+          />
           <Input
             type="text"
             placeholder="Поиск задач или исполнителей..."
@@ -252,7 +251,9 @@ export function TasksComponent() {
           </div>
 
           {/* Reset button */}
-          {(selectedWorkerFilter !== null || selectedPriorityFilter !== null || searchQuery) && (
+          {(selectedWorkerFilter !== null ||
+            selectedPriorityFilter !== null ||
+            searchQuery) && (
             <Button
               variant="ghost"
               size="sm"

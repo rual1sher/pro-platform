@@ -33,7 +33,10 @@ export const useAuth = create<IAuthStore>((set, get) => ({
   setOrganizations: (orgs) => {
     set({ organizations: orgs });
     const currentActive = get().activeOrg;
-    if (orgs.length > 0 && (!currentActive || !orgs.some((o) => o.id === currentActive.id))) {
+    if (
+      orgs.length > 0 &&
+      (!currentActive || !orgs.some((o) => o.id === currentActive.id))
+    ) {
       set({ activeOrg: orgs[0] });
     }
   },

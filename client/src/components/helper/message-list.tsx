@@ -14,9 +14,19 @@ function formatTime(iso: string) {
   return date.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
-export function MessageList({ messages, currentUserId, emptyText, onDelete, className = "" }: MessageListProps) {
+export function MessageList({
+  messages,
+  currentUserId,
+  emptyText,
+  onDelete,
+  className = "",
+}: MessageListProps) {
   if (messages.length === 0) {
-    return <div className={`py-6 text-center text-xs text-[#9E9E9E] ${className}`} >{emptyText}</div>;
+    return (
+      <div className={`py-6 text-center text-xs text-[#9E9E9E] ${className}`}>
+        {emptyText}
+      </div>
+    );
   }
 
   return (
@@ -43,7 +53,9 @@ export function MessageList({ messages, currentUserId, emptyText, onDelete, clas
                   {isOwn ? "Вы" : m.author.name}
                 </span>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="text-[10px] text-[#616161]">{formatTime(m.createdAt)}</span>
+                  <span className="text-[10px] text-[#616161]">
+                    {formatTime(m.createdAt)}
+                  </span>
                   {onDelete && (
                     <button
                       onClick={() => onDelete(m.id)}
@@ -55,7 +67,9 @@ export function MessageList({ messages, currentUserId, emptyText, onDelete, clas
                   )}
                 </div>
               </div>
-              <p className="text-xs text-[#E3E3E3] leading-relaxed break-words">{m.content}</p>
+              <p className="text-xs text-[#E3E3E3] leading-relaxed break-words">
+                {m.content}
+              </p>
             </div>
           </div>
         );

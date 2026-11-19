@@ -25,9 +25,7 @@ export function RegisterComponent() {
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Введите email").email("Неверная почта"),
     name: Yup.string().required("Введите имя").min(2, "Минимум 2 символа"),
-    password: Yup.string()
-      .required("Введите пароль")
-      .min(6, "Минимум 6 символов"),
+    password: Yup.string().required("Введите пароль").min(6, "Минимум 6 символов"),
   });
 
   const onSubmit = async (value: IRegister) => {
@@ -67,26 +65,33 @@ export function RegisterComponent() {
           <Form className="space-y-4">
             <InputField name="name" title="Ваше имя" type="text" />
             {errors.name && touched.name && (
-              <div className="text-[#CF6679] text-xs mt-1 font-semibold">{errors.name}</div>
+              <div className="text-[#CF6679] text-xs mt-1 font-semibold">
+                {errors.name}
+              </div>
             )}
 
             <InputField name="email" title="Email" type="email" />
             {errors.email && touched.email && (
-              <div className="text-[#CF6679] text-xs mt-1 font-semibold">{errors.email}</div>
+              <div className="text-[#CF6679] text-xs mt-1 font-semibold">
+                {errors.email}
+              </div>
             )}
 
             <InputField name="password" title="Пароль" type="password" />
             {errors.password && touched.password && (
-              <div className="text-[#CF6679] text-xs mt-1 font-semibold">{errors.password}</div>
+              <div className="text-[#CF6679] text-xs mt-1 font-semibold">
+                {errors.password}
+              </div>
             )}
 
-            <InputField
-              name="remember"
-              title="Запомнить меня"
-              type="checkbox"
-            />
+            <InputField name="remember" title="Запомнить меня" type="checkbox" />
 
-            <Button variant="primary" className="w-full mt-2 !bg-[#BB86FC] !text-[#121212] hover:!bg-[#a370e0] font-bold" type="submit" disabled={loading}>
+            <Button
+              variant="primary"
+              className="w-full mt-2 !bg-[#BB86FC] !text-[#121212] hover:!bg-[#a370e0] font-bold"
+              type="submit"
+              disabled={loading}
+            >
               {loading ? "Создание аккаунта..." : "Зарегистрироваться"}
             </Button>
           </Form>

@@ -47,7 +47,7 @@ export async function organizationRoutes(fastify: FastifyInstance) {
         memberCount: m.organization._count.members,
         taskCount: m.organization._count.tasks,
         createdAt: m.organization.createdAt,
-      }))
+      })),
     );
   });
 
@@ -149,7 +149,7 @@ export async function organizationRoutes(fastify: FastifyInstance) {
         avatar: m.user.avatar,
         role: m.role,
         joinedAt: m.createdAt,
-      }))
+      })),
     );
   });
 
@@ -164,7 +164,9 @@ export async function organizationRoutes(fastify: FastifyInstance) {
 
     const parse = addMemberSchema.safeParse(request.body);
     if (!parse.success) {
-      return reply.status(400).send({ error: "Ошибка валидации", details: parse.error.errors });
+      return reply
+        .status(400)
+        .send({ error: "Ошибка валидации", details: parse.error.errors });
     }
 
     const { userId, email, role } = parse.data;
@@ -193,7 +195,9 @@ export async function organizationRoutes(fastify: FastifyInstance) {
     });
 
     if (existingMember) {
-      return reply.status(400).send({ error: "Пользователь уже состоит в этой организации" });
+      return reply
+        .status(400)
+        .send({ error: "Пользователь уже состоит в этой организации" });
     }
 
     const newMember = await prisma.organizationMember.create({
@@ -236,7 +240,9 @@ export async function organizationRoutes(fastify: FastifyInstance) {
     });
 
     if (count <= 1) {
-      return reply.status(400).send({ error: "Нельзя удалить единственного участника организации" });
+      return reply
+        .status(400)
+        .send({ error: "Нельзя удалить единственного участника организации" });
     }
 
     await prisma.organizationMember.deleteMany({

@@ -19,7 +19,7 @@ export function TasksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] text-[#E3E3E3] pb-12 pt-4">
+    <div className="w-full text-[#E3E3E3] pb-12 pt-4">
       <Container className="py-2">
         {/* Responsive Layout: Left Sidebar + Main Kanban Canvas */}
         <div className="flex flex-col lg:flex-row gap-5 items-start">
@@ -38,18 +38,9 @@ export function TasksPage() {
       </Container>
 
       {/* Organization, Members and Create Task Modals */}
-      <CreateOrgModal
-        isOpen={createOrgOpen}
-        onClose={() => setCreateOrgOpen(false)}
-      />
-      <MembersModal
-        isOpen={membersOpen}
-        onClose={() => setMembersOpen(false)}
-      />
-      <CreateTaskModal
-        isOpen={createTaskOpen}
-        onClose={() => setCreateTaskOpen(false)}
-      />
+      <CreateOrgModal isOpen={createOrgOpen} onClose={() => setCreateOrgOpen(false)} />
+      <MembersModal isOpen={membersOpen} onClose={() => setMembersOpen(false)} />
+      <CreateTaskModal isOpen={createTaskOpen} onClose={() => setCreateTaskOpen(false)} />
     </div>
   );
 }

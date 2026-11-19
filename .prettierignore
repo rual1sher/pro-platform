@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+*.db
+*.db-journal
+api/prisma/migrations
+package-lock.json
+.git
+.idea
+.vscode
+coverage
+

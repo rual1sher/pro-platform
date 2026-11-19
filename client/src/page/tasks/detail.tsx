@@ -4,6 +4,7 @@ import { Container } from "../../components/helper/container";
 import { TaskDetailComponent } from "../../components/tasks/detail-page";
 import { useAuthGuard } from "../../components/helper/use-auth-guard";
 import { AuthLoading } from "../../components/helper/auth-loading";
+import { Button } from "../../components/ui/button";
 import { getById } from "../../service/task.service";
 import { useTask } from "../../store/task.store";
 
@@ -43,17 +44,19 @@ export function TaskDetailPage() {
   const notFound = fetchFailed || Number.isNaN(taskId);
 
   return (
-    <div className="bg-[#121212] text-[#E3E3E3] pb-12 pt-4">
+    <div className="w-full text-[#E3E3E3] pb-12 pt-4">
       <Container className="py-2">
         {notFound ? (
           <div className="max-w-md mx-auto text-center py-20 space-y-3">
             <p className="text-sm font-bold text-[#E3E3E3]">Задача не найдена</p>
-            <button
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => navigate("/tasks")}
               className="text-xs font-bold text-[#BB86FC] hover:text-[#a871ea]"
             >
               Вернуться к доске задач
-            </button>
+            </Button>
           </div>
         ) : !task ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-3">

@@ -103,7 +103,9 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
               <select
                 id="edit-assignee"
                 value={assigneeId}
-                onChange={(e) => setAssigneeId(e.target.value ? Number(e.target.value) : "")}
+                onChange={(e) =>
+                  setAssigneeId(e.target.value ? Number(e.target.value) : "")
+                }
                 className="w-full px-3 py-2.5 bg-[#252525] border border-[#2C2C2C] rounded-xl text-[#E3E3E3] text-xs font-medium focus:outline-none focus:border-[#BB86FC] transition-all"
               >
                 <option value="">Не назначен</option>

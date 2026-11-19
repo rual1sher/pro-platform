@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { Route, Routes, useLocation } from "react-router";
 import { Header } from "./components/header";
-import { AppSidebar } from "./components/sidebar";
-import { HomePage } from "./page/home/index";
+import { useBootstrapAuth } from "./components/helper/use-bootstrap-auth";
 import { NotFound } from "./components/not-found/not-found";
+import { AppSidebar } from "./components/sidebar";
 import { LoginPage } from "./page/auth/login";
-import { TasksPage } from "./page/tasks";
-import { TaskDetailPage } from "./page/tasks/detail";
 import { RegisterPage } from "./page/auth/regisnter";
 import { ChatPage } from "./page/chat";
 import { DashboardPage } from "./page/dashboard";
-import { ProfilePage } from "./page/profile";
+import { HomePage } from "./page/home/index";
 import { OrganizationPage } from "./page/organization";
-import { useBootstrapAuth } from "./components/helper/use-bootstrap-auth";
+import { ProfilePage } from "./page/profile";
+import { TasksPage } from "./page/tasks";
+import { TaskDetailPage } from "./page/tasks/detail";
 import { useAuth } from "./store/auth.store";
 
 function App() {
@@ -39,20 +39,14 @@ function App() {
   const showSidebar = Boolean(user && !isAuthPage);
 
   return (
-    <div className="flex min-h-screen bg-[#121212] text-[#E3E3E3]">
+    <div className="flex h-screen overflow-hidden bg-[#121212] text-[#E3E3E3]">
       {showSidebar && (
-        <AppSidebar
-          isCollapsed={isCollapsed}
-          onToggle={handleToggleSidebar}
-        />
+        <AppSidebar isCollapsed={isCollapsed} onToggle={handleToggleSidebar} />
       )}
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header
-          onToggleSidebar={showSidebar ? handleToggleSidebar : undefined}
-          isSidebarCollapsed={isCollapsed}
-        />
-        <main className="flex-1 min-w-0">
+      <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
+        <Header />
+        <main className="flex-1 min-w-0 overflow-y-auto">
           <Routes>
             {/* landing */}
             <Route path="/" element={<HomePage />} />

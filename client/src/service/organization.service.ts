@@ -23,13 +23,18 @@ export async function getOrganizations(): Promise<IOrganization[]> {
   }
 }
 
-export async function createOrganization(org: { name: string; description?: string }): Promise<IOrganization | null> {
+export async function createOrganization(org: {
+  name: string;
+  description?: string;
+}): Promise<IOrganization | null> {
   try {
     const { data } = await axios.post(`${env.baseUrl}/organizations`, org, getHeaders());
     toast.success("Организация успешно создана!");
     return data;
   } catch (err: any) {
-    toast.error(err.response?.data?.error || err.message || "Не удалось создать организацию");
+    toast.error(
+      err.response?.data?.error || err.message || "Не удалось создать организацию",
+    );
     return null;
   }
 }
@@ -46,7 +51,10 @@ export async function getOrganization(id: number): Promise<IOrganization | null>
 
 export async function getOrganizationMembers(id: number): Promise<IOrganizationMember[]> {
   try {
-    const { data } = await axios.get(`${env.baseUrl}/organizations/${id}/members`, getHeaders());
+    const { data } = await axios.get(
+      `${env.baseUrl}/organizations/${id}/members`,
+      getHeaders(),
+    );
     return data;
   } catch (err: any) {
     console.error("Ошибка загрузки участников:", err);
@@ -56,21 +64,33 @@ export async function getOrganizationMembers(id: number): Promise<IOrganizationM
 
 export async function addOrganizationMember(
   orgId: number,
-  member: { userId?: number; email?: string; role?: string }
+  member: { userId?: number; email?: string; role?: string },
 ): Promise<IOrganizationMember | null> {
   try {
-    const { data } = await axios.post(`${env.baseUrl}/organizations/${orgId}/members`, member, getHeaders());
+    const { data } = await axios.post(
+      `${env.baseUrl}/organizations/${orgId}/members`,
+      member,
+      getHeaders(),
+    );
     toast.success("Сотрудник добавлен в команду!");
     return data;
   } catch (err: any) {
-    toast.error(err.response?.data?.error || err.message || "Ошибка добавления сотрудника");
+    toast.error(
+      err.response?.data?.error || err.message || "Ошибка добавления сотрудника",
+    );
     return null;
   }
 }
 
-export async function removeOrganizationMember(orgId: number, userId: number): Promise<boolean> {
+export async function removeOrganizationMember(
+  orgId: number,
+  userId: number,
+): Promise<boolean> {
   try {
-    await axios.delete(`${env.baseUrl}/organizations/${orgId}/members/${userId}`, getHeaders());
+    await axios.delete(
+      `${env.baseUrl}/organizations/${orgId}/members/${userId}`,
+      getHeaders(),
+    );
     toast.info("Сотрудник удален из команды");
     return true;
   } catch (err: any) {

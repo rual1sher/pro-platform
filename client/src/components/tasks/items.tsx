@@ -123,11 +123,7 @@ export function TaskItem({ task }: TaskItemProps) {
       </div>
 
       {/* Edit modal */}
-      <EditTaskModal
-        task={task}
-        isOpen={editOpen}
-        onClose={() => setEditOpen(false)}
-      />
+      <EditTaskModal task={task} isOpen={editOpen} onClose={() => setEditOpen(false)} />
     </>
   );
 }

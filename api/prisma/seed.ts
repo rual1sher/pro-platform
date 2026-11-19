@@ -21,7 +21,8 @@ async function main() {
       name: "Алексей Иванов",
       password: passwordHash,
       role: "ADMIN",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
+      avatar:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
     },
   });
 
@@ -31,7 +32,8 @@ async function main() {
       name: "Мария Смирнова",
       password: passwordHash,
       role: "MEMBER",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80",
+      avatar:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80",
     },
   });
 
@@ -41,7 +43,8 @@ async function main() {
       name: "Дмитрий Сидоров",
       password: passwordHash,
       role: "MEMBER",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80",
+      avatar:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80",
     },
   });
 
@@ -84,7 +87,8 @@ async function main() {
     data: [
       {
         title: "Спроектировать REST API на Fastify и схему Prisma",
-        description: "Подключить SQLite, спроектировать сущности User, Organization, Task",
+        description:
+          "Подключить SQLite, спроектировать сущности User, Organization, Task",
         status: "2", // Готово
         priority: "2", // Высокий
         dueDate: today,
@@ -94,7 +98,8 @@ async function main() {
       },
       {
         title: "Настроить JWT аутентификацию и регистрацию",
-        description: "Реализовать эндпоинты /api/auth/register, /api/auth/login, /api/auth/me",
+        description:
+          "Реализовать эндпоинты /api/auth/register, /api/auth/login, /api/auth/me",
         status: "2", // Готово
         priority: "1", // Средний
         dueDate: today,
@@ -144,7 +149,8 @@ async function main() {
       },
       {
         title: "Интеграция с legacy сервисом рассылок v0",
-        description: "Задача отменена в связи с переходом на современную почтовую платформу",
+        description:
+          "Задача отменена в связи с переходом на современную почтовую платформу",
         status: "3", // Отклонено
         priority: "0", // Низкий
         dueDate: "15.09.2026",

@@ -10,7 +10,7 @@ const Label = React.forwardRef<
     ref={ref}
     className={cn(
       "text-xs font-bold text-[#E3E3E3] uppercase tracking-wider leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-      className
+      className,
     )}
     {...props}
   />
@@ -18,4 +18,3 @@ const Label = React.forwardRef<
 Label.displayName = LabelPrimitive.Root.displayName;
 
 export { Label };
-

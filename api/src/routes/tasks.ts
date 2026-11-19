@@ -228,7 +228,9 @@ export async function taskRoutes(fastify: FastifyInstance) {
 
     const parse = updateTaskSchema.safeParse(request.body);
     if (!parse.success) {
-      return reply.status(400).send({ error: "Ошибка валидации", details: parse.error.errors });
+      return reply
+        .status(400)
+        .send({ error: "Ошибка валидации", details: parse.error.errors });
     }
 
     const data = parse.data;

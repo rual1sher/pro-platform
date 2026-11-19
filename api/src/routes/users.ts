@@ -21,4 +21,3 @@ export async function userRoutes(fastify: FastifyInstance) {
     return reply.send(users);
   });
 }
-

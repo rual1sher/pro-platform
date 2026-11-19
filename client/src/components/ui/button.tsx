@@ -12,10 +12,8 @@ const buttonVariants = cva(
           "bg-[#BB86FC] text-[#121212] hover:bg-[#a871ea] shadow-sm active:scale-[0.98] font-black rounded-xl",
         secondary:
           "bg-[#03DAC6] text-[#121212] hover:bg-[#02c0ae] shadow-sm active:scale-[0.98] font-black rounded-xl",
-        dark:
-          "bg-[#252525] text-[#E3E3E3] border border-[#2C2C2C] hover:bg-[#2f2f2f] hover:border-[#BB86FC]/50 active:scale-[0.98] rounded-xl",
-        sand:
-          "bg-[#FFB74D] text-[#121212] hover:bg-[#ffa726] active:scale-[0.98] font-black rounded-xl",
+        dark: "bg-[#252525] text-[#E3E3E3] border border-[#2C2C2C] hover:bg-[#2f2f2f] hover:border-[#BB86FC]/50 active:scale-[0.98] rounded-xl",
+        sand: "bg-[#FFB74D] text-[#121212] hover:bg-[#ffa726] active:scale-[0.98] font-black rounded-xl",
         outline:
           "bg-transparent text-[#BB86FC] border border-[#BB86FC] hover:bg-[#BB86FC]/10 active:scale-[0.98] rounded-xl",
         ghost:
@@ -36,11 +34,12 @@ const buttonVariants = cva(
       variant: "primary",
       size: "md",
     },
-  }
+  },
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
@@ -55,9 +54,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
-
