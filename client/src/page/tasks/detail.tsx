@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { AlertCircle, ArrowLeft } from "lucide-react";
 import { Container } from "../../components/helper/container";
 import { TaskDetailComponent } from "../../components/tasks/detail-page";
 import { useAuthGuard } from "../../components/helper/use-auth-guard";
@@ -44,26 +45,35 @@ export function TaskDetailPage() {
   const notFound = fetchFailed || Number.isNaN(taskId);
 
   return (
-    <div className="w-full text-[var(--text-primary)] pb-12 pt-4">
+    <div className="w-full min-h-[calc(100vh-64px)] text-[var(--text-primary)] pb-12 pt-3">
       <Container className="py-2">
         {notFound ? (
-          <div className="max-w-md mx-auto text-center py-20 space-y-3">
-            <p className="text-sm font-bold text-[var(--text-primary)]">
-              Задача не найдена
-            </p>
+          <div className="max-w-md mx-auto text-center py-20 space-y-4 bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-8 shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-[var(--status-error)]/15 text-[var(--status-error)] flex items-center justify-center mx-auto">
+              <AlertCircle size={24} />
+            </div>
+            <div className="space-y-1">
+              <h2 className="text-base font-semibold text-[var(--text-primary)]">
+                Задача #{id} не найдена
+              </h2>
+              <p className="text-xs text-[var(--text-secondary)]">
+                Возможно, задача была удалена или у вас нет доступа к этой организации.
+              </p>
+            </div>
             <Button
               variant="outline"
               size="sm"
               onClick={() => navigate("/tasks")}
-              className="text-xs font-bold text-[var(--brand-primary)] hover:text-[var(--brand-primary-hover)]"
+              className="gap-2 text-xs font-semibold text-[var(--brand-primary)] hover:text-[var(--brand-primary-hover)] mx-auto"
             >
-              Вернуться к доске задач
+              <ArrowLeft size={14} />
+              <span>Вернуться к доске задач</span>
             </Button>
           </div>
         ) : !task ? (
-          <div className="flex flex-col items-center justify-center py-20 space-y-3">
-            <div className="w-8 h-8 border-3 border-[var(--brand-primary)] border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-[var(--text-primary)] text-xs font-bold">
+          <div className="flex flex-col items-center justify-center py-28 space-y-3">
+            <div className="w-8 h-8 border-2 border-[var(--brand-primary)] border-t-transparent rounded-full animate-spin" />
+            <p className="text-[var(--text-secondary)] text-xs font-medium">
               Загрузка задачи...
             </p>
           </div>

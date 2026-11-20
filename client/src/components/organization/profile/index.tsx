@@ -1,15 +1,15 @@
+import { Building2, Calendar, Shield, User, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import { Building2, Calendar, Shield, User, Users } from "lucide-react";
+import { getOrganizationMembers } from "../../../service/organization.service";
+import { findAll } from "../../../service/task.service";
 import { useAuth } from "../../../store/auth.store";
 import { useTask } from "../../../store/task.store";
-import { findAll } from "../../../service/task.service";
-import { getOrganizationMembers } from "../../../service/organization.service";
+import type { ITaskResponce } from "../../../types";
+import { WorkloadOverview } from "../../dashboard/stat-cards";
 import { computeTaskStats } from "../../helper/task-stats";
 import { Button } from "../../ui/button";
 import { MembersModal } from "../org-modal";
-import { WorkloadOverview } from "../../dashboard/stat-cards";
-import type { ITaskResponce } from "../../../types";
 
 interface OrgProfileProps {
   organizationId: number;

@@ -3,7 +3,7 @@ import jwt from "@fastify/jwt";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import "dotenv/config";
-import Fastify from "fastify";
+import Fastify, { FastifyError } from "fastify";
 
 import { authRoutes } from "./routes/auth.js";
 import { messageRoutes } from "./routes/messages.js";
@@ -75,7 +75,7 @@ await fastify.register(taskRoutes, { prefix: "/api/tasks" });
 await fastify.register(messageRoutes, { prefix: "/api" });
 
 // Global Error Handler
-fastify.setErrorHandler((error: any, request, reply) => {
+fastify.setErrorHandler((error: FastifyError, _request, reply) => {
   fastify.log.error(error);
   const statusCode = error.statusCode || 500;
   reply.status(statusCode).send({

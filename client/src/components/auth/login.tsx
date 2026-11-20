@@ -1,14 +1,14 @@
-import { useState } from "react";
 import { Form, Formik } from "formik";
-import type { ILogin } from "../../types";
-import { login } from "../../service/auth.service";
+import { LogIn, Sparkles, UserCheck } from "lucide-react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
+import * as Yup from "yup";
+import { login } from "../../service/auth.service";
+import { useAuth } from "../../store/auth.store";
+import type { ILogin } from "../../types";
 import { InputField } from "../helper/field-input";
 import { addToken } from "../helper/tokens";
 import { Button } from "../ui/button";
-import { useAuth } from "../../store/auth.store";
-import * as Yup from "yup";
-import { LogIn, Sparkles, UserCheck } from "lucide-react";
 
 export function LoginComponent() {
   const navigate = useNavigate();

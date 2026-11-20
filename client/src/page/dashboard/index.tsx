@@ -11,10 +11,8 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="w-full text-[var(--text-primary)] pb-12 pt-4">
-      <Container className="py-2">
-        <DashboardComponent />
-      </Container>
-    </div>
+    <Container className="p-4 sm:p-6">
+      <DashboardComponent />
+    </Container>
   );
 }

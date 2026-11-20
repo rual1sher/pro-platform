@@ -1,11 +1,14 @@
 import type React from "react";
+import { cn } from "../../lib/utils";
 
-export function Container(props: React.PropsWithChildren<{ className?: string }>) {
+interface ContainerProps extends React.PropsWithChildren {
+  className?: string;
+}
+
+export function Container({ children, className }: ContainerProps) {
   return (
-    <div
-      className={`max-w-400 mx-auto px-2 md:px-2 py-3 ${props.className ? props.className : ""}`}
-    >
-      {props.children}
+    <div className={cn("w-full max-w-7xl mx-auto px-4 sm:px-6 py-4", className)}>
+      {children}
     </div>
   );
 }

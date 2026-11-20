@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 import { authenticate, getMembership, TokenPayload } from "../lib/auth.js";
@@ -14,7 +15,15 @@ const authorSelect = {
   select: { id: true, name: true, email: true, avatar: true },
 } as const;
 
-function formatMessage(message: any) {
+type FormattableMessage = Prisma.MessageGetPayload<{
+  include: {
+    author: {
+      select: { id: true; name: true; email: true; avatar: true };
+    };
+  };
+}>;
+
+function formatMessage(message: FormattableMessage) {
   return {
     id: message.id,
     content: message.content,

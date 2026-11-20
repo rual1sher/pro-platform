@@ -1,12 +1,12 @@
+import { Building2, Mail, Plus, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Building2, Mail, Plus, ShieldCheck } from "lucide-react";
-import { useAuth } from "../../store/auth.store";
 import { findAll } from "../../service/task.service";
-import { CreateOrgModal } from "../organization/org-modal";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
+import { useAuth } from "../../store/auth.store";
 import type { ITaskResponce } from "../../types";
+import { CreateOrgModal } from "../organization/org-modal";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 
 const ROLE_LABEL: Record<string, string> = {
   OWNER: "Владелец",

@@ -14,16 +14,14 @@ export function OrganizationPage() {
   }
 
   return (
-    <div className="w-full text-[var(--text-primary)] pb-12 pt-4">
-      <Container className="py-2">
-        {Number.isNaN(organizationId) ? (
-          <div className="py-16 text-center text-[var(--text-secondary)] text-sm font-bold">
-            Некорректный идентификатор организации.
-          </div>
-        ) : (
-          <OrgProfileComponent organizationId={organizationId} />
-        )}
-      </Container>
-    </div>
+    <Container className="p-4 sm:p-6">
+      {Number.isNaN(organizationId) ? (
+        <div className="py-16 text-center text-[var(--text-secondary)] text-sm font-bold">
+          Некорректный идентификатор организации.
+        </div>
+      ) : (
+        <OrgProfileComponent organizationId={organizationId} />
+      )}
+    </Container>
   );
 }

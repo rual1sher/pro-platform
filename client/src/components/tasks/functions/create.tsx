@@ -1,20 +1,20 @@
+import { Building2, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import type { ITaskRequest } from "../../../types";
-import { Plus, Building2 } from "lucide-react";
 import { create } from "../../../service/task.service";
 import { useAuth } from "../../../store/auth.store";
 import { useTask } from "../../../store/task.store";
+import type { ITaskRequest } from "../../../types";
 import { Button } from "../../ui/button";
-import { Input } from "../../ui/input";
-import { Textarea } from "../../ui/textarea";
-import { Label } from "../../ui/label";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "../../ui/dialog";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { Textarea } from "../../ui/textarea";
 
 interface CreateTaskModalProps {
   isOpen: boolean;

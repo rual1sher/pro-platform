@@ -1,30 +1,30 @@
-import { useState, useEffect } from "react";
+import { Building2, Shield, Trash2, User, UserPlus, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  addOrganizationMember,
+  createOrganization,
+  getAllUsers,
+  getOrganizationMembers,
+  getOrganizations,
+  removeOrganizationMember,
+} from "../../service/organization.service";
 import { useAuth } from "../../store/auth.store";
 import { useTask } from "../../store/task.store";
-import {
-  createOrganization,
-  getOrganizations,
-  getOrganizationMembers,
-  addOrganizationMember,
-  removeOrganizationMember,
-  getAllUsers,
-} from "../../service/organization.service";
-import { Building2, Users, UserPlus, Trash2, Shield, User } from "lucide-react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Label } from "../ui/label";
-import { Badge } from "../ui/badge";
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import type { IOrganizationMember, IUser } from "../../types";
 import { ConfirmModal } from "../helper/confirm-modal";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "../ui/dialog";
-import type { IUser, IOrganizationMember } from "../../types";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
 interface CreateOrgModalProps {
   isOpen: boolean;

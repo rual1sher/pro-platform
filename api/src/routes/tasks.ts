@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 import { authenticate, TokenPayload } from "../lib/auth.js";
@@ -33,8 +34,21 @@ const updateTaskSchema = z.object({
 export async function taskRoutes(fastify: FastifyInstance) {
   fastify.addHook("preHandler", authenticate);
 
+  const taskInclude = {
+    assignee: {
+      select: { id: true, name: true, email: true, avatar: true },
+    },
+    creator: {
+      select: { id: true, name: true, email: true },
+    },
+  } as const;
+
+  type FormattableTask = Prisma.TaskGetPayload<{
+    include: typeof taskInclude;
+  }>;
+
   // Format task for frontend compatibility
-  const formatTask = (task: any) => ({
+  const formatTask = (task: FormattableTask) => ({
     id: task.id,
     title: task.title,
     description: task.description || "",
@@ -96,7 +110,7 @@ export async function taskRoutes(fastify: FastifyInstance) {
       return reply.send([]);
     }
 
-    const where: any = {
+    const where: Prisma.TaskWhereInput = {
       organizationId: targetOrgId,
     };
 
@@ -119,14 +133,7 @@ export async function taskRoutes(fastify: FastifyInstance) {
 
     const tasks = await prisma.task.findMany({
       where,
-      include: {
-        assignee: {
-          select: { id: true, name: true, email: true, avatar: true },
-        },
-        creator: {
-          select: { id: true, name: true, email: true },
-        },
-      },
+      include: taskInclude,
       orderBy: { createdAt: "desc" },
     });
 
@@ -176,14 +183,7 @@ export async function taskRoutes(fastify: FastifyInstance) {
         assigneeId,
         creatorId: payload.id,
       },
-      include: {
-        assignee: {
-          select: { id: true, name: true, email: true, avatar: true },
-        },
-        creator: {
-          select: { id: true, name: true, email: true },
-        },
-      },
+      include: taskInclude,
     });
 
     return reply.status(201).send(formatTask(task));
@@ -200,14 +200,7 @@ export async function taskRoutes(fastify: FastifyInstance) {
 
     const task = await prisma.task.findUnique({
       where: { id: taskId },
-      include: {
-        assignee: {
-          select: { id: true, name: true, email: true, avatar: true },
-        },
-        creator: {
-          select: { id: true, name: true, email: true },
-        },
-      },
+      include: taskInclude,
     });
 
     if (!task) {
@@ -234,7 +227,7 @@ export async function taskRoutes(fastify: FastifyInstance) {
     }
 
     const data = parse.data;
-    const updateData: any = {};
+    const updateData: Prisma.TaskUncheckedUpdateInput = {};
 
     if (data.title !== undefined) updateData.title = data.title;
     if (data.description !== undefined) updateData.description = data.description;
@@ -250,14 +243,7 @@ export async function taskRoutes(fastify: FastifyInstance) {
     const task = await prisma.task.update({
       where: { id: taskId },
       data: updateData,
-      include: {
-        assignee: {
-          select: { id: true, name: true, email: true, avatar: true },
-        },
-        creator: {
-          select: { id: true, name: true, email: true },
-        },
-      },
+      include: taskInclude,
     });
 
     return reply.send(formatTask(task));

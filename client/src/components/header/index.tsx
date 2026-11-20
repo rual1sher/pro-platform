@@ -24,7 +24,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-30 bg-[var(--bg-surface)]/95 backdrop-blur-md border-b border-[var(--border-light)] h-16 shrink-0 flex items-center">
-      <Container className="h-full flex items-center py-0! w-full">
+      <Container className="h-full flex items-center py-0 w-full">
         <div className="flex items-center justify-between gap-4 w-full">
           {/* 1. Left: Dynamic Breadcrumbs when logged in, or Clean Brand Logo when guest */}
           <div className="flex items-center gap-3">

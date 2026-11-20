@@ -1,15 +1,15 @@
-import { useEffect, useState, useMemo } from "react";
-import { findAll, update } from "../../service/task.service";
-import { getOrganizationMembers } from "../../service/organization.service";
-import { Column } from "./column";
-import { useAuth } from "../../store/auth.store";
 import { DragDropProvider } from "@dnd-kit/react";
-import { TaskItem } from "./items";
+import { Building2, Filter, Search, Users, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { getOrganizationMembers } from "../../service/organization.service";
+import { findAll, update } from "../../service/task.service";
+import { useAuth } from "../../store/auth.store";
 import { useTask } from "../../store/task.store";
-import { CreateTask } from "./functions/create";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Search, Filter, Users, Building2, X } from "lucide-react";
+import { Column } from "./column";
+import { CreateTask } from "./functions/create";
+import { TaskItem } from "./items";
 
 export function TasksComponent() {
   const [loading, setLoading] = useState(true);

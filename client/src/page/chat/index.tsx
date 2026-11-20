@@ -1,6 +1,6 @@
-import { OrgChat } from "../../components/organization/chat";
-import { useAuthGuard } from "../../components/helper/use-auth-guard";
 import { AuthLoading } from "../../components/helper/auth-loading";
+import { useAuthGuard } from "../../components/helper/use-auth-guard";
+import { OrgChat } from "../../components/organization/chat";
 
 export function ChatPage() {
   const { checking } = useAuthGuard();
@@ -10,7 +10,7 @@ export function ChatPage() {
   }
 
   return (
-    <div className="w-full text-[var(--text-primary)] px-4 py-3">
+    <div className="w-full p-3 sm:p-4 text-[var(--text-primary)]">
       <OrgChat />
     </div>
   );

@@ -9,7 +9,7 @@ export interface TokenPayload {
 export async function authenticate(request: FastifyRequest, reply: FastifyReply) {
   try {
     await request.jwtVerify();
-  } catch (err) {
+  } catch {
     return reply
       .status(401)
       .send({ error: "Не авторизован", message: "Токен недействителен или отсутствует" });

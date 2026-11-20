@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { Building2, Check, ChevronDown, Plus, Users } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../store/auth.store";
-import { Building2, ChevronDown, Plus, Users, Check } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface OrgSwitcherProps {
