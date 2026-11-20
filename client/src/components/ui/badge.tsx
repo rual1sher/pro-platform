@@ -3,17 +3,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../../lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold transition-colors border",
+  "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium tracking-tight transition-colors border",
   {
     variants: {
       variant: {
-        default: "bg-[#BB86FC]/20 text-[#BB86FC] border-[#BB86FC]/40",
-        secondary: "bg-[#252525] text-[#E3E3E3] border-[#2C2C2C]",
-        destructive: "bg-[#CF6679]/20 text-[#CF6679] border-[#CF6679]/40",
-        success: "bg-[#4CAF50]/20 text-[#4CAF50] border-[#4CAF50]/40",
-        warning: "bg-[#FFB74D]/20 text-[#FFB74D] border-[#FFB74D]/40",
-        accent: "bg-[#03DAC6]/20 text-[#03DAC6] border-[#03DAC6]/40",
-        outline: "bg-transparent text-[#E3E3E3] border-[#2C2C2C]",
+        default:
+          "bg-[var(--brand-primary)]/20 text-[var(--brand-primary)] border-[var(--brand-primary)]/40",
+        secondary:
+          "bg-[var(--bg-overlay)] text-[var(--text-primary)] border-[var(--border-light)]",
+        destructive:
+          "bg-[var(--status-error)]/20 text-[var(--status-error)] border-[var(--status-error)]/40",
+        success:
+          "bg-[var(--status-success)]/20 text-[var(--status-success)] border-[var(--status-success)]/40",
+        warning:
+          "bg-[var(--status-warning)]/20 text-[var(--status-warning)] border-[var(--status-warning)]/40",
+        accent:
+          "bg-[var(--brand-secondary)]/20 text-[var(--brand-secondary)] border-[var(--brand-secondary)]/40",
+        outline: "bg-transparent text-[var(--text-primary)] border-[var(--border-light)]",
       },
     },
     defaultVariants: {

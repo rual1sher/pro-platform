@@ -3,7 +3,7 @@ import { HeaderComponent } from "../../components/home/main";
 
 export function HomePage() {
   return (
-    <div className="w-full text-[#E3E3E3] pb-16">
+    <div className="w-full text-[var(--text-primary)] pb-16">
       <Container>
         <HeaderComponent />
       </Container>

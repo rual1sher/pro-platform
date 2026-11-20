@@ -27,7 +27,7 @@ export function Logout() {
         size="sm"
         onClick={() => setOpen(true)}
         title="Выйти"
-        className="w-8 h-8 p-0 rounded-lg text-[#9E9E9E] hover:text-[#CF6679] hover:bg-[#252525]"
+        className="w-8 h-8 p-0 rounded-lg text-[var(--text-secondary)] hover:text-[var(--status-error)] hover:bg-[var(--bg-overlay)]"
       >
         <LogOut size={16} />
       </Button>

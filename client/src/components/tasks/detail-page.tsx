@@ -48,15 +48,17 @@ function DetailField({
   value: ReactNode;
 }) {
   return (
-    <div className="flex items-start gap-2.5 bg-[#252525] border border-[#2C2C2C] rounded-xl p-3">
-      <div className="w-7 h-7 rounded-lg bg-[#1E1E1E] text-[#BB86FC] flex items-center justify-center shrink-0">
+    <div className="flex items-start gap-2.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl p-3">
+      <div className="w-7 h-7 rounded-lg bg-[var(--bg-surface)] text-[var(--brand-primary)] flex items-center justify-center shrink-0">
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-[10px] font-bold text-[#9E9E9E] uppercase tracking-wider">
+        <p className="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">
           {label}
         </p>
-        <div className="text-xs font-bold text-[#E3E3E3] mt-0.5 truncate">{value}</div>
+        <div className="text-xs font-bold text-[var(--text-primary)] mt-0.5 truncate">
+          {value}
+        </div>
       </div>
     </div>
   );
@@ -151,7 +153,7 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
         variant="ghost"
         size="sm"
         onClick={onBack}
-        className="text-[#9E9E9E] hover:text-[#E3E3E3] p-0 h-auto gap-1.5"
+        className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-0 h-auto gap-1.5"
       >
         <ArrowLeft size={15} />
         Назад к задачам
@@ -159,9 +161,9 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
 
       <div className="grid lg:grid-cols-2 gap-5">
         {/* LEFT: Settings / details */}
-        <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-4xl p-6 md:p-8 space-y-5 text-[#E3E3E3]">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-4xl p-6 md:p-8 space-y-5 text-[var(--text-primary)]">
           <div className="flex items-start justify-between gap-3">
-            <h1 className="text-xl font-bold text-[#E3E3E3] leading-tight">
+            <h1 className="text-xl font-bold text-[var(--text-primary)] leading-tight">
               {task.title}
             </h1>
             <div className="flex items-center gap-1 shrink-0">
@@ -170,7 +172,7 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
                 size="sm"
                 onClick={() => setEditOpen(true)}
                 title="Редактировать"
-                className="w-8 h-8 p-0 rounded-full text-[#9E9E9E] hover:text-[#BB86FC] hover:bg-[#252525]"
+                className="w-8 h-8 p-0 rounded-full text-[var(--text-secondary)] hover:text-[var(--brand-primary)] hover:bg-[var(--bg-overlay)]"
               >
                 <Edit2 size={15} />
               </Button>
@@ -179,19 +181,19 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
                 size="sm"
                 onClick={() => setDeleteConfirmOpen(true)}
                 title="Удалить"
-                className="w-8 h-8 p-0 rounded-full text-[#CF6679] hover:bg-[#CF6679]/10"
+                className="w-8 h-8 p-0 rounded-full text-[var(--status-error)] hover:bg-[var(--status-error)]/10"
               >
                 <Trash2 size={15} />
               </Button>
             </div>
           </div>
 
-          <p className="text-xs text-[#9E9E9E] leading-relaxed bg-[#252525] border border-[#2C2C2C] rounded-xl p-3">
+          <p className="text-xs text-[var(--text-secondary)] leading-relaxed bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl p-3">
             {task.description || "Описание не указано"}
           </p>
 
           <div>
-            <p className="text-[10px] font-black text-[#9E9E9E] uppercase tracking-wider mb-2">
+            <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-wider mb-2">
               Настройки задачи
             </p>
             <div className="grid sm:grid-cols-2 gap-2.5">
@@ -251,8 +253,8 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
         </div>
 
         {/* RIGHT: Chat / comments */}
-        <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-4xl h-170 p-5 md:p-6 space-y-3 text-[#E3E3E3] flex flex-col">
-          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#9E9E9E]">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-4xl h-170 p-5 md:p-6 space-y-3 text-[var(--text-primary)] flex flex-col">
+          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">
             <MessageSquare size={12} />
             <span>Комментарии ({comments.length})</span>
           </div>

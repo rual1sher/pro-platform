@@ -13,6 +13,7 @@ import {
   Plus,
 } from "lucide-react";
 import type { ITaskResponce } from "../../types";
+import { Button } from "../ui/button";
 
 interface SidebarProps {
   onOpenCreateOrg: () => void;
@@ -92,29 +93,33 @@ export function Sidebar({
   return (
     <aside className="w-full lg:w-[310px] shrink-0 space-y-4">
       {/* 1. Mini Calendar Widget */}
-      <div className="bg-[#1E1E1E] text-[#E3E3E3] rounded-[30px] p-5 shadow-lg border border-[#2C2C2C]">
+      <div className="bg-[var(--bg-surface)] text-[var(--text-primary)] rounded-[30px] p-5 shadow-lg border border-[var(--border-light)]">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-sm text-[#E3E3E3] tracking-wide">
+          <h3 className="font-bold text-sm text-[var(--text-primary)] tracking-wide">
             {monthNames[month]} {year}
           </h3>
           <div className="flex items-center gap-1">
-            <button
+            <Button
+              variant="dark"
+              size="sm"
               onClick={prevMonth}
-              className="w-7 h-7 rounded-full bg-[#252525] hover:bg-[#2e2e2e] border border-[#2C2C2C] flex items-center justify-center text-[#BB86FC] transition-colors"
+              className="w-7 h-7 p-0 rounded-full flex items-center justify-center text-[var(--brand-primary)]"
             >
               <ChevronLeft size={15} />
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="dark"
+              size="sm"
               onClick={nextMonth}
-              className="w-7 h-7 rounded-full bg-[#252525] hover:bg-[#2e2e2e] border border-[#2C2C2C] flex items-center justify-center text-[#BB86FC] transition-colors"
+              className="w-7 h-7 p-0 rounded-full flex items-center justify-center text-[var(--brand-primary)]"
             >
               <ChevronRight size={15} />
-            </button>
+            </Button>
           </div>
         </div>
 
         {/* Days of week */}
-        <div className="grid grid-cols-7 text-center text-xs font-semibold text-[#03DAC6] mb-2">
+        <div className="grid grid-cols-7 text-center text-xs font-semibold text-[var(--brand-secondary)] mb-2">
           {daysOfWeek.map((day, idx) => (
             <div key={idx} className="py-1">
               {day}
@@ -143,12 +148,12 @@ export function Sidebar({
               <button
                 key={idx}
                 onClick={() => setSelectedDay(d)}
-                className={`w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
+                className={`w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-semibold transition-all cursor-pointer ${
                   isSelected
-                    ? "bg-[#BB86FC] text-[#121212] shadow-sm font-black scale-105"
+                    ? "bg-[var(--brand-primary)] text-[var(--bg-main)] shadow-sm font-black scale-105"
                     : isToday
-                      ? "border border-[#03DAC6] text-[#03DAC6]"
-                      : "text-[#E3E3E3]/80 hover:bg-[#252525] hover:text-[#E3E3E3]"
+                      ? "border border-[var(--brand-secondary)] text-[var(--brand-secondary)]"
+                      : "text-[var(--text-primary)]/80 hover:bg-[var(--bg-overlay)] hover:text-[var(--text-primary)]"
                 }`}
               >
                 {d}
@@ -159,23 +164,27 @@ export function Sidebar({
       </div>
 
       {/* 2. Upcoming tasks / Активные задачи */}
-      <div className="bg-[#1E1E1E] text-[#E3E3E3] rounded-[30px] p-5 shadow-lg border border-[#2C2C2C]">
+      <div className="bg-[var(--bg-surface)] text-[var(--text-primary)] rounded-[30px] p-5 shadow-lg border border-[var(--border-light)]">
         <div className="flex items-center justify-between mb-3.5">
-          <h3 className="font-bold text-sm text-[#E3E3E3] tracking-wide">
+          <h3 className="font-bold text-sm text-[var(--text-primary)] tracking-wide">
             Активные задачи
           </h3>
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={onOpenCreateTask}
-            className="text-xs font-semibold text-[#BB86FC] hover:text-[#a871ea] flex items-center gap-1 transition-colors"
+            className="text-xs font-semibold text-[var(--brand-primary)] hover:opacity-80 flex items-center gap-1 p-1 h-auto"
           >
             <Plus size={13} />
             <span>Новая</span>
-          </button>
+          </Button>
         </div>
 
         <div className="space-y-2.5 max-h-[190px] overflow-y-auto pr-1">
           {tasks.length === 0 ? (
-            <p className="text-xs text-[#9E9E9E] py-3 text-center">Задач пока нет</p>
+            <p className="text-xs text-[var(--text-secondary)] py-3 text-center">
+              Задач пока нет
+            </p>
           ) : (
             tasks.slice(0, 4).map((task) => {
               const isDone = String(task.order ?? task.status) === "2";
@@ -183,13 +192,13 @@ export function Sidebar({
                 <div
                   key={task.id}
                   onClick={() => toggleTaskDone(task)}
-                  className="flex items-start gap-2.5 p-2 rounded-xl bg-[#252525] hover:bg-[#2c2c2c] border border-[#2C2C2C] cursor-pointer transition-all group"
+                  className="flex items-start gap-2.5 p-2 rounded-xl bg-[var(--bg-overlay)] hover:opacity-90 border border-[var(--border-light)] cursor-pointer transition-all group"
                 >
                   <div
                     className={`w-4 h-4 mt-0.5 rounded flex items-center justify-center transition-colors shrink-0 ${
                       isDone
-                        ? "bg-[#4CAF50] text-[#121212]"
-                        : "border border-[#BB86FC]/60 group-hover:border-[#BB86FC]"
+                        ? "bg-[var(--status-success)] text-[var(--bg-main)]"
+                        : "border border-[var(--brand-primary)]/60 group-hover:border-[var(--brand-primary)]"
                     }`}
                   >
                     {isDone && <Check size={12} strokeWidth={3} />}
@@ -198,12 +207,14 @@ export function Sidebar({
                   <div className="flex-1 min-w-0">
                     <p
                       className={`text-xs font-medium truncate ${
-                        isDone ? "line-through text-[#9E9E9E]" : "text-[#E3E3E3]"
+                        isDone
+                          ? "line-through text-[var(--text-disabled)]"
+                          : "text-[var(--text-primary)]"
                       }`}
                     >
                       {task.title}
                     </p>
-                    <span className="text-[10px] text-[#03DAC6] block mt-0.5">
+                    <span className="text-[10px] text-[var(--brand-secondary)] block mt-0.5">
                       {task.dueDate || task.date || "Сегодня"}
                     </span>
                   </div>
@@ -215,28 +226,31 @@ export function Sidebar({
       </div>
 
       {/* 3. Task breakdown / Статистика задач */}
-      <div className="bg-[#1E1E1E] text-[#E3E3E3] rounded-[30px] p-5 shadow-lg border border-[#2C2C2C]">
+      <div className="bg-[var(--bg-surface)] text-[var(--text-primary)] rounded-[30px] p-5 shadow-lg border border-[var(--border-light)]">
         <div className="flex items-center justify-between mb-3.5">
-          <h3 className="font-bold text-sm text-[#E3E3E3] tracking-wide">
+          <h3 className="font-bold text-sm text-[var(--text-primary)] tracking-wide">
             Статистика задач
           </h3>
-          <span className="text-xs font-bold text-[#BB86FC]">{tasks.length} всего</span>
+          <span className="text-xs font-bold text-[var(--brand-primary)]">
+            {tasks.length} всего
+          </span>
         </div>
 
         <div className="space-y-3 text-xs">
           {/* В работе */}
           <div>
-            <div className="flex justify-between text-[#E3E3E3] mb-1 font-medium">
+            <div className="flex justify-between text-[var(--text-primary)] mb-1 font-medium">
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#2196F3]"></span>В работе
+                <span className="w-2 h-2 rounded-full bg-[var(--status-info)]"></span>В
+                работе
               </span>
-              <span className="text-[#2196F3] font-bold">
+              <span className="text-[var(--status-info)] font-bold">
                 {inProgressCount} ({inProgressPct}%)
               </span>
             </div>
-            <div className="w-full bg-[#252525] h-1.5 rounded-full overflow-hidden">
+            <div className="w-full bg-[var(--bg-overlay)] h-1.5 rounded-full overflow-hidden">
               <div
-                className="bg-[#2196F3] h-full rounded-full transition-all duration-300"
+                className="bg-[var(--status-info)] h-full rounded-full transition-all duration-300"
                 style={{ width: `${inProgressPct}%` }}
               ></div>
             </div>
@@ -244,18 +258,18 @@ export function Sidebar({
 
           {/* Готово */}
           <div>
-            <div className="flex justify-between text-[#E3E3E3] mb-1 font-medium">
+            <div className="flex justify-between text-[var(--text-primary)] mb-1 font-medium">
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#4CAF50]"></span>
+                <span className="w-2 h-2 rounded-full bg-[var(--status-success)]"></span>
                 Готово
               </span>
-              <span className="text-[#4CAF50] font-bold">
+              <span className="text-[var(--status-success)] font-bold">
                 {doneCount} ({donePct}%)
               </span>
             </div>
-            <div className="w-full bg-[#252525] h-1.5 rounded-full overflow-hidden">
+            <div className="w-full bg-[var(--bg-overlay)] h-1.5 rounded-full overflow-hidden">
               <div
-                className="bg-[#4CAF50] h-full rounded-full transition-all duration-300"
+                className="bg-[var(--status-success)] h-full rounded-full transition-all duration-300"
                 style={{ width: `${donePct}%` }}
               ></div>
             </div>
@@ -263,18 +277,18 @@ export function Sidebar({
 
           {/* Ожидает */}
           <div>
-            <div className="flex justify-between text-[#E3E3E3] mb-1 font-medium">
+            <div className="flex justify-between text-[var(--text-primary)] mb-1 font-medium">
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#757575]"></span>
+                <span className="w-2 h-2 rounded-full bg-[var(--text-disabled)]"></span>
                 Ожидает
               </span>
-              <span className="text-[#9E9E9E] font-bold">
+              <span className="text-[var(--text-secondary)] font-bold">
                 {pendingCount} ({pendingPct}%)
               </span>
             </div>
-            <div className="w-full bg-[#252525] h-1.5 rounded-full overflow-hidden">
+            <div className="w-full bg-[var(--bg-overlay)] h-1.5 rounded-full overflow-hidden">
               <div
-                className="bg-[#757575] h-full rounded-full transition-all duration-300"
+                className="bg-[var(--text-disabled)] h-full rounded-full transition-all duration-300"
                 style={{ width: `${pendingPct}%` }}
               ></div>
             </div>
@@ -283,18 +297,18 @@ export function Sidebar({
           {/* Отклонено */}
           {rejectedCount > 0 && (
             <div>
-              <div className="flex justify-between text-[#E3E3E3] mb-1 font-medium">
+              <div className="flex justify-between text-[var(--text-primary)] mb-1 font-medium">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#CF6679]"></span>
+                  <span className="w-2 h-2 rounded-full bg-[var(--status-error)]"></span>
                   Отклонено
                 </span>
-                <span className="text-[#CF6679] font-bold">
+                <span className="text-[var(--status-error)] font-bold">
                   {rejectedCount} ({rejectedPct}%)
                 </span>
               </div>
-              <div className="w-full bg-[#252525] h-1.5 rounded-full overflow-hidden">
+              <div className="w-full bg-[var(--bg-overlay)] h-1.5 rounded-full overflow-hidden">
                 <div
-                  className="bg-[#CF6679] h-full rounded-full transition-all duration-300"
+                  className="bg-[var(--status-error)] h-full rounded-full transition-all duration-300"
                   style={{ width: `${rejectedPct}%` }}
                 ></div>
               </div>
@@ -304,20 +318,20 @@ export function Sidebar({
       </div>
 
       {/* 4. My workspaces / Мои организации */}
-      <div className="bg-[#1E1E1E] text-[#E3E3E3] rounded-[30px] p-5 shadow-lg border border-[#2C2C2C]">
+      <div className="bg-[var(--bg-surface)] text-[var(--text-primary)] rounded-[30px] p-5 shadow-lg border border-[var(--border-light)]">
         <div
           onClick={() => setOrgsDropdownOpen(!orgsDropdownOpen)}
           className="flex items-center justify-between cursor-pointer group"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#BB86FC] text-[#121212] flex items-center justify-center font-bold text-xs shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center font-bold text-xs shadow-sm">
               <Building2 size={16} />
             </div>
             <div className="text-left">
-              <h3 className="font-bold text-xs text-[#E3E3E3] truncate max-w-[150px]">
+              <h3 className="font-bold text-xs text-[var(--text-primary)] truncate max-w-[150px]">
                 {activeOrg?.name || "Организация"}
               </h3>
-              <p className="text-[10px] text-[#03DAC6]">
+              <p className="text-[10px] text-[var(--brand-secondary)]">
                 {activeOrg?.role === "OWNER"
                   ? "Владелец"
                   : activeOrg?.role === "ADMIN"
@@ -329,14 +343,14 @@ export function Sidebar({
 
           <ChevronDown
             size={16}
-            className={`text-[#9E9E9E] transition-transform duration-200 ${
+            className={`text-[var(--text-secondary)] transition-transform duration-200 ${
               orgsDropdownOpen ? "rotate-180" : ""
             }`}
           />
         </div>
 
         {orgsDropdownOpen && (
-          <div className="mt-3 pt-3 border-t border-[#2C2C2C] space-y-2">
+          <div className="mt-3 pt-3 border-t border-[var(--border-light)] space-y-2">
             <div className="space-y-1 max-h-36 overflow-y-auto pr-1">
               {organizations.map((org) => (
                 <button
@@ -345,10 +359,10 @@ export function Sidebar({
                     setActiveOrgById(org.id);
                     setOrgsDropdownOpen(false);
                   }}
-                  className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-colors flex items-center justify-between ${
+                  className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-colors flex items-center justify-between cursor-pointer ${
                     org.id === activeOrg?.id
-                      ? "bg-[#BB86FC]/20 text-[#BB86FC] font-bold"
-                      : "text-[#E3E3E3]/80 hover:bg-[#252525] hover:text-[#E3E3E3]"
+                      ? "bg-[var(--brand-primary)]/20 text-[var(--brand-primary)] font-bold"
+                      : "text-[var(--text-primary)]/80 hover:bg-[var(--bg-overlay)] hover:text-[var(--text-primary)]"
                   }`}
                 >
                   <span className="truncate">{org.name}</span>
@@ -357,21 +371,25 @@ export function Sidebar({
               ))}
             </div>
 
-            <div className="flex gap-2 pt-1 border-t border-[#2C2C2C]">
-              <button
+            <div className="flex gap-2 pt-1 border-t border-[var(--border-light)]">
+              <Button
+                variant="dark"
+                size="sm"
                 onClick={onOpenMembers}
-                className="flex-1 py-1.5 px-2 bg-[#252525] hover:bg-[#2c2c2c] text-[#03DAC6] border border-[#2C2C2C] text-[11px] font-semibold rounded-lg text-center transition-colors flex items-center justify-center gap-1"
+                className="flex-1 text-[var(--brand-secondary)] text-[11px] font-semibold py-1.5 px-2 flex items-center justify-center gap-1"
               >
                 <Users size={12} />
                 <span>Команда</span>
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={onOpenCreateOrg}
-                className="flex-1 py-1.5 px-2 bg-[#BB86FC] hover:bg-[#a871ea] text-[#121212] text-[11px] font-bold rounded-lg text-center transition-colors flex items-center justify-center gap-1"
+                className="flex-1 text-[11px] font-bold py-1.5 px-2 flex items-center justify-center gap-1"
               >
                 <Plus size={12} />
                 <span>Создать</span>
-              </button>
+              </Button>
             </div>
           </div>
         )}

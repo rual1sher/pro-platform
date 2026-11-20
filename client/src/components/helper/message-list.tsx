@@ -1,5 +1,6 @@
 import { Trash2 } from "lucide-react";
 import type { IMessage } from "../../types";
+import { Button } from "../ui/button";
 
 interface MessageListProps {
   messages: IMessage[];
@@ -23,7 +24,9 @@ export function MessageList({
 }: MessageListProps) {
   if (messages.length === 0) {
     return (
-      <div className={`py-6 text-center text-xs text-[#9E9E9E] ${className}`}>
+      <div
+        className={`py-6 text-center text-xs text-[var(--text-secondary)] ${className}`}
+      >
         {emptyText}
       </div>
     );
@@ -39,35 +42,37 @@ export function MessageList({
               <img
                 src={m.author.avatar}
                 alt={m.author.name}
-                className="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-[#2C2C2C]"
+                className="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-[var(--border-light)]"
               />
             ) : (
-              <div className="w-7 h-7 rounded-full bg-[#BB86FC] text-[#121212] font-black text-[11px] flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-full bg-[var(--brand-primary)] text-[var(--bg-main)] font-black text-[11px] flex items-center justify-center shrink-0">
                 {m.author.name.substring(0, 1).toUpperCase()}
               </div>
             )}
 
-            <div className="flex-1 min-w-0 bg-[#252525] border border-[#2C2C2C] rounded-2xl px-3 py-2">
+            <div className="flex-1 min-w-0 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-2xl px-3 py-2">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[11px] font-bold text-[#E3E3E3] truncate">
+                <span className="text-[11px] font-bold text-[var(--text-primary)] truncate">
                   {isOwn ? "Вы" : m.author.name}
                 </span>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="text-[10px] text-[#616161]">
+                  <span className="text-[10px] text-[var(--text-disabled)]">
                     {formatTime(m.createdAt)}
                   </span>
                   {onDelete && (
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => onDelete(m.id)}
                       title="Удалить сообщение"
-                      className="opacity-0 group-hover:opacity-100 text-[#CF6679] hover:bg-[#CF6679]/10 rounded-full p-0.5 transition-opacity"
+                      className="opacity-0 group-hover:opacity-100 text-[var(--status-error)] hover:bg-[var(--status-error)]/10 rounded-full p-1 h-auto transition-opacity"
                     >
                       <Trash2 size={12} />
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
-              <p className="text-xs text-[#E3E3E3] leading-relaxed break-words">
+              <p className="text-xs text-[var(--text-primary)] leading-relaxed break-words">
                 {m.content}
               </p>
             </div>

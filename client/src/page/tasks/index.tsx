@@ -19,7 +19,7 @@ export function TasksPage() {
   }
 
   return (
-    <div className="w-full text-[#E3E3E3] pb-12 pt-4">
+    <div className="w-full text-[var(--text-primary)] pb-12 pt-4">
       <Container className="py-2">
         {/* Responsive Layout: Left Sidebar + Main Kanban Canvas */}
         <div className="flex flex-col lg:flex-row gap-5 items-start">

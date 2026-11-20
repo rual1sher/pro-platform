@@ -65,21 +65,21 @@ export function ProfileComponent() {
   return (
     <div className="space-y-5">
       {/* User card */}
-      <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-[28px] p-6 flex items-center gap-4">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[28px] p-6 flex items-center gap-4">
         {user.avatar ? (
           <img
             src={user.avatar}
             alt={user.name}
-            className="w-16 h-16 rounded-full object-cover ring-2 ring-[#BB86FC]"
+            className="w-16 h-16 rounded-full object-cover ring-2 ring-[var(--brand-primary)]"
           />
         ) : (
-          <div className="w-16 h-16 rounded-full bg-[#BB86FC] text-[#121212] ring-2 ring-[#03DAC6] flex items-center justify-center text-xl font-black">
+          <div className="w-16 h-16 rounded-full bg-[var(--brand-primary)] text-[var(--bg-main)] ring-2 ring-[var(--brand-secondary)] flex items-center justify-center text-xl font-black">
             {initials}
           </div>
         )}
         <div>
-          <h1 className="text-xl font-black text-[#E3E3E3]">{user.name}</h1>
-          <p className="text-xs text-[#9E9E9E] font-semibold flex items-center gap-1.5 mt-1">
+          <h1 className="text-xl font-black text-[var(--text-primary)]">{user.name}</h1>
+          <p className="text-xs text-[var(--text-secondary)] font-semibold flex items-center gap-1.5 mt-1">
             <Mail size={13} />
             {user.email}
           </p>
@@ -88,15 +88,17 @@ export function ProfileComponent() {
 
       <div className="grid lg:grid-cols-[3fr_2fr] gap-4">
         {/* Recent tasks across all orgs */}
-        <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-[28px] p-5 space-y-3">
-          <h2 className="text-sm font-bold text-[#E3E3E3]">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[28px] p-5 space-y-3">
+          <h2 className="text-sm font-bold text-[var(--text-primary)]">
             Последние задачи по всем организациям
           </h2>
 
           {loading ? (
-            <p className="text-xs text-[#9E9E9E] py-6 text-center">Загрузка...</p>
+            <p className="text-xs text-[var(--text-secondary)] py-6 text-center">
+              Загрузка...
+            </p>
           ) : recentTasks.length === 0 ? (
-            <p className="text-xs text-[#9E9E9E] py-6 text-center">
+            <p className="text-xs text-[var(--text-secondary)] py-6 text-center">
               У вас пока нет назначенных задач
             </p>
           ) : (
@@ -105,22 +107,22 @@ export function ProfileComponent() {
                 <div
                   key={task.id}
                   onClick={() => navigate(`/tasks/${task.id}`)}
-                  className="flex items-center justify-between gap-3 p-3 rounded-xl bg-[#252525] hover:bg-[#2c2c2c] border border-[#2C2C2C] cursor-pointer transition-colors"
+                  className="flex items-center justify-between gap-3 p-3 rounded-xl bg-[var(--bg-overlay)] hover:bg-[var(--border-light)] border border-[var(--border-light)] cursor-pointer transition-colors"
                 >
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-[#E3E3E3] truncate">
+                    <p className="text-xs font-bold text-[var(--text-primary)] truncate">
                       {task.title}
                     </p>
                     {task.description && (
-                      <p className="text-[10px] text-[#9E9E9E] mt-0.5 truncate">
+                      <p className="text-[10px] text-[var(--text-secondary)] mt-0.5 truncate">
                         {task.description}
                       </p>
                     )}
-                    <p className="text-[10px] text-[#9E9E9E] mt-0.5">
+                    <p className="text-[10px] text-[var(--text-secondary)] mt-0.5">
                       {task.dueDate || task.date}
                     </p>
                   </div>
-                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#252525] text-[#03DAC6] border border-[#03DAC6]/30 shrink-0">
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[var(--bg-overlay)] text-[var(--brand-secondary)] border border-[var(--brand-secondary)]/30 shrink-0">
                     {task.organizationId
                       ? organizations.find((o) => o.id === task.organizationId)?.name
                       : ""}
@@ -132,14 +134,16 @@ export function ProfileComponent() {
         </div>
 
         {/* Organizations list */}
-        <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-[28px] p-5 space-y-3">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[28px] p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-[#E3E3E3]">Мои организации</h2>
+            <h2 className="text-sm font-bold text-[var(--text-primary)]">
+              Мои организации
+            </h2>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setCreateOrgOpen(true)}
-              className="text-[#BB86FC] hover:text-[#a871ea] p-1 h-auto font-bold"
+              className="text-[var(--brand-primary)] hover:text-[var(--brand-primary-hover)] p-1 h-auto font-bold"
             >
               <Plus size={13} />
               Создать
@@ -147,7 +151,7 @@ export function ProfileComponent() {
           </div>
 
           {organizations.length === 0 ? (
-            <p className="text-xs text-[#9E9E9E] py-6 text-center">
+            <p className="text-xs text-[var(--text-secondary)] py-6 text-center">
               Вы пока не состоите ни в одной организации
             </p>
           ) : (
@@ -160,17 +164,17 @@ export function ProfileComponent() {
                     setActiveOrgById(org.id);
                     navigate(`/organizations/${org.id}`);
                   }}
-                  className="w-full justify-between gap-3 p-3 rounded-xl text-left h-auto font-normal hover:bg-[#2c2c2c]"
+                  className="w-full justify-between gap-3 p-3 rounded-xl text-left h-auto font-normal hover:bg-[var(--border-light)]"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-8 h-8 rounded-xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shrink-0">
                       <Building2 size={15} />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-[#E3E3E3] truncate">
+                      <p className="text-xs font-bold text-[var(--text-primary)] truncate">
                         {org.name}
                       </p>
-                      <p className="text-[10px] text-[#9E9E9E]">
+                      <p className="text-[10px] text-[var(--text-secondary)]">
                         {org.memberCount ?? 0} участников • {org.taskCount ?? 0} задач
                       </p>
                     </div>

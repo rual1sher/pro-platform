@@ -32,14 +32,14 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] bg-[#1E1E1E] border border-[#2C2C2C] rounded-[32px] p-6 shadow-2xl text-[#E3E3E3] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+        "fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] text-[var(--text-primary)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
         className,
       )}
       {...props}
     >
       {children}
       {!hideClose && (
-        <DialogPrimitive.Close className="absolute right-5 top-5 p-1.5 text-[#9E9E9E] hover:text-[#E3E3E3] rounded-full hover:bg-[#252525] transition-colors disabled:pointer-events-none">
+        <DialogPrimitive.Close className="absolute right-5 top-5 p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-full hover:bg-[var(--bg-overlay)] transition-colors disabled:pointer-events-none">
           <X size={16} />
           <span className="sr-only">Закрыть</span>
         </DialogPrimitive.Close>
@@ -51,7 +51,10 @@ DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("flex flex-col space-y-1.5 pb-3 border-b border-[#2C2C2C]", className)}
+    className={cn(
+      "flex flex-col space-y-1.5 pb-3 border-b border-[var(--border-light)]",
+      className,
+    )}
     {...props}
   />
 );
@@ -59,7 +62,10 @@ DialogHeader.displayName = "DialogHeader";
 
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("flex justify-end gap-2.5 pt-3 border-t border-[#2C2C2C]", className)}
+    className={cn(
+      "flex justify-end gap-2.5 pt-3 border-t border-[var(--border-light)]",
+      className,
+    )}
     {...props}
   />
 );
@@ -71,7 +77,10 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn("text-lg font-extrabold text-[#E3E3E3] leading-none", className)}
+    className={cn(
+      "text-lg font-extrabold text-[var(--text-primary)] leading-none",
+      className,
+    )}
     {...props}
   />
 ));
@@ -83,7 +92,10 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("text-xs text-[#9E9E9E] leading-relaxed font-medium", className)}
+    className={cn(
+      "text-xs text-[var(--text-secondary)] leading-relaxed font-medium",
+      className,
+    )}
     {...props}
   />
 ));

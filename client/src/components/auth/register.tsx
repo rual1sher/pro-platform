@@ -43,15 +43,15 @@ export function RegisterComponent() {
   };
 
   return (
-    <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-[32px] shadow-2xl p-8 max-w-md w-full mx-auto text-[#E3E3E3]">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[32px] shadow-2xl p-8 max-w-md w-full mx-auto text-[var(--text-primary)]">
       <div className="text-center mb-6">
-        <div className="w-12 h-12 rounded-2xl bg-[#BB86FC] text-[#121212] flex items-center justify-center mx-auto mb-3 shadow-md">
+        <div className="w-12 h-12 rounded-2xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center mx-auto mb-3 shadow-md">
           <UserPlus size={22} />
         </div>
-        <h1 className="text-2xl font-black text-[#E3E3E3] tracking-tight mb-1">
+        <h1 className="text-2xl font-black text-[var(--text-primary)] tracking-tight mb-1">
           Регистрация
         </h1>
-        <p className="text-xs text-[#9E9E9E] font-medium">
+        <p className="text-xs text-[var(--text-secondary)] font-medium">
           Создайте аккаунт и рабочее пространство организации
         </p>
       </div>
@@ -65,21 +65,21 @@ export function RegisterComponent() {
           <Form className="space-y-4">
             <InputField name="name" title="Ваше имя" type="text" />
             {errors.name && touched.name && (
-              <div className="text-[#CF6679] text-xs mt-1 font-semibold">
+              <div className="text-[var(--status-error)] text-xs mt-1 font-semibold">
                 {errors.name}
               </div>
             )}
 
             <InputField name="email" title="Email" type="email" />
             {errors.email && touched.email && (
-              <div className="text-[#CF6679] text-xs mt-1 font-semibold">
+              <div className="text-[var(--status-error)] text-xs mt-1 font-semibold">
                 {errors.email}
               </div>
             )}
 
             <InputField name="password" title="Пароль" type="password" />
             {errors.password && touched.password && (
-              <div className="text-[#CF6679] text-xs mt-1 font-semibold">
+              <div className="text-[var(--status-error)] text-xs mt-1 font-semibold">
                 {errors.password}
               </div>
             )}
@@ -88,7 +88,7 @@ export function RegisterComponent() {
 
             <Button
               variant="primary"
-              className="w-full mt-2 !bg-[#BB86FC] !text-[#121212] hover:!bg-[#a370e0] font-bold"
+              className="w-full mt-2 !bg-[var(--brand-primary)] !text-[var(--bg-main)] hover:!bg-[var(--brand-primary-hover)] font-bold"
               type="submit"
               disabled={loading}
             >
@@ -98,11 +98,11 @@ export function RegisterComponent() {
         )}
       </Formik>
 
-      <p className="mt-6 text-center text-xs text-[#9E9E9E] font-medium">
+      <p className="mt-6 text-center text-xs text-[var(--text-secondary)] font-medium">
         Уже есть аккаунт?{" "}
         <NavLink
           to="/login"
-          className="text-[#BB86FC] underline hover:text-[#03DAC6] font-bold transition-colors"
+          className="text-[var(--brand-primary)] underline hover:text-[var(--brand-secondary)] font-bold transition-colors"
         >
           Войти
         </NavLink>

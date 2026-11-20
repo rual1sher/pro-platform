@@ -59,7 +59,7 @@ export function CreateOrgModal({ isOpen, onClose }: CreateOrgModalProps) {
       <DialogContent className="max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#BB86FC] text-[#121212] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center">
               <Building2 size={18} />
             </div>
             <DialogTitle>Новая организация</DialogTitle>
@@ -186,14 +186,14 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
       <Dialog open={isOpen && !!activeOrg} onOpenChange={(open) => !open && onClose()}>
         <DialogContent className="max-w-xl max-h-[90vh] flex flex-col overflow-hidden p-0">
           {/* Header */}
-          <DialogHeader className="px-6 pt-6 pb-4 border-b border-[#2C2C2C] flex-shrink-0">
+          <DialogHeader className="px-6 pt-6 pb-4 border-b border-[var(--border-light)] flex-shrink-0">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-2xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shadow-sm">
+              <div className="w-9 h-9 rounded-2xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shadow-sm">
                 <Users size={18} />
               </div>
               <div>
                 <DialogTitle>Команда и воркеры</DialogTitle>
-                <p className="text-xs text-[#03DAC6] font-semibold mt-0.5">
+                <p className="text-xs text-[var(--brand-secondary)] font-semibold mt-0.5">
                   Организация: {activeOrg?.name}
                 </p>
               </div>
@@ -204,16 +204,16 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
           <div className="px-6 pt-4 flex-shrink-0">
             <form
               onSubmit={handleAddMember}
-              className="bg-[#252525] border border-[#2C2C2C] rounded-2xl p-4 space-y-3"
+              className="bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-2xl p-4 space-y-3"
             >
-              <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-[#BB86FC]">
+              <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-[var(--brand-primary)]">
                 <UserPlus size={14} />
                 <span>Добавить воркера в команду</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <Label className="normal-case tracking-normal text-[11px] text-[#9E9E9E]">
+                  <Label className="normal-case tracking-normal text-[11px] text-[var(--text-secondary)]">
                     Выбрать пользователя
                   </Label>
                   <select
@@ -222,7 +222,7 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
                       setSelectedUserId(e.target.value ? Number(e.target.value) : "");
                       if (e.target.value) setEmailInput("");
                     }}
-                    className="w-full px-3 py-2 bg-[#1E1E1E] border border-[#2C2C2C] rounded-xl text-xs text-[#E3E3E3] focus:outline-none focus:border-[#BB86FC] transition-all"
+                    className="w-full px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] transition-all"
                   >
                     <option value="">-- Выбрать из базы --</option>
                     {availableUsers.map((u) => (
@@ -234,7 +234,7 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <Label className="normal-case tracking-normal text-[11px] text-[#9E9E9E]">
+                  <Label className="normal-case tracking-normal text-[11px] text-[var(--text-secondary)]">
                     Или ввести Email
                   </Label>
                   <Input
@@ -245,7 +245,7 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
                       setEmailInput(e.target.value);
                       if (e.target.value) setSelectedUserId("");
                     }}
-                    className="bg-[#1E1E1E] text-xs py-2"
+                    className="bg-[var(--bg-surface)] text-xs py-2"
                   />
                 </div>
               </div>
@@ -256,7 +256,7 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
                   <select
                     value={roleInput}
                     onChange={(e) => setRoleInput(e.target.value)}
-                    className="px-2.5 py-1 bg-[#1E1E1E] border border-[#2C2C2C] rounded-xl text-xs text-[#E3E3E3] font-semibold focus:outline-none focus:border-[#BB86FC] transition-all"
+                    className="px-2.5 py-1 bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-primary)] font-semibold focus:outline-none focus:border-[var(--brand-primary)] transition-all"
                   >
                     <option value="MEMBER">Участник / Воркер</option>
                     <option value="ADMIN">Администратор</option>
@@ -277,16 +277,16 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
 
           {/* Member list */}
           <div className="flex-1 overflow-y-auto px-6 py-4 space-y-2 min-h-0">
-            <div className="text-xs font-extrabold text-[#E3E3E3] uppercase tracking-wider mb-2">
+            <div className="text-xs font-extrabold text-[var(--text-primary)] uppercase tracking-wider mb-2">
               Сотрудники ({members.length})
             </div>
 
             {loading ? (
-              <div className="py-6 text-center text-xs text-[#9E9E9E]">
+              <div className="py-6 text-center text-xs text-[var(--text-secondary)]">
                 Загрузка списка...
               </div>
             ) : members.length === 0 ? (
-              <div className="py-6 text-center text-xs text-[#9E9E9E]">
+              <div className="py-6 text-center text-xs text-[var(--text-secondary)]">
                 В организации пока нет участников
               </div>
             ) : (
@@ -298,18 +298,18 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
                 return (
                   <div
                     key={m.id}
-                    className="flex items-center justify-between p-3 rounded-2xl bg-[#252525] border border-[#2C2C2C] shadow-2xs"
+                    className="flex items-center justify-between p-3 rounded-2xl bg-[var(--bg-overlay)] border border-[var(--border-light)] shadow-2xs"
                   >
                     <div className="flex items-center gap-3">
-                      <Avatar className="w-9 h-9 ring-2 ring-[#BB86FC]">
+                      <Avatar className="w-9 h-9 ring-2 ring-[var(--brand-primary)]">
                         <AvatarImage src={m.avatar ?? undefined} alt={m.name} />
-                        <AvatarFallback className="ring-2 ring-[#03DAC6]">
+                        <AvatarFallback className="ring-2 ring-[var(--brand-secondary)]">
                           {m.name.substring(0, 1).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-[#E3E3E3]">
+                          <span className="text-sm font-bold text-[var(--text-primary)]">
                             {m.name}
                           </span>
                           {isCurrentUser && (
@@ -318,7 +318,7 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
                             </Badge>
                           )}
                         </div>
-                        <p className="text-xs text-[#9E9E9E]">{m.email}</p>
+                        <p className="text-xs text-[var(--text-secondary)]">{m.email}</p>
                       </div>
                     </div>
 
@@ -335,7 +335,7 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
                         <button
                           onClick={() => setRemoveTarget(m)}
                           title="Удалить из организации"
-                          className="p-1.5 text-[#CF6679] hover:bg-[#CF6679]/10 rounded-lg transition-colors"
+                          className="p-1.5 text-[var(--status-error)] hover:bg-[var(--status-error)]/10 rounded-lg transition-colors"
                         >
                           <Trash2 size={15} />
                         </button>
@@ -347,7 +347,7 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
             )}
           </div>
 
-          <div className="px-6 pb-4 flex justify-end border-t border-[#2C2C2C] pt-3 flex-shrink-0">
+          <div className="px-6 pb-4 flex justify-end border-t border-[var(--border-light)] pt-3 flex-shrink-0">
             <Button variant="ghost" size="sm" onClick={onClose}>
               Закрыть
             </Button>

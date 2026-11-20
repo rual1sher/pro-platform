@@ -39,7 +39,7 @@ function App() {
   const showSidebar = Boolean(user && !isAuthPage);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#121212] text-[#E3E3E3]">
+    <div className="flex h-screen overflow-hidden bg-[var(--bg-main)] text-[var(--text-primary)]">
       {showSidebar && (
         <AppSidebar isCollapsed={isCollapsed} onToggle={handleToggleSidebar} />
       )}

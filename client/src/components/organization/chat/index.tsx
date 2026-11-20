@@ -41,7 +41,7 @@ export function OrgChat() {
 
   if (!activeOrg) {
     return (
-      <div className="py-24 text-center text-xs font-bold text-[#9E9E9E] bg-[#1E1E1E] rounded-[28px] border border-[#2C2C2C]">
+      <div className="py-24 text-center text-xs font-bold text-[var(--text-secondary)] bg-[var(--bg-surface)] rounded-[28px] border border-[var(--border-light)]">
         Выберите или создайте организацию, чтобы открыть общий чат команды
       </div>
     );
@@ -58,16 +58,16 @@ export function OrgChat() {
   };
 
   return (
-    <div className="flex flex-col bg-[#1E1E1E] border border-[#2C2C2C] rounded-[28px] shadow-sm h-[75vh]">
-      <div className="flex items-center gap-2.5 p-4 border-b border-[#2C2C2C]">
-        <div className="w-9 h-9 rounded-2xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shrink-0">
+    <div className="flex flex-col bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[28px] shadow-sm h-[75vh]">
+      <div className="flex items-center gap-2.5 p-4 border-b border-[var(--border-light)]">
+        <div className="w-9 h-9 rounded-2xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shrink-0">
           <MessageCircle size={18} />
         </div>
         <div className="min-w-0">
-          <h2 className="text-base font-black text-[#E3E3E3] leading-tight">
+          <h2 className="text-base font-black text-[var(--text-primary)] leading-tight">
             Общий чат команды
           </h2>
-          <span className="inline-flex items-center gap-1 text-[11px] text-[#03DAC6] font-bold">
+          <span className="inline-flex items-center gap-1 text-[11px] text-[var(--brand-secondary)] font-bold">
             <Building2 size={11} />
             {activeOrg.name}
           </span>
@@ -84,7 +84,7 @@ export function OrgChat() {
         <div ref={bottomRef} />
       </div>
 
-      <div className="p-3 border-t border-[#2C2C2C]">
+      <div className="p-3 border-t border-[var(--border-light)]">
         <MessageInput
           onSend={handleSend}
           placeholder="Написать в чат команды..."

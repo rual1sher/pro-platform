@@ -3,10 +3,30 @@ import type { ITaskStats, IStatCardItem } from "../../types";
 export type { IStatCardItem };
 
 export const STAT_CARDS: readonly IStatCardItem[] = [
-  { key: "pending", label: "Ожидает", color: "#757575", dot: "bg-[#757575]" },
-  { key: "inProgress", label: "В работе", color: "#2196F3", dot: "bg-[#2196F3]" },
-  { key: "done", label: "Готово", color: "#4CAF50", dot: "bg-[#4CAF50]" },
-  { key: "rejected", label: "Отклонено", color: "#CF6679", dot: "bg-[#CF6679]" },
+  {
+    key: "pending",
+    label: "Ожидает",
+    color: "var(--text-disabled)",
+    dot: "bg-[var(--text-disabled)]",
+  },
+  {
+    key: "inProgress",
+    label: "В работе",
+    color: "var(--status-info)",
+    dot: "bg-[var(--status-info)]",
+  },
+  {
+    key: "done",
+    label: "Готово",
+    color: "var(--status-success)",
+    dot: "bg-[var(--status-success)]",
+  },
+  {
+    key: "rejected",
+    label: "Отклонено",
+    color: "var(--status-error)",
+    dot: "bg-[var(--status-error)]",
+  },
 ] as const;
 
 interface StatCardProps {
@@ -16,12 +36,14 @@ interface StatCardProps {
 
 export function StatCard({ card, value }: StatCardProps) {
   return (
-    <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-4 space-y-1.5">
-      <span className="flex items-center gap-1.5 text-xs font-semibold text-[#9E9E9E]">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-4 space-y-1.5 shadow-[0_1px_3px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.03)]">
+      <span className="flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)]">
         <span className={`w-2 h-2 rounded-full ${card.dot}`}></span>
         {card.label}
       </span>
-      <p className="text-2xl font-black text-[#E3E3E3]">{value}</p>
+      <p className="text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
+        {value}
+      </p>
     </div>
   );
 }

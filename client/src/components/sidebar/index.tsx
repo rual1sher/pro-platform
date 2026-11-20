@@ -49,26 +49,26 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
 
   return (
     <aside
-      className={`sticky top-0 h-screen z-40 bg-[#1E1E1E] border-r border-[#2C2C2C] flex flex-col justify-between transition-all duration-300 shrink-0 ${
+      className={`sticky top-0 h-screen z-40 bg-[var(--bg-surface)] border-r border-[var(--border-light)] flex flex-col justify-between transition-all duration-300 shrink-0 ${
         isCollapsed ? "w-18" : "w-64"
       }`}
     >
       {/* Верхняя часть: Лого / Заголовок и кнопка скрытия/раскрытия */}
       <div>
-        <div className="flex items-center justify-between px-3.5 border-b border-[#2C2C2C] h-16 shrink-0">
+        <div className="flex items-center justify-between px-3.5 border-b border-[var(--border-light)] h-16 shrink-0">
           {!isCollapsed && (
             <div
               onClick={() => navigate("/dashboard")}
               className="flex items-center gap-2.5 cursor-pointer overflow-hidden group"
             >
-              <div className="w-9 h-9 rounded-2xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                <CheckSquare size={20} strokeWidth={2.5} />
+              <div className="w-9 h-9 rounded-xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                <CheckSquare size={19} strokeWidth={2} />
               </div>
               <div className="truncate">
-                <h2 className="text-base font-black text-[#E3E3E3] tracking-tight leading-none">
+                <h2 className="text-sm font-semibold text-[var(--text-primary)] tracking-tight leading-none">
                   PRO Platform
                 </h2>
-                <span className="text-[10px] font-bold text-[#03DAC6] tracking-wider uppercase">
+                <span className="text-[10px] font-medium text-[var(--brand-secondary)] tracking-wider uppercase">
                   Workspace
                 </span>
               </div>
@@ -81,7 +81,7 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
               className="mx-auto cursor-pointer group"
               title="PRO Platform"
             >
-              <div className="w-9 h-9 rounded-2xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+              <div className="w-9 h-9 rounded-2xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
                 <CheckSquare size={20} strokeWidth={2.5} />
               </div>
             </div>
@@ -103,12 +103,6 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
 
         {/* Навигационное меню */}
         <div className="p-2 space-y-1.5 mt-2">
-          {!isCollapsed && (
-            <div className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-[#9E9E9E]">
-              Навигация
-            </div>
-          )}
-
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive =
@@ -122,13 +116,13 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
                     variant={isActive ? "primary" : "ghost"}
                     onClick={() => navigate(item.path)}
                     title={item.title}
-                    className={`w-11 h-11 p-0 rounded-full flex items-center justify-center transition-all ${
+                    className={`w-10 h-10 p-0 rounded-lg flex items-center justify-center transition-all ${
                       isActive
-                        ? "shadow-md scale-105"
-                        : "text-[#9E9E9E] hover:text-[#E3E3E3] hover:bg-[#252525]"
+                        ? "shadow-sm scale-102"
+                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-overlay)]"
                     }`}
                   >
-                    <Icon size={19} />
+                    <Icon size={18} strokeWidth={1.75} />
                   </Button>
                 </div>
               );
@@ -139,20 +133,20 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
                 key={item.path}
                 variant={isActive ? "primary" : "ghost"}
                 onClick={() => navigate(item.path)}
-                className={`w-full justify-start gap-3 px-3 py-2.5 rounded-2xl text-xs font-bold transition-all text-left h-auto ${
+                className={`w-full justify-start gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all text-left h-auto ${
                   isActive
-                    ? "font-black shadow-sm"
-                    : "text-[#9E9E9E] hover:text-[#E3E3E3] hover:bg-[#252525]"
+                    ? "font-semibold shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-overlay)]"
                 }`}
               >
                 <div
-                  className={`w-7 h-7 rounded-xl flex items-center justify-center shrink-0 ${
+                  className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${
                     isActive
-                      ? "bg-[#121212]/15 text-[#121212]"
-                      : "bg-[#252525] text-[#9E9E9E]"
+                      ? "bg-[var(--bg-main)]/15 text-[var(--bg-main)]"
+                      : "bg-[var(--bg-overlay)] text-[var(--text-secondary)]"
                   }`}
                 >
-                  <Icon size={16} />
+                  <Icon size={15} strokeWidth={1.75} />
                 </div>
                 <span className="truncate">{item.title}</span>
               </Button>
@@ -162,7 +156,7 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
       </div>
 
       {/* Нижняя часть: информация об организации / кнопка раскрытия в свернутом виде */}
-      <div className="p-2 border-t border-[#2C2C2C] space-y-2">
+      <div className="p-2 border-t border-[var(--border-light)] space-y-2">
         {isCollapsed ? (
           <div className="flex flex-col items-center gap-2 py-1">
             <Button
@@ -179,17 +173,17 @@ export function AppSidebar({ isCollapsed, onToggle }: SidebarProps) {
           activeOrg && (
             <div
               onClick={() => navigate(`/organizations/${activeOrg.id}`)}
-              className="p-2.5 bg-[#252525] border border-[#2C2C2C] rounded-2xl cursor-pointer hover:border-[#BB86FC]/50 transition-colors flex items-center gap-2.5 overflow-hidden"
+              className="p-2.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-2xl cursor-pointer hover:border-[var(--brand-primary)]/50 transition-colors flex items-center gap-2.5 overflow-hidden"
               title="Перейти в организацию"
             >
-              <div className="w-8 h-8 rounded-xl bg-[#03DAC6]/15 text-[#03DAC6] flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-xl bg-[var(--brand-secondary)]/15 text-[var(--brand-secondary)] flex items-center justify-center shrink-0">
                 <Building2 size={16} />
               </div>
               <div className="min-w-0 flex-1 leading-tight">
-                <p className="text-xs font-bold text-[#E3E3E3] truncate">
+                <p className="text-xs font-bold text-[var(--text-primary)] truncate">
                   {activeOrg.name}
                 </p>
-                <span className="text-[10px] text-[#03DAC6] font-semibold">
+                <span className="text-[10px] text-[var(--brand-secondary)] font-semibold">
                   Организация
                 </span>
               </div>

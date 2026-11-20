@@ -27,9 +27,9 @@ const HERO_CHECKS = [
 
 // Small illustrative previews under each feature card — plain divs, no images/deps.
 const FEATURE_PREVIEWS = [
-  <div className="flex items-center gap-2 bg-[#1E1E1E] border border-[#2C2C2C] rounded-xl px-3 py-2.5">
-    <Plus size={13} className="text-[#BB86FC] shrink-0" />
-    <span className="text-[11px] text-[#616161] font-medium">
+  <div className="flex items-center gap-2 bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl px-3 py-2.5">
+    <Plus size={13} className="text-[var(--brand-primary)] shrink-0" />
+    <span className="text-[11px] text-[var(--text-disabled)] font-medium">
       Что необходимо сделать?
     </span>
   </div>,
@@ -39,8 +39,8 @@ const FEATURE_PREVIEWS = [
         key={s}
         className={`px-2 py-1 rounded-lg text-[10px] font-bold border ${
           i === 1
-            ? "bg-[#2196F3]/15 text-[#2196F3] border-[#2196F3]/30"
-            : "bg-[#1E1E1E] text-[#9E9E9E] border-[#2C2C2C]"
+            ? "bg-[var(--status-info)]/15 text-[var(--status-info)] border-[var(--status-info)]/30"
+            : "bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-light)]"
         }`}
       >
         {s}
@@ -51,22 +51,24 @@ const FEATURE_PREVIEWS = [
     {[40, 70, 55, 90, 65].map((h, i) => (
       <div
         key={i}
-        className="flex-1 rounded-t-md bg-gradient-to-t from-[#2196F3]/30 to-[#2196F3]"
+        className="flex-1 rounded-t-md bg-gradient-to-t from-[var(--status-info)]/30 to-[var(--status-info)]"
         style={{ height: `${h}%` }}
       ></div>
     ))}
   </div>,
-  <div className="flex items-center gap-2 bg-[#1E1E1E] border border-[#2C2C2C] rounded-xl px-3 py-2">
-    <Search size={12} className="text-[#03DAC6] shrink-0" />
-    <span className="text-[11px] text-[#616161] font-medium flex-1">Поиск задач...</span>
-    <Filter size={12} className="text-[#9E9E9E] shrink-0" />
+  <div className="flex items-center gap-2 bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl px-3 py-2">
+    <Search size={12} className="text-[var(--brand-secondary)] shrink-0" />
+    <span className="text-[11px] text-[var(--text-disabled)] font-medium flex-1">
+      Поиск задач...
+    </span>
+    <Filter size={12} className="text-[var(--text-secondary)] shrink-0" />
   </div>,
-  <div className="flex items-center gap-2 bg-[#1E1E1E] border border-[#2C2C2C] rounded-xl px-3 py-2">
-    <div className="w-5 h-5 rounded-full bg-[#BB86FC] shrink-0"></div>
-    <span className="text-[11px] text-[#E3E3E3] font-medium flex-1 truncate">
+  <div className="flex items-center gap-2 bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl px-3 py-2">
+    <div className="w-5 h-5 rounded-full bg-[var(--brand-primary)] shrink-0"></div>
+    <span className="text-[11px] text-[var(--text-primary)] font-medium flex-1 truncate">
       "Готово, отправил на ревью"
     </span>
-    <MessagesSquare size={12} className="text-[#03DAC6] shrink-0" />
+    <MessagesSquare size={12} className="text-[var(--brand-secondary)] shrink-0" />
   </div>,
 ];
 
@@ -79,27 +81,28 @@ export function HeaderComponent() {
   };
 
   return (
-    <div className="w-full text-[#E3E3E3]">
+    <div className="w-full text-[var(--text-primary)]">
       {/* Hero Section */}
       <section className="relative pt-16 pb-10 overflow-hidden">
         {/* Ambient glow */}
         <div className="pointer-events-none absolute inset-x-0 -top-32 h-[480px] bg-[radial-gradient(ellipse_at_top,rgba(187,134,252,0.16),transparent_65%)]"></div>
 
         <div className="relative max-w-3xl mx-auto text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#1E1E1E] rounded-full border border-[#2C2C2C]">
-            <Sparkles size={13} className="text-[#03DAC6]" />
-            <span className="text-xs font-bold text-[#03DAC6]">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[var(--bg-surface)] rounded-full border border-[var(--border-light)]">
+            <Sparkles size={13} className="text-[var(--brand-secondary)]" />
+            <span className="text-xs font-bold text-[var(--brand-secondary)]">
               Новое: комментарии и общий чат команды
             </span>
           </div>
 
-          <h1 className="font-black text-4xl sm:text-5xl md:text-6xl text-[#E3E3E3] leading-[1.1] tracking-tight">
+          <h1 className="font-black text-4xl sm:text-5xl md:text-6xl text-[var(--text-primary)] leading-[1.1] tracking-tight">
             Управляйте каждой задачей
             <br />
-            на пути к <span className="text-[#BB86FC]">результату команды</span>
+            на пути к{" "}
+            <span className="text-[var(--brand-primary)]">результату команды</span>
           </h1>
 
-          <p className="text-base md:text-lg text-[#9E9E9E] leading-relaxed font-normal max-w-xl mx-auto">
+          <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed font-normal max-w-xl mx-auto">
             Self-hosted task-менеджер для IT-команд: доска задач, роли, чат и прогресс
             организации — в одном лёгком инструменте.
           </p>
@@ -109,9 +112,9 @@ export function HeaderComponent() {
             {HERO_CHECKS.map((item) => (
               <span
                 key={item}
-                className="flex items-center gap-1.5 text-xs font-semibold text-[#E3E3E3]"
+                className="flex items-center gap-1.5 text-xs font-semibold text-[var(--text-primary)]"
               >
-                <BadgeCheck size={15} className="text-[#03DAC6]" />
+                <BadgeCheck size={15} className="text-[var(--brand-secondary)]" />
                 {item}
               </span>
             ))}
@@ -120,7 +123,7 @@ export function HeaderComponent() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
             <Button
               onClick={() => navigate("/register")}
-              className="!bg-[#BB86FC] !text-[#121212] hover:!bg-[#a370e0] font-bold"
+              className="!bg-[var(--brand-primary)] !text-[var(--bg-main)] hover:!bg-[var(--brand-primary-hover)] font-bold"
             >
               Начать бесплатно
               <ArrowUpRight className="w-5 h-5" />
@@ -128,7 +131,7 @@ export function HeaderComponent() {
             <Button
               variant="outline"
               onClick={scrollToFaq}
-              className="!border-[#2C2C2C] !text-[#E3E3E3] hover:!bg-[#252525]"
+              className="!border-[var(--border-light)] !text-[var(--text-primary)] hover:!bg-[var(--bg-overlay)]"
             >
               Узнать больше
             </Button>
@@ -136,22 +139,22 @@ export function HeaderComponent() {
         </div>
 
         {/* Floating stat card — left */}
-        <div className="hidden lg:block absolute left-2 top-40 w-52 bg-[#1E1E1E] border border-[#2C2C2C] rounded-3xl p-4 shadow-2xl -rotate-3">
+        <div className="hidden lg:block absolute left-2 top-40 w-52 bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-3xl p-4 shadow-2xl -rotate-3">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-bold text-[#9E9E9E] uppercase tracking-wide">
+            <span className="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-wide">
               За эту неделю
             </span>
-            <span className="flex items-center gap-0.5 text-[10px] font-black text-[#4CAF50]">
+            <span className="flex items-center gap-0.5 text-[10px] font-black text-[var(--status-success)]">
               <TrendingUp size={11} />
               +18%
             </span>
           </div>
-          <p className="text-xl font-black text-[#E3E3E3] mb-2">128 задач</p>
+          <p className="text-xl font-black text-[var(--text-primary)] mb-2">128 задач</p>
           <div className="flex items-end gap-1 h-8">
             {[35, 55, 40, 75, 60, 90].map((h, i) => (
               <div
                 key={i}
-                className="flex-1 rounded-t-sm bg-[#BB86FC]/70"
+                className="flex-1 rounded-t-sm bg-[var(--brand-primary)]/70"
                 style={{ height: `${h}%` }}
               ></div>
             ))}
@@ -159,42 +162,52 @@ export function HeaderComponent() {
         </div>
 
         {/* Floating stat card — right */}
-        <div className="hidden lg:block absolute right-2 top-24 w-52 bg-[#1E1E1E] border border-[#2C2C2C] rounded-3xl p-4 shadow-2xl rotate-3">
+        <div className="hidden lg:block absolute right-2 top-24 w-52 bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-3xl p-4 shadow-2xl rotate-3">
           <div className="flex items-center justify-between mb-2.5">
-            <span className="text-[10px] font-bold text-[#9E9E9E] uppercase tracking-wide">
+            <span className="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-wide">
               Воркеров онлайн
             </span>
-            <Users size={13} className="text-[#03DAC6]" />
+            <Users size={13} className="text-[var(--brand-secondary)]" />
           </div>
           <div className="flex items-center gap-2">
             <div className="flex -space-x-2">
-              {["#BB86FC", "#03DAC6", "#FFB74D"].map((c, i) => (
+              {[
+                "var(--brand-primary)",
+                "var(--brand-secondary)",
+                "var(--status-warning)",
+              ].map((c, i) => (
                 <div
                   key={i}
-                  className="w-7 h-7 rounded-full ring-2 ring-[#1E1E1E] flex items-center justify-center text-[10px] font-black text-[#121212]"
+                  className="w-7 h-7 rounded-full ring-2 ring-[var(--bg-surface)] flex items-center justify-center text-[10px] font-black text-[var(--bg-main)]"
                   style={{ backgroundColor: c }}
                 >
                   {String.fromCharCode(65 + i)}
                 </div>
               ))}
             </div>
-            <span className="text-xs font-bold text-[#E3E3E3]">+9 сегодня</span>
+            <span className="text-xs font-bold text-[var(--text-primary)]">
+              +9 сегодня
+            </span>
           </div>
         </div>
 
         {/* Trust strip */}
-        <div className="mt-16 pt-8 border-t border-[#2C2C2C]">
-          <p className="text-center text-[11px] font-bold text-[#616161] uppercase tracking-wider mb-5">
+        <div className="mt-16 pt-8 border-t border-[var(--border-light)]">
+          <p className="text-center text-[11px] font-bold text-[var(--text-disabled)] uppercase tracking-wider mb-5">
             Одна платформа для всей работы команды
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-3 text-center shadow-xs"
+                className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-2xl p-3 text-center shadow-xs"
               >
-                <p className="text-2xl font-black text-[#BB86FC]">{stat.number}</p>
-                <p className="text-[11px] font-semibold text-[#9E9E9E]">{stat.label}</p>
+                <p className="text-2xl font-black text-[var(--brand-primary)]">
+                  {stat.number}
+                </p>
+                <p className="text-[11px] font-semibold text-[var(--text-secondary)]">
+                  {stat.label}
+                </p>
               </div>
             ))}
           </div>
@@ -203,13 +216,15 @@ export function HeaderComponent() {
 
       {/* Goal / Mission */}
       <section className="py-14">
-        <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-[36px] p-8 md:p-12 shadow-xs grid md:grid-cols-[auto_1fr] gap-6 items-start">
-          <div className="w-14 h-14 rounded-2xl bg-[#03DAC6]/15 border border-[#03DAC6]/30 text-[#03DAC6] flex items-center justify-center shrink-0">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[36px] p-8 md:p-12 shadow-xs grid md:grid-cols-[auto_1fr] gap-6 items-start">
+          <div className="w-14 h-14 rounded-2xl bg-[var(--brand-secondary)]/15 border border-[var(--brand-secondary)]/30 text-[var(--brand-secondary)] flex items-center justify-center shrink-0">
             <Target size={26} />
           </div>
           <div className="space-y-3">
-            <h2 className="text-2xl md:text-3xl font-black text-[#E3E3E3]">Наша цель</h2>
-            <p className="text-sm md:text-base text-[#9E9E9E] leading-relaxed font-normal max-w-3xl">
+            <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]">
+              Наша цель
+            </h2>
+            <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-normal max-w-3xl">
               Дать IT-командам и разработчикам самостоятельный, лёгкий в развёртывании
               task-менеджер — без переплаты за корпоративные SaaS-подписки и без лишней
               сложности. Ставьте платформу на свой сервер, работайте на слабом железе и
@@ -225,14 +240,16 @@ export function HeaderComponent() {
           {statuses.map((status) => (
             <div
               key={status.name}
-              className="p-5 bg-[#1E1E1E] rounded-3xl border border-[#2C2C2C] shadow-xs text-center hover:border-[#BB86FC]/40 transition-colors"
+              className="p-5 bg-[var(--bg-surface)] rounded-3xl border border-[var(--border-light)] shadow-xs text-center hover:border-[var(--brand-primary)]/40 transition-colors"
             >
               <div
                 className={`w-12 h-12 ${status.color} rounded-2xl flex items-center justify-center text-2xl mb-2 mx-auto shadow-xs`}
               >
                 {status.emoji}
               </div>
-              <p className="text-sm font-bold text-[#E3E3E3]">{status.name}</p>
+              <p className="text-sm font-bold text-[var(--text-primary)]">
+                {status.name}
+              </p>
             </div>
           ))}
         </div>
@@ -241,13 +258,13 @@ export function HeaderComponent() {
       {/* Features Grid */}
       <section id="features" className="py-16">
         <div className="text-center mb-12">
-          <span className="text-xs font-black uppercase tracking-widest text-[#03DAC6]">
+          <span className="text-xs font-black uppercase tracking-widest text-[var(--brand-secondary)]">
             Ценные возможности
           </span>
-          <h2 className="text-3xl md:text-4xl font-black text-[#E3E3E3] mt-2 mb-3">
+          <h2 className="text-3xl md:text-4xl font-black text-[var(--text-primary)] mt-2 mb-3">
             Гибкие решения под любую задачу
           </h2>
-          <p className="text-sm md:text-base text-[#9E9E9E] font-medium max-w-xl mx-auto">
+          <p className="text-sm md:text-base text-[var(--text-secondary)] font-medium max-w-xl mx-auto">
             Интуитивный интерфейс, продуманный до мелочей: от drag-and-drop до
             распределения ролей
           </p>
@@ -257,16 +274,18 @@ export function HeaderComponent() {
           {features.slice(0, 3).map((feature, index) => (
             <div
               key={index}
-              className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-3xl p-6 shadow-xs hover:border-[#BB86FC]/50 transition-all space-y-4 text-[#E3E3E3]"
+              className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-3xl p-6 shadow-xs hover:border-[var(--brand-primary)]/50 transition-all space-y-4 text-[var(--text-primary)]"
             >
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-2xl bg-[#252525] text-[#BB86FC] border border-[#2C2C2C] flex items-center justify-center shadow-xs">
+                <div className="w-12 h-12 rounded-2xl bg-[var(--bg-overlay)] text-[var(--brand-primary)] border border-[var(--border-light)] flex items-center justify-center shadow-xs">
                   {feature.icon}
                 </div>
               </div>
               <div className="space-y-1.5">
-                <h3 className="text-lg font-bold text-[#E3E3E3]">{feature.title}</h3>
-                <p className="text-xs text-[#9E9E9E] leading-relaxed font-normal">
+                <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                  {feature.title}
+                </h3>
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-normal">
                   {feature.description}
                 </p>
               </div>
@@ -281,14 +300,16 @@ export function HeaderComponent() {
             return (
               <div
                 key={index}
-                className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-3xl p-6 shadow-xs hover:border-[#BB86FC]/50 transition-all space-y-4 text-[#E3E3E3]"
+                className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-3xl p-6 shadow-xs hover:border-[var(--brand-primary)]/50 transition-all space-y-4 text-[var(--text-primary)]"
               >
-                <div className="w-12 h-12 rounded-2xl bg-[#252525] text-[#BB86FC] border border-[#2C2C2C] flex items-center justify-center shadow-xs">
+                <div className="w-12 h-12 rounded-2xl bg-[var(--bg-overlay)] text-[var(--brand-primary)] border border-[var(--border-light)] flex items-center justify-center shadow-xs">
                   {feature.icon}
                 </div>
                 <div className="space-y-1.5">
-                  <h3 className="text-lg font-bold text-[#E3E3E3]">{feature.title}</h3>
-                  <p className="text-xs text-[#9E9E9E] leading-relaxed font-normal">
+                  <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                    {feature.title}
+                  </h3>
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-normal">
                     {feature.description}
                   </p>
                 </div>
@@ -304,13 +325,13 @@ export function HeaderComponent() {
         <div className="grid lg:grid-cols-2 gap-10 items-start">
           {/* Left: heading + tags */}
           <div className="space-y-5 lg:sticky lg:top-24">
-            <span className="text-xs font-black uppercase tracking-widest text-[#BB86FC]">
+            <span className="text-xs font-black uppercase tracking-widest text-[var(--brand-primary)]">
               Преимущества
             </span>
-            <h2 className="text-3xl md:text-4xl font-black text-[#E3E3E3] leading-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-[var(--text-primary)] leading-tight">
               Новый уровень порядка и продуктивности команды
             </h2>
-            <p className="text-sm md:text-base text-[#9E9E9E] leading-relaxed font-normal max-w-md">
+            <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-normal max-w-md">
               Открываем платформу — и сразу понятно, что делать: без обучения, без лишних
               настроек, без потерянных задач.
             </p>
@@ -318,9 +339,9 @@ export function HeaderComponent() {
               {benefitTags.map((tag) => (
                 <span
                   key={tag}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold bg-[#1E1E1E] border border-[#2C2C2C] text-[#E3E3E3]"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold bg-[var(--bg-surface)] border border-[var(--border-light)] text-[var(--text-primary)]"
                 >
-                  <ShieldCheck size={12} className="text-[#03DAC6]" />
+                  <ShieldCheck size={12} className="text-[var(--brand-secondary)]" />
                   {tag}
                 </span>
               ))}
@@ -332,14 +353,16 @@ export function HeaderComponent() {
             {benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="flex items-start gap-4 py-4 border-l-2 border-[#2C2C2C] hover:border-[#BB86FC] pl-5 transition-colors"
+                className="flex items-start gap-4 py-4 border-l-2 border-[var(--border-light)] hover:border-[var(--brand-primary)] pl-5 transition-colors"
               >
-                <div className="w-9 h-9 rounded-xl bg-[#1E1E1E] border border-[#2C2C2C] flex items-center justify-center text-lg shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-light)] flex items-center justify-center text-lg shrink-0">
                   {benefit.icon}
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-[#E3E3E3]">{benefit.title}</h3>
-                  <p className="text-xs text-[#9E9E9E] font-normal leading-relaxed mt-0.5">
+                  <h3 className="text-sm font-bold text-[var(--text-primary)]">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-xs text-[var(--text-secondary)] font-normal leading-relaxed mt-0.5">
                     {benefit.text}
                   </p>
                 </div>
@@ -352,7 +375,7 @@ export function HeaderComponent() {
       {/* FAQ */}
       <section id="faq" className="py-16">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-black text-[#E3E3E3]">
+          <h2 className="text-3xl md:text-4xl font-black text-[var(--text-primary)]">
             Частые вопросы
           </h2>
         </div>
@@ -363,25 +386,25 @@ export function HeaderComponent() {
             return (
               <div
                 key={index}
-                className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl overflow-hidden"
+                className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-2xl overflow-hidden"
               >
                 <Button
                   variant="ghost"
                   onClick={() => setOpenFaq(isOpen ? null : index)}
-                  className="w-full justify-between gap-4 p-4 text-left h-auto font-normal rounded-none hover:bg-[#252525]"
+                  className="w-full justify-between gap-4 p-4 text-left h-auto font-normal rounded-none hover:bg-[var(--bg-overlay)]"
                 >
-                  <span className="text-sm font-bold text-[#E3E3E3]">
+                  <span className="text-sm font-bold text-[var(--text-primary)]">
                     {item.question}
                   </span>
                   <ChevronDown
                     size={18}
-                    className={`text-[#9E9E9E] shrink-0 transition-transform ${
+                    className={`text-[var(--text-secondary)] shrink-0 transition-transform ${
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
                 </Button>
                 {isOpen && (
-                  <p className="px-4 pb-4 text-xs text-[#9E9E9E] leading-relaxed font-normal">
+                  <p className="px-4 pb-4 text-xs text-[var(--text-secondary)] leading-relaxed font-normal">
                     {item.answer}
                   </p>
                 )}
@@ -393,20 +416,20 @@ export function HeaderComponent() {
 
       {/* Call to action */}
       <section className="py-16">
-        <div className="bg-[#1E1E1E] border border-[#2C2C2C] text-[#E3E3E3] rounded-[36px] p-10 md:p-14 shadow-2xl max-w-4xl mx-auto space-y-5 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-[#BB86FC] text-[#121212] flex items-center justify-center mx-auto">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] text-[var(--text-primary)] rounded-[36px] p-10 md:p-14 shadow-2xl max-w-4xl mx-auto space-y-5 text-center">
+          <div className="w-12 h-12 rounded-2xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center mx-auto">
             <Zap size={22} />
           </div>
-          <h2 className="text-3xl md:text-5xl font-black text-[#E3E3E3]">
+          <h2 className="text-3xl md:text-5xl font-black text-[var(--text-primary)]">
             Готовы начать работу?
           </h2>
-          <p className="text-sm md:text-base text-[#03DAC6] max-w-xl mx-auto font-medium">
+          <p className="text-sm md:text-base text-[var(--brand-secondary)] max-w-xl mx-auto font-medium">
             Создайте команду и управляйте задачами эффективно прямо сейчас.
           </p>
           <div className="pt-2">
             <Button
               onClick={() => navigate("/register")}
-              className="mx-auto !bg-[#BB86FC] !text-[#121212] hover:!bg-[#a370e0] font-bold"
+              className="mx-auto !bg-[var(--brand-primary)] !text-[var(--bg-main)] hover:!bg-[var(--brand-primary-hover)] font-bold"
             >
               Начать бесплатно
               <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />

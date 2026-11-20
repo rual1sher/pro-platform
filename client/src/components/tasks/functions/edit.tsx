@@ -106,7 +106,7 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
                 onChange={(e) =>
                   setAssigneeId(e.target.value ? Number(e.target.value) : "")
                 }
-                className="w-full px-3 py-2.5 bg-[#252525] border border-[#2C2C2C] rounded-xl text-[#E3E3E3] text-xs font-medium focus:outline-none focus:border-[#BB86FC] transition-all"
+                className="w-full px-3 py-2.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl text-[var(--text-primary)] text-xs font-medium focus:outline-none focus:border-[var(--brand-primary)] transition-all"
               >
                 <option value="">Не назначен</option>
                 {members.map((m) => (
@@ -123,11 +123,11 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
                 id="edit-priority"
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
-                className="w-full px-3 py-2.5 bg-[#252525] border border-[#2C2C2C] rounded-xl text-[#E3E3E3] text-xs font-medium focus:outline-none focus:border-[#BB86FC] transition-all"
+                className="w-full px-3 py-2.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl text-[var(--text-primary)] text-xs font-medium focus:outline-none focus:border-[var(--brand-primary)] transition-all"
               >
-                <option value="0">🟢 Низкий (#81C784)</option>
-                <option value="1">🟡 Средний (#FFB74D)</option>
-                <option value="2">🔴 Высокий (#FF5252)</option>
+                <option value="0">🟢 Низкий (var(--status-success))</option>
+                <option value="1">🟡 Средний (var(--status-warning))</option>
+                <option value="2">🔴 Высокий (var(--status-error))</option>
               </select>
             </div>
           </div>
@@ -139,7 +139,7 @@ export function EditTaskModal({ task, isOpen, onClose }: EditTaskModalProps) {
                 id="edit-status"
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full px-3 py-2.5 bg-[#252525] border border-[#2C2C2C] rounded-xl text-[#E3E3E3] text-xs font-medium focus:outline-none focus:border-[#BB86FC] transition-all"
+                className="w-full px-3 py-2.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl text-[var(--text-primary)] text-xs font-medium focus:outline-none focus:border-[var(--brand-primary)] transition-all"
               >
                 <option value="0">Ожидает</option>
                 <option value="1">В работе</option>

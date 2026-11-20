@@ -11,7 +11,7 @@ export function Header() {
   const { user, activeOrg } = useAuth();
 
   return (
-    <header className="sticky top-0 z-30 bg-[#1E1E1E]/95 backdrop-blur-md border-b border-[#2C2C2C] h-16 shrink-0 flex items-center">
+    <header className="sticky top-0 z-30 bg-[var(--bg-surface)]/95 backdrop-blur-md border-b border-[var(--border-light)] h-16 shrink-0 flex items-center">
       <Container className="h-full flex items-center py-0! w-full">
         <div className="flex items-center justify-between gap-4 w-full">
           {/* 1. Left: Toggle Sidebar Button & Brand Logo */}
@@ -20,14 +20,14 @@ export function Header() {
               onClick={() => navigate(user ? "/dashboard" : "/")}
               className="cursor-pointer flex items-center gap-2.5 group shrink-0"
             >
-              <div className="w-9 h-9 rounded-2xl bg-[#BB86FC] text-[#121212] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-                <CheckSquare size={20} strokeWidth={2.5} />
+              <div className="w-9 h-9 rounded-xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                <CheckSquare size={19} strokeWidth={2} />
               </div>
               <div>
-                <h1 className="text-base font-black text-[#E3E3E3] tracking-tight leading-none">
+                <h1 className="text-sm font-semibold text-[var(--text-primary)] tracking-tight leading-none">
                   PRO Platform
                 </h1>
-                <span className="text-[10px] font-bold text-[#03DAC6] tracking-wider uppercase">
+                <span className="text-[10px] font-medium text-[var(--brand-secondary)] tracking-wider uppercase">
                   Task Manager v1
                 </span>
               </div>
@@ -44,9 +44,9 @@ export function Header() {
                   size="sm"
                   onClick={() => navigate("/")}
                   title="На главную"
-                  className="w-8 h-8 rounded-full p-0"
+                  className="w-8 h-8 rounded-lg p-0"
                 >
-                  <Home size={15} />
+                  <Home size={15} strokeWidth={1.75} />
                 </Button>
 
                 {/* Notification Bell */}
@@ -54,31 +54,31 @@ export function Header() {
                   variant="dark"
                   size="sm"
                   title="Уведомления"
-                  className="w-8 h-8 rounded-full p-0 text-[#9E9E9E] hover:text-[#E3E3E3]"
+                  className="w-8 h-8 rounded-lg p-0 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                 >
-                  <Bell size={15} />
+                  <Bell size={15} strokeWidth={1.75} />
                 </Button>
 
                 {/* User Profile Chip */}
-                <div className="flex items-center gap-2 pl-2 border-l border-[#2C2C2C]">
+                <div className="flex items-center gap-2 pl-2 border-l border-[var(--border-light)]">
                   <Button
                     variant="ghost"
                     onClick={() => navigate("/profile")}
                     title="Профиль"
-                    className="p-1 rounded-xl h-auto flex items-center gap-2"
+                    className="p-1 rounded-lg h-auto flex items-center gap-2"
                   >
-                    <Avatar className="w-8 h-8 ring-2 ring-[#BB86FC]">
+                    <Avatar className="w-8 h-8 ring-1 ring-[var(--border-light)]">
                       <AvatarImage src={user.avatar ?? undefined} alt={user.name} />
-                      <AvatarFallback className="ring-2 ring-[#03DAC6] text-xs">
+                      <AvatarFallback className="text-xs bg-[var(--bg-overlay)] text-[var(--text-primary)]">
                         {user.name ? user.name.substring(0, 1).toUpperCase() : "U"}
                       </AvatarFallback>
                     </Avatar>
 
                     <div className="hidden sm:block text-left leading-tight">
-                      <p className="font-bold text-xs text-[#E3E3E3] truncate max-w-[120px]">
+                      <p className="font-medium text-xs text-[var(--text-primary)] truncate max-w-[120px]">
                         {user.name}
                       </p>
-                      <p className="text-[10px] text-[#9E9E9E] font-semibold truncate max-w-[120px]">
+                      <p className="text-[10px] text-[var(--text-secondary)] font-normal truncate max-w-[120px]">
                         {activeOrg?.name || "Воркер"}
                       </p>
                     </div>

@@ -44,24 +44,28 @@ export function TaskDetailPage() {
   const notFound = fetchFailed || Number.isNaN(taskId);
 
   return (
-    <div className="w-full text-[#E3E3E3] pb-12 pt-4">
+    <div className="w-full text-[var(--text-primary)] pb-12 pt-4">
       <Container className="py-2">
         {notFound ? (
           <div className="max-w-md mx-auto text-center py-20 space-y-3">
-            <p className="text-sm font-bold text-[#E3E3E3]">Задача не найдена</p>
+            <p className="text-sm font-bold text-[var(--text-primary)]">
+              Задача не найдена
+            </p>
             <Button
               variant="outline"
               size="sm"
               onClick={() => navigate("/tasks")}
-              className="text-xs font-bold text-[#BB86FC] hover:text-[#a871ea]"
+              className="text-xs font-bold text-[var(--brand-primary)] hover:text-[var(--brand-primary-hover)]"
             >
               Вернуться к доске задач
             </Button>
           </div>
         ) : !task ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-3">
-            <div className="w-8 h-8 border-3 border-[#BB86FC] border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-[#E3E3E3] text-xs font-bold">Загрузка задачи...</p>
+            <div className="w-8 h-8 border-3 border-[var(--brand-primary)] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[var(--text-primary)] text-xs font-bold">
+              Загрузка задачи...
+            </p>
           </div>
         ) : (
           <TaskDetailComponent task={task} onBack={() => navigate("/tasks")} />

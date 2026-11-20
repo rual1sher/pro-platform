@@ -40,8 +40,8 @@ export function ConfirmModal({
             <div
               className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
                 variant === "danger"
-                  ? "bg-[#CF6679]/15 text-[#CF6679]"
-                  : "bg-[#BB86FC]/15 text-[#BB86FC]"
+                  ? "bg-[var(--status-error)]/15 text-[var(--status-error)]"
+                  : "bg-[var(--brand-primary)]/15 text-[var(--brand-primary)]"
               }`}
             >
               <AlertTriangle size={18} />

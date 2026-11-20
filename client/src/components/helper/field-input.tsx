@@ -34,7 +34,9 @@ export function InputField({ name, type, title }: IInputField) {
               type={type}
               {...field}
               placeholder={isCheckbox ? undefined : `Введите ${title.toLowerCase()}...`}
-              className={cn(isCheckbox && "w-4 h-4 rounded accent-[#BB86FC] p-0")}
+              className={cn(
+                isCheckbox && "w-4 h-4 rounded accent-[var(--brand-primary)] p-0",
+              )}
             />
           )
         }

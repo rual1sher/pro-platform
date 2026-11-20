@@ -11,7 +11,7 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="w-full text-[#E3E3E3] pb-12 pt-4">
+    <div className="w-full text-[var(--text-primary)] pb-12 pt-4">
       <Container className="py-2">
         <ProfileComponent />
       </Container>
