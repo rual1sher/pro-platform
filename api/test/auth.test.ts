@@ -1,6 +1,6 @@
-import { describe, it } from "node:test";
-import assert from "node:assert/strict";
 import bcrypt from "bcryptjs";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
 describe("Auth & Security Utilities", () => {
   it("should securely hash and verify passwords", async () => {

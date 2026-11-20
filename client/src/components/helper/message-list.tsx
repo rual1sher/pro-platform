@@ -313,7 +313,7 @@ export function MessageList({
                         {/* Floating actions menu on hover */}
                         <div
                           className={`absolute -top-3.5 ${
-                            isOwn ? "left-2" : "right-2"
+                            isOwn ? "right-1" : "left-1"
                           } hidden group-hover/msg:flex items-center gap-0.5 bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-lg p-0.5 shadow-md z-10 transition-opacity`}
                         >
                           <Button

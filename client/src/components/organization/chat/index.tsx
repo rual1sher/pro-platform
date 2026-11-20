@@ -241,7 +241,7 @@ export function OrgChat() {
         <div
           ref={scrollContainerRef}
           onScroll={handleScroll}
-          className="flex-1 overflow-y-auto p-4 space-y-4"
+          className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4"
         >
           {searchQuery && (
             <div className="flex items-center justify-between px-3 py-1.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-lg text-xs text-[var(--text-secondary)]">

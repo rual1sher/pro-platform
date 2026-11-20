@@ -63,6 +63,13 @@ export function MessageInput({
     }
   }, [replyTo]);
 
+  // Restore focus whenever sending finishes
+  useEffect(() => {
+    if (!sending && !disabled) {
+      textareaRef.current?.focus();
+    }
+  }, [sending, disabled]);
+
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     const content = value.trim();
@@ -86,10 +93,13 @@ export function MessageInput({
       await onSend(finalPayload);
     } finally {
       setSending(false);
-      // Reset textarea height after sending
+      // Reset textarea height and refocus immediately after sending
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 0);
     }
   };
 

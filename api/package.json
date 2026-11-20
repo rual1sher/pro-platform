@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "lint": "node ../client/node_modules/eslint/bin/eslint.js -c ../client/eslint.config.js src test",
     "test": "tsx --test \"test/**/*.test.ts\"",
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/node": "^22.13.5",
+    "@types/node": "^22.20.5",
     "prettier": "^3.10.1",
     "prisma": "^6.4.1",
     "tsx": "^4.19.3",

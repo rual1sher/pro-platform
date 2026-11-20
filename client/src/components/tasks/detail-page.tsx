@@ -181,6 +181,14 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
   const [submittingComment, setSubmittingComment] = useState(false);
 
   const bottomRef = useRef<HTMLDivElement>(null);
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Focus comment textarea when submitting finishes
+  useEffect(() => {
+    if (!submittingComment) {
+      commentInputRef.current?.focus();
+    }
+  }, [submittingComment]);
 
   // Sync inputs with live task changes
   useEffect(() => {
@@ -310,6 +318,9 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
       }
     } finally {
       setSubmittingComment(false);
+      setTimeout(() => {
+        commentInputRef.current?.focus();
+      }, 0);
     }
   };
 
@@ -623,8 +634,8 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
               </span>
             </div>
 
-            {/* Stream: Creation event + comments */}
-            <div className="space-y-3.5">
+            {/* Stream: Creation event + comments container with stable fixed height */}
+            <div className="h-[360px] overflow-y-auto overflow-x-hidden pr-2 space-y-3.5">
               {/* Creation event */}
               <div className="flex items-center gap-3 py-1.5 px-3 rounded-lg bg-[var(--bg-overlay)]/40 border border-[var(--border-light)]/60 text-xs text-[var(--text-secondary)]">
                 <div className="w-5 h-5 rounded-full bg-[var(--brand-primary)]/15 text-[var(--brand-primary)] flex items-center justify-center shrink-0">
@@ -646,15 +657,15 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
 
               {/* Comments list */}
               {comments.length === 0 ? (
-                <div className="py-8 text-center space-y-1.5">
+                <div className="h-[280px] flex flex-col items-center justify-center text-center space-y-1.5 select-none">
                   <MessageSquare
-                    size={24}
+                    size={28}
                     className="mx-auto text-[var(--text-disabled)] opacity-40"
                   />
-                  <p className="text-xs text-[var(--text-secondary)]">
+                  <p className="text-xs font-medium text-[var(--text-secondary)]">
                     Пока нет комментариев
                   </p>
-                  <p className="text-[11px] text-[var(--text-disabled)]">
+                  <p className="text-[11px] text-[var(--text-disabled)] max-w-xs">
                     Задайте вопрос команде или оставьте обновление по задаче
                   </p>
                 </div>
@@ -712,6 +723,7 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
             <div className="pt-2 border-t border-[var(--border-light)]">
               <div className="bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl p-3 focus-within:border-[var(--brand-primary)]/80 focus-within:ring-1 focus-within:ring-[var(--brand-primary)]/30 transition-all">
                 <Textarea
+                  ref={commentInputRef}
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   onKeyDown={handleCommentKeyDown}
