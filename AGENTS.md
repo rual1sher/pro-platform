@@ -283,16 +283,21 @@ if (!membership) {
 - `npm run install:all` — установка зависимостей в корне, `client/` и `api/`.
 - `npm run run:all` — одновременный запуск фронтенда (Vite 5173) и бэкенда (Fastify 3001) через `concurrently`.
 - `npm run build:all` — одновременная сборка фронтенда (`tsc -b && vite build`) и бэкенда (`tsc`).
+- `npm run lint` — запуск ESLint для `client` и `api`.
+- `npm run typecheck` — запуск TypeScript typecheck (`tsc -b` для `client`, `tsc --noEmit` для `api`).
+- `npm run test` — запуск unit-тестов в `client` (Node test runner) и `api` (tsx test runner).
+- `npm run verify` — комплексная автоматическая проверка (`npm run lint && npm run typecheck && npm run test`).
 - `npm run format` — глобальное форматирование всего проекта через Prettier (`prettier --write .`).
 - `npm run format:check` — проверка форматирования кода во всем проекте.
 - `npm run db:seed` — запуск сида базы данных.
 - `npm run db:studio` — веб-интерфейс Prisma Studio для просмотра БД.
 
-Перед любым коммитом **ОБЯЗАТЕЛЬНО** проверить:
+Перед любым коммитом и ответом о готовности **СТРОГО ОБЯЗАТЕЛЬНО**:
 
-1. `npm run format:check` (или `npm run format`) — форматирование соответствует `.prettierrc`.
-2. `cd client && npm run build` — сборка клиента без ошибок TS.
-3. `cd api && npm run build` — сборка сервера без ошибок TS.
+1. `npm run verify` — обязательный прогон ESLint, Typecheck и Tests (все проверки должны завершаться с кодом 0).
+2. `npm run format:check` (или `npm run format`) — форматирование соответствует `.prettierrc`.
+3. `cd client && npm run build` — сборка клиента без ошибок TS.
+4. `cd api && npm run build` — сборка сервера без ошибок TS.
 
 ---
 

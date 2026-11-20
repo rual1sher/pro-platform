@@ -41,7 +41,7 @@ export function OrgChat() {
 
   if (!activeOrg) {
     return (
-      <div className="py-24 text-center text-xs font-bold text-[var(--text-secondary)] bg-[var(--bg-surface)] rounded-[28px] border border-[var(--border-light)]">
+      <div className="py-24 text-center text-xs font-medium text-[var(--text-secondary)] bg-[var(--bg-surface)] rounded-xl border border-[var(--border-light)]">
         Выберите или создайте организацию, чтобы открыть общий чат команды
       </div>
     );
@@ -58,17 +58,17 @@ export function OrgChat() {
   };
 
   return (
-    <div className="flex flex-col bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[28px] shadow-sm h-[75vh]">
-      <div className="flex items-center gap-2.5 p-4 border-b border-[var(--border-light)]">
-        <div className="w-9 h-9 rounded-2xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shrink-0">
-          <MessageCircle size={18} />
+    <div className="flex flex-col bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl shadow-xs h-[calc(100vh-100px)] min-h-[500px]">
+      <div className="flex items-center gap-2.5 p-3.5 border-b border-[var(--border-light)]">
+        <div className="w-8 h-8 rounded-lg bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shrink-0">
+          <MessageCircle size={16} strokeWidth={2} />
         </div>
         <div className="min-w-0">
-          <h2 className="text-base font-black text-[var(--text-primary)] leading-tight">
+          <h2 className="text-sm font-semibold text-[var(--text-primary)] leading-tight">
             Общий чат команды
           </h2>
-          <span className="inline-flex items-center gap-1 text-[11px] text-[var(--brand-secondary)] font-bold">
-            <Building2 size={11} />
+          <span className="inline-flex items-center gap-1 text-[11px] text-[var(--brand-secondary)] font-medium">
+            <Building2 size={11} strokeWidth={1.5} />
             {activeOrg.name}
           </span>
         </div>

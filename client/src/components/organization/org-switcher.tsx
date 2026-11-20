@@ -92,7 +92,7 @@ export function OrgSwitcher({ onOpenCreateOrg, onOpenMembers }: OrgSwitcherProps
                   }}
                   className={`w-full flex items-center justify-between px-3 py-2 text-left text-xs transition-colors cursor-pointer ${
                     isSelected
-                      ? "bg-[var(--brand-primary)]/15 text-[var(--brand-primary)] font-black"
+                      ? "bg-[var(--brand-primary)]/15 text-[var(--brand-primary)] font-semibold"
                       : "text-[var(--text-primary)] hover:bg-[var(--bg-overlay)]"
                   }`}
                 >

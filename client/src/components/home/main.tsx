@@ -85,7 +85,7 @@ export function HeaderComponent() {
       {/* Hero Section */}
       <section className="relative pt-16 pb-10 overflow-hidden">
         {/* Ambient glow */}
-        <div className="pointer-events-none absolute inset-x-0 -top-32 h-[480px] bg-[radial-gradient(ellipse_at_top,rgba(187,134,252,0.16),transparent_65%)]"></div>
+        <div className="pointer-events-none absolute inset-x-0 -top-32 h-[480px] bg-[radial-gradient(ellipse_at_top,rgba(226,177,122,0.12),transparent_65%)]"></div>
 
         <div className="relative max-w-3xl mx-auto text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[var(--bg-surface)] rounded-full border border-[var(--border-light)]">
@@ -122,17 +122,15 @@ export function HeaderComponent() {
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
             <Button
+              variant="primary"
+              size="md"
               onClick={() => navigate("/register")}
-              className="!bg-[var(--brand-primary)] !text-[var(--bg-main)] hover:!bg-[var(--brand-primary-hover)] font-bold"
+              className="gap-2"
             >
               Начать бесплатно
-              <ArrowUpRight className="w-5 h-5" />
+              <ArrowUpRight className="w-4 h-4" />
             </Button>
-            <Button
-              variant="outline"
-              onClick={scrollToFaq}
-              className="!border-[var(--border-light)] !text-[var(--text-primary)] hover:!bg-[var(--bg-overlay)]"
-            >
+            <Button variant="dark" size="md" onClick={scrollToFaq}>
               Узнать больше
             </Button>
           </div>
@@ -216,7 +214,7 @@ export function HeaderComponent() {
 
       {/* Goal / Mission */}
       <section className="py-14">
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[36px] p-8 md:p-12 shadow-xs grid md:grid-cols-[auto_1fr] gap-6 items-start">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-2xl p-8 md:p-10 shadow-xs grid md:grid-cols-[auto_1fr] gap-6 items-start">
           <div className="w-14 h-14 rounded-2xl bg-[var(--brand-secondary)]/15 border border-[var(--brand-secondary)]/30 text-[var(--brand-secondary)] flex items-center justify-center shrink-0">
             <Target size={26} />
           </div>
@@ -416,7 +414,7 @@ export function HeaderComponent() {
 
       {/* Call to action */}
       <section className="py-16">
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] text-[var(--text-primary)] rounded-[36px] p-10 md:p-14 shadow-2xl max-w-4xl mx-auto space-y-5 text-center">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] text-[var(--text-primary)] rounded-2xl p-8 md:p-12 shadow-xl max-w-4xl mx-auto space-y-5 text-center">
           <div className="w-12 h-12 rounded-2xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center mx-auto">
             <Zap size={22} />
           </div>

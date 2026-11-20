@@ -1,5 +1,5 @@
 import { Bell, CheckSquare, Home } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../store/auth.store";
 import { Container } from "../helper/container";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -8,30 +8,54 @@ import { Logout } from "./functions/logout";
 
 export function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, activeOrg } = useAuth();
+
+  const getBreadcrumb = () => {
+    const p = location.pathname;
+    if (p.startsWith("/dashboard")) return "Дашборд";
+    if (p.startsWith("/tasks/")) return "Детали задачи";
+    if (p.startsWith("/tasks")) return "Доска задач";
+    if (p.startsWith("/chat")) return "Чат команды";
+    if (p.startsWith("/organizations/")) return "Организация";
+    if (p.startsWith("/profile")) return "Профиль пользователя";
+    return "";
+  };
 
   return (
     <header className="sticky top-0 z-30 bg-[var(--bg-surface)]/95 backdrop-blur-md border-b border-[var(--border-light)] h-16 shrink-0 flex items-center">
       <Container className="h-full flex items-center py-0! w-full">
         <div className="flex items-center justify-between gap-4 w-full">
-          {/* 1. Left: Toggle Sidebar Button & Brand Logo */}
+          {/* 1. Left: Dynamic Breadcrumbs when logged in, or Clean Brand Logo when guest */}
           <div className="flex items-center gap-3">
-            <div
-              onClick={() => navigate(user ? "/dashboard" : "/")}
-              className="cursor-pointer flex items-center gap-2.5 group shrink-0"
-            >
-              <div className="w-9 h-9 rounded-xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-                <CheckSquare size={19} strokeWidth={2} />
-              </div>
-              <div>
-                <h1 className="text-sm font-semibold text-[var(--text-primary)] tracking-tight leading-none">
-                  PRO Platform
-                </h1>
-                <span className="text-[10px] font-medium text-[var(--brand-secondary)] tracking-wider uppercase">
-                  Task Manager v1
+            {user ? (
+              <div className="flex items-center gap-2 text-xs">
+                <span
+                  onClick={() => navigate("/dashboard")}
+                  className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer transition-colors font-normal"
+                >
+                  {activeOrg?.name || "Рабочее пространство"}
+                </span>
+                <span className="text-[var(--text-disabled)] font-light">/</span>
+                <span className="text-[var(--text-primary)] font-medium">
+                  {getBreadcrumb()}
                 </span>
               </div>
-            </div>
+            ) : (
+              <div
+                onClick={() => navigate("/")}
+                className="cursor-pointer flex items-center gap-2.5 group shrink-0"
+              >
+                <div className="w-8 h-8 rounded-lg bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shadow-xs">
+                  <CheckSquare size={17} strokeWidth={2} />
+                </div>
+                <div>
+                  <h1 className="text-sm font-semibold text-[var(--text-primary)] tracking-tight leading-none">
+                    PRO Platform
+                  </h1>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 2. Right: Notifications & User Profile Chip */}

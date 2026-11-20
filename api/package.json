@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "format": "prettier --write src",
+    "typecheck": "tsc --noEmit",
+    "lint": "node ../client/node_modules/eslint/bin/eslint.js -c ../client/eslint.config.js src test",
+    "test": "tsx --test \"test/**/*.test.ts\"",
+    "format": "prettier --write src test",
     "start": "node dist/index.js",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",

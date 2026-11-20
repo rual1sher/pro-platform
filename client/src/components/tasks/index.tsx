@@ -134,9 +134,15 @@ export function TasksComponent() {
     );
   };
 
+  const currentPeriod = useMemo(() => {
+    const now = new Date();
+    const month = now.toLocaleString("ru-RU", { month: "long" });
+    return `${month.charAt(0).toUpperCase() + month.slice(1)} ${now.getFullYear()}`;
+  }, []);
+
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 space-y-3 bg-[var(--bg-surface)] rounded-[28px] border border-[var(--border-light)]">
+      <div className="flex flex-col items-center justify-center py-24 space-y-3 bg-[var(--bg-surface)] rounded-xl border border-[var(--border-light)]">
         <div className="w-8 h-8 border-3 border-[var(--brand-primary)] border-t-transparent rounded-full animate-spin"></div>
         <p className="text-[var(--text-primary)] text-xs font-bold">Загрузка задач...</p>
       </div>
@@ -145,45 +151,57 @@ export function TasksComponent() {
 
   return (
     <div className="space-y-4">
-      {/* 1. Header Bar: Month/Title + Month/Week/Day tabs + Action button */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[var(--bg-surface)] p-4 rounded-[28px] border border-[var(--border-light)] shadow-sm">
+      {/* 1. Header Bar: Dynamic Period / Board title + View tabs + Action button */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[var(--bg-surface)] p-4 rounded-xl border border-[var(--border-light)] shadow-xs">
         <div>
           <div className="flex items-center gap-2.5">
-            <h2 className="text-xl font-black text-[var(--text-primary)] tracking-tight">
-              Сентябрь 2026
+            <h2 className="text-lg font-semibold text-[var(--text-primary)] tracking-tight">
+              Доска задач
             </h2>
             {activeOrg && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[var(--brand-primary)]/15 border border-[var(--brand-primary)]/30 text-[var(--brand-primary)] text-[11px] font-extrabold">
-                <Building2 size={12} />
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[var(--brand-primary)]/15 border border-[var(--brand-primary)]/30 text-[var(--brand-primary)] text-[11px] font-medium">
+                <Building2 size={11} />
                 {activeOrg.name}
               </span>
             )}
           </div>
-          <p className="text-xs text-[var(--text-secondary)] font-semibold mt-0.5">
-            {filteredTasks.length} задач на доске команды
+          <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+            {filteredTasks.length}{" "}
+            {filteredTasks.length === 1
+              ? "задача"
+              : filteredTasks.length < 5
+                ? "задачи"
+                : "задач"}{" "}
+            • {currentPeriod}
           </p>
         </div>
 
         {/* Right side: View tabs & New Task button */}
         <div className="flex items-center gap-2.5">
           {/* View tabs pill */}
-          <div className="flex items-center bg-[var(--bg-overlay)] p-1 rounded-full border border-[var(--border-light)] shadow-xs">
-            <Button
-              variant={activeViewTab === "board" ? "primary" : "ghost"}
-              size="sm"
+          <div className="flex items-center bg-[var(--bg-overlay)] p-0.5 rounded-lg border border-[var(--border-light)] shadow-xs">
+            <button
+              type="button"
               onClick={() => setActiveViewTab("board")}
-              className="px-3.5 py-1 text-xs font-bold rounded-full h-auto"
+              className={`px-3 py-1 text-xs font-medium rounded-md transition-all cursor-pointer ${
+                activeViewTab === "board"
+                  ? "bg-[var(--bg-surface)] text-[var(--text-primary)] font-semibold shadow-xs"
+                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              }`}
             >
               Доска
-            </Button>
-            <Button
-              variant={activeViewTab === "list" ? "primary" : "ghost"}
-              size="sm"
+            </button>
+            <button
+              type="button"
               onClick={() => setActiveViewTab("list")}
-              className="px-3.5 py-1 text-xs font-bold rounded-full h-auto"
+              className={`px-3 py-1 text-xs font-medium rounded-md transition-all cursor-pointer ${
+                activeViewTab === "list"
+                  ? "bg-[var(--bg-surface)] text-[var(--text-primary)] font-semibold shadow-xs"
+                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              }`}
             >
               Список
-            </Button>
+            </button>
           </div>
 
           <CreateTask />
@@ -191,7 +209,7 @@ export function TasksComponent() {
       </div>
 
       {/* 2. Filters & Search Strip */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 bg-[var(--bg-surface)] p-3 rounded-2xl border border-[var(--border-light)]">
+      <div className="flex flex-wrap items-center justify-between gap-2.5 bg-[var(--bg-surface)] p-3 rounded-xl border border-[var(--border-light)]">
         {/* Search input */}
         <div className="relative flex-1 min-w-[200px] max-w-sm">
           <Search
@@ -203,7 +221,7 @@ export function TasksComponent() {
             placeholder="Поиск задач или исполнителей..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 text-xs py-1.5 rounded-xl font-medium"
+            className="pl-8 text-xs py-1.5 rounded-lg font-normal"
           />
         </div>
 
@@ -218,7 +236,7 @@ export function TasksComponent() {
                 const val = e.target.value;
                 setSelectedWorkerFilter(val === "" ? null : Number(val));
               }}
-              className="px-2.5 py-1.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-primary)] font-semibold focus:outline-none focus:border-[var(--brand-primary)]"
+              className="px-2.5 py-1.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-lg text-xs text-[var(--text-primary)] font-normal focus:outline-none focus:border-[var(--brand-primary)]"
             >
               <option value="">Все воркеры</option>
               {user && <option value={user.id}>Мои задачи ({user.name})</option>}
@@ -241,7 +259,7 @@ export function TasksComponent() {
                 const val = e.target.value;
                 setSelectedPriorityFilter(val === "" ? null : val);
               }}
-              className="px-2.5 py-1.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-primary)] font-semibold focus:outline-none focus:border-[var(--brand-primary)]"
+              className="px-2.5 py-1.5 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-lg text-xs text-[var(--text-primary)] font-normal focus:outline-none focus:border-[var(--brand-primary)]"
             >
               <option value="">Все приоритеты</option>
               <option value="2">🔴 Высокий (Важные)</option>
@@ -297,7 +315,7 @@ export function TasksComponent() {
         </div>
       ) : (
         /* List View alternative */
-        <div className="space-y-2 bg-[var(--bg-surface)] p-4 rounded-[28px] border border-[var(--border-light)]">
+        <div className="space-y-2 bg-[var(--bg-surface)] p-4 rounded-xl border border-[var(--border-light)]">
           {filteredTasks.length === 0 ? (
             <div className="py-12 text-center text-[var(--text-secondary)] text-xs font-bold">
               Нет задач для отображения

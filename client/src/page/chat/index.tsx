@@ -1,4 +1,3 @@
-import { Container } from "../../components/helper/container";
 import { OrgChat } from "../../components/organization/chat";
 import { useAuthGuard } from "../../components/helper/use-auth-guard";
 import { AuthLoading } from "../../components/helper/auth-loading";
@@ -11,10 +10,8 @@ export function ChatPage() {
   }
 
   return (
-    <div className="w-full text-[var(--text-primary)] pb-12 pt-4">
-      <Container className="py-2">
-        <OrgChat />
-      </Container>
+    <div className="w-full text-[var(--text-primary)] px-4 py-3">
+      <OrgChat />
     </div>
   );
 }

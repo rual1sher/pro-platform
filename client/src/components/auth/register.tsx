@@ -43,12 +43,12 @@ export function RegisterComponent() {
   };
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[32px] shadow-2xl p-8 max-w-md w-full mx-auto text-[var(--text-primary)]">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] p-7 max-w-md w-full mx-auto text-[var(--text-primary)]">
       <div className="text-center mb-6">
-        <div className="w-12 h-12 rounded-2xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center mx-auto mb-3 shadow-md">
-          <UserPlus size={22} />
+        <div className="w-10 h-10 rounded-xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center mx-auto mb-3 shadow-sm">
+          <UserPlus size={20} strokeWidth={2} />
         </div>
-        <h1 className="text-2xl font-black text-[var(--text-primary)] tracking-tight mb-1">
+        <h1 className="text-xl font-semibold text-[var(--text-primary)] tracking-tight mb-1">
           Регистрация
         </h1>
         <p className="text-xs text-[var(--text-secondary)] font-medium">

@@ -53,24 +53,24 @@ export function LoginComponent() {
   };
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[32px] shadow-2xl p-8 max-w-md w-full mx-auto text-[var(--text-primary)]">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] p-7 max-w-md w-full mx-auto text-[var(--text-primary)]">
       <div className="text-center mb-6">
-        <div className="w-12 h-12 rounded-2xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center mx-auto mb-3 shadow-md">
-          <LogIn size={22} />
+        <div className="w-10 h-10 rounded-xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center mx-auto mb-3 shadow-sm">
+          <LogIn size={20} strokeWidth={2} />
         </div>
-        <h1 className="text-2xl font-black text-[var(--text-primary)] tracking-tight mb-1">
+        <h1 className="text-xl font-semibold text-[var(--text-primary)] tracking-tight mb-1">
           Вход в платформу
         </h1>
-        <p className="text-xs text-[var(--text-secondary)] font-semibold">
+        <p className="text-xs text-[var(--text-secondary)] font-normal">
           Войдите под своей учетной записью или выберите воркера
         </p>
       </div>
 
       {/* Quick Demo Login Buttons */}
-      <div className="mb-6 p-4 rounded-2xl bg-[var(--bg-overlay)] border border-[var(--border-light)] space-y-2.5">
-        <div className="flex items-center gap-1.5 text-[11px] font-black text-[var(--brand-primary)] uppercase tracking-wider">
-          <Sparkles size={13} />
-          <span>Быстрый демо-вход (1 клик)</span>
+      <div className="mb-6 p-3.5 rounded-xl bg-[var(--bg-overlay)]/70 border border-[var(--border-light)] space-y-2">
+        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[var(--brand-primary)] uppercase tracking-wider">
+          <Sparkles size={12} />
+          <span>Быстрый демо-вход</span>
         </div>
         <div className="grid grid-cols-1 gap-2">
           <Button
@@ -171,7 +171,7 @@ export function LoginComponent() {
         Нет аккаунта?{" "}
         <NavLink
           to="/register"
-          className="text-[var(--brand-primary)] hover:underline font-black transition-colors"
+          className="text-[var(--brand-primary)] hover:underline font-semibold transition-colors"
         >
           Зарегистрироваться
         </NavLink>

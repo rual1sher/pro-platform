@@ -204,9 +204,9 @@ export function MembersModal({ isOpen, onClose }: MembersModalProps) {
           <div className="px-6 pt-4 flex-shrink-0">
             <form
               onSubmit={handleAddMember}
-              className="bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-2xl p-4 space-y-3"
+              className="bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl p-3.5 space-y-3"
             >
-              <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-[var(--brand-primary)]">
+              <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--brand-primary)]">
                 <UserPlus size={14} />
                 <span>Добавить воркера в команду</span>
               </div>

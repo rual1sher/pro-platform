@@ -36,15 +36,15 @@ export function RemoveTask({ id }: { id: number }) {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-10" />
 
         <div className="fixed inset-0 z-20 flex items-center justify-center p-4">
-          <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-3xl p-8 shadow-2xl text-[var(--text-primary)] w-full max-w-sm">
-            <div className="text-center mb-8">
-              <div className="w-20 h-20 rounded-3xl bg-[var(--status-error)]/15 border border-[var(--status-error)]/30 flex items-center justify-center mx-auto mb-5">
-                <Trash className="text-[var(--status-error)]" size={36} />
+          <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-2xl p-6 shadow-xl text-[var(--text-primary)] w-full max-w-sm">
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 rounded-xl bg-[var(--status-error)]/15 border border-[var(--status-error)]/30 flex items-center justify-center mx-auto mb-4">
+                <Trash className="text-[var(--status-error)]" size={24} />
               </div>
-              <h3 className="text-2xl font-black text-[var(--text-primary)] mb-2">
+              <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">
                 Удалить задачу?
               </h3>
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                 Это действие нельзя отменить
               </p>
             </div>

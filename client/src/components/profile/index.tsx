@@ -65,31 +65,33 @@ export function ProfileComponent() {
   return (
     <div className="space-y-5">
       {/* User card */}
-      <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[28px] p-6 flex items-center gap-4">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-5 flex items-center gap-4 shadow-xs">
         {user.avatar ? (
           <img
             src={user.avatar}
             alt={user.name}
-            className="w-16 h-16 rounded-full object-cover ring-2 ring-[var(--brand-primary)]"
+            className="w-14 h-14 rounded-full object-cover ring-1 ring-[var(--border-light)]"
           />
         ) : (
-          <div className="w-16 h-16 rounded-full bg-[var(--brand-primary)] text-[var(--bg-main)] ring-2 ring-[var(--brand-secondary)] flex items-center justify-center text-xl font-black">
+          <div className="w-14 h-14 rounded-full bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center text-lg font-medium">
             {initials}
           </div>
         )}
         <div>
-          <h1 className="text-xl font-black text-[var(--text-primary)]">{user.name}</h1>
-          <p className="text-xs text-[var(--text-secondary)] font-semibold flex items-center gap-1.5 mt-1">
+          <h1 className="text-lg font-semibold text-[var(--text-primary)]">
+            {user.name}
+          </h1>
+          <p className="text-xs text-[var(--text-secondary)] font-normal flex items-center gap-1.5 mt-0.5">
             <Mail size={13} />
             {user.email}
           </p>
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-[3fr_2fr] gap-4">
+      <div className="grid lg:grid-cols-[3fr_2fr] gap-4 items-start">
         {/* Recent tasks across all orgs */}
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[28px] p-5 space-y-3">
-          <h2 className="text-sm font-bold text-[var(--text-primary)]">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-4 space-y-3 shadow-xs">
+          <h2 className="text-xs font-semibold text-[var(--text-primary)] pb-2 border-b border-[var(--border-light)]">
             Последние задачи по всем организациям
           </h2>
 
@@ -102,15 +104,15 @@ export function ProfileComponent() {
               У вас пока нет назначенных задач
             </p>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {recentTasks.map((task) => (
                 <div
                   key={task.id}
                   onClick={() => navigate(`/tasks/${task.id}`)}
-                  className="flex items-center justify-between gap-3 p-3 rounded-xl bg-[var(--bg-overlay)] hover:bg-[var(--border-light)] border border-[var(--border-light)] cursor-pointer transition-colors"
+                  className="flex items-center justify-between gap-3 p-2.5 rounded-lg bg-[var(--bg-overlay)]/60 hover:bg-[var(--bg-overlay)] border border-[var(--border-light)] cursor-pointer transition-colors"
                 >
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-[var(--text-primary)] truncate">
+                    <p className="text-xs font-medium text-[var(--text-primary)] truncate">
                       {task.title}
                     </p>
                     {task.description && (
@@ -122,7 +124,7 @@ export function ProfileComponent() {
                       {task.dueDate || task.date}
                     </p>
                   </div>
-                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[var(--bg-overlay)] text-[var(--brand-secondary)] border border-[var(--brand-secondary)]/30 shrink-0">
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-[var(--bg-overlay)] text-[var(--brand-secondary)] border border-[var(--brand-secondary)]/30 shrink-0">
                     {task.organizationId
                       ? organizations.find((o) => o.id === task.organizationId)?.name
                       : ""}
@@ -134,16 +136,16 @@ export function ProfileComponent() {
         </div>
 
         {/* Organizations list */}
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-[28px] p-5 space-y-3">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-[var(--text-primary)]">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-4 space-y-3 shadow-xs">
+          <div className="flex items-center justify-between pb-2 border-b border-[var(--border-light)]">
+            <h2 className="text-xs font-semibold text-[var(--text-primary)]">
               Мои организации
             </h2>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setCreateOrgOpen(true)}
-              className="text-[var(--brand-primary)] hover:text-[var(--brand-primary-hover)] p-1 h-auto font-bold"
+              className="text-[var(--brand-primary)] hover:text-[var(--brand-primary-hover)] p-0.5 h-auto text-xs font-medium"
             >
               <Plus size={13} />
               Создать
@@ -164,14 +166,14 @@ export function ProfileComponent() {
                     setActiveOrgById(org.id);
                     navigate(`/organizations/${org.id}`);
                   }}
-                  className="w-full justify-between gap-3 p-3 rounded-xl text-left h-auto font-normal hover:bg-[var(--border-light)]"
+                  className="w-full justify-between gap-3 p-2.5 rounded-lg text-left h-auto font-normal hover:bg-[var(--border-light)]"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-8 h-8 rounded-xl bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shrink-0">
-                      <Building2 size={15} />
+                    <div className="w-7 h-7 rounded-lg bg-[var(--brand-primary)] text-[var(--bg-main)] flex items-center justify-center shrink-0">
+                      <Building2 size={14} />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-[var(--text-primary)] truncate">
+                      <p className="text-xs font-medium text-[var(--text-primary)] truncate">
                         {org.name}
                       </p>
                       <p className="text-[10px] text-[var(--text-secondary)]">

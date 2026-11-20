@@ -45,14 +45,14 @@ export function MessageList({
                 className="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-[var(--border-light)]"
               />
             ) : (
-              <div className="w-7 h-7 rounded-full bg-[var(--brand-primary)] text-[var(--bg-main)] font-black text-[11px] flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-full bg-[var(--brand-primary)] text-[var(--bg-main)] font-medium text-[11px] flex items-center justify-center shrink-0">
                 {m.author.name.substring(0, 1).toUpperCase()}
               </div>
             )}
 
-            <div className="flex-1 min-w-0 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-2xl px-3 py-2">
+            <div className="flex-1 min-w-0 bg-[var(--bg-overlay)] border border-[var(--border-light)] rounded-xl px-3 py-2">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[11px] font-bold text-[var(--text-primary)] truncate">
+                <span className="text-[11px] font-semibold text-[var(--text-primary)] truncate">
                   {isOwn ? "Вы" : m.author.name}
                 </span>
                 <div className="flex items-center gap-1.5 shrink-0">

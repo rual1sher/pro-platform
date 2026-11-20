@@ -39,14 +39,14 @@ export function MessageInput({
         onChange={(e) => setValue(e.target.value)}
         disabled={sending}
         autoFocus={autoFocus}
-        className="flex-1 rounded-full text-xs py-2 px-3"
+        className="flex-1 rounded-lg text-xs py-2 px-3"
       />
       <Button
         type="submit"
         variant="primary"
         size="sm"
         disabled={!value.trim() || sending}
-        className="rounded-full font-black text-xs"
+        className="rounded-lg font-medium text-xs"
       >
         +
       </Button>

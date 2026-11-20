@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "format": "prettier --write src"
+    "typecheck": "tsc -b",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "format": "prettier --write src test"
   },
   "dependencies": {
     "@dnd-kit/abstract": "^0.3.1",

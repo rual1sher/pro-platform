@@ -196,9 +196,9 @@ export function CreateTask() {
         variant="primary"
         size="sm"
         onClick={() => setIsOpen(true)}
-        className="rounded-2xl font-black"
+        className="gap-1.5"
       >
-        <Plus size={15} strokeWidth={2.5} />
+        <Plus size={14} strokeWidth={2} />
         <span>Новая задача</span>
       </Button>
 

@@ -193,7 +193,7 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
           </p>
 
           <div>
-            <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-wider mb-2">
+            <p className="text-[10px] font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-2">
               Настройки задачи
             </p>
             <div className="grid sm:grid-cols-2 gap-2.5">
@@ -243,9 +243,9 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
           <Button
             variant={isDone ? "success" : "primary"}
             onClick={handleToggleStatus}
-            className="w-full py-3 rounded-full font-black text-xs h-auto shadow-md"
+            className="w-full py-2.5 rounded-lg font-medium text-xs h-auto shadow-sm"
           >
-            <CheckCircle2 size={15} />
+            <CheckCircle2 size={15} strokeWidth={1.75} />
             <span>
               {isDone ? "Задача выполнена! Вернуть в работу" : "Отметить выполненной"}
             </span>
@@ -253,8 +253,8 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
         </div>
 
         {/* RIGHT: Chat / comments */}
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-4xl h-170 p-5 md:p-6 space-y-3 text-[var(--text-primary)] flex flex-col">
-          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl h-170 p-5 md:p-6 space-y-3 text-[var(--text-primary)] flex flex-col">
+          <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
             <MessageSquare size={12} />
             <span>Комментарии ({comments.length})</span>
           </div>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Container } from "../../components/helper/container";
 import { TasksComponent } from "../../components/tasks";
-import { Sidebar } from "../../components/tasks/sidebar";
 import { CreateOrgModal, MembersModal } from "../../components/organization/org-modal";
 import { CreateTaskModal } from "../../components/tasks/functions/create";
 import { useAuthGuard } from "../../components/helper/use-auth-guard";
@@ -21,20 +20,10 @@ export function TasksPage() {
   return (
     <div className="w-full text-[var(--text-primary)] pb-12 pt-4">
       <Container className="py-2">
-        {/* Responsive Layout: Left Sidebar + Main Kanban Canvas */}
-        <div className="flex flex-col lg:flex-row gap-5 items-start">
-          {/* Left Sidebar (Mini Calendar, Upcoming tasks, Time breakdown, Workspaces) */}
-          <Sidebar
-            onOpenCreateOrg={() => setCreateOrgOpen(true)}
-            onOpenMembers={() => setMembersOpen(true)}
-            onOpenCreateTask={() => setCreateTaskOpen(true)}
-          />
-
-          {/* Main Content Area (Month Header, Kanban Columns, Cards) */}
-          <main className="flex-1 w-full min-w-0">
-            <TasksComponent />
-          </main>
-        </div>
+        {/* Full-width Kanban Canvas (Linear/Jira style) */}
+        <main className="w-full min-w-0">
+          <TasksComponent />
+        </main>
       </Container>
 
       {/* Organization, Members and Create Task Modals */}

@@ -5,7 +5,7 @@ import { useBootstrapAuth } from "./components/helper/use-bootstrap-auth";
 import { NotFound } from "./components/not-found/not-found";
 import { AppSidebar } from "./components/sidebar";
 import { LoginPage } from "./page/auth/login";
-import { RegisterPage } from "./page/auth/regisnter";
+import { RegisterPage } from "./page/auth/register";
 import { ChatPage } from "./page/chat";
 import { DashboardPage } from "./page/dashboard";
 import { HomePage } from "./page/home/index";
