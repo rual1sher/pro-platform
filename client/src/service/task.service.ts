@@ -66,7 +66,71 @@ export async function update(
     const res = await axios.patch(`${env.baseUrl}/tasks/${id}`, data, getHeaders());
     return res.data;
   } catch (err: any) {
-    toast.error(err.response?.data?.error || err.message || "Ошибка обновления задачи");
+    toast.error(
+      err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Ошибка обновления задачи",
+    );
     return null;
+  }
+}
+
+export async function updateStatus(
+  id: number,
+  status: string,
+  position?: number,
+): Promise<ITaskResponce | null> {
+  try {
+    const res = await axios.patch(
+      `${env.baseUrl}/tasks/${id}/status`,
+      { status, position },
+      getHeaders(),
+    );
+    return res.data;
+  } catch (err: any) {
+    toast.error(
+      err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Ошибка смены статуса задачи",
+    );
+    return null;
+  }
+}
+
+export async function reorderTask(
+  id: number,
+  position: number,
+  status?: string,
+): Promise<ITaskResponce | null> {
+  try {
+    const res = await axios.patch(
+      `${env.baseUrl}/tasks/${id}/reorder`,
+      { position, status },
+      getHeaders(),
+    );
+    return res.data;
+  } catch (err: any) {
+    toast.error(
+      err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Ошибка изменения порядка задачи",
+    );
+    return null;
+  }
+}
+
+export async function bulkReorder(
+  items: Array<{ id: number; position: number; status?: string }>,
+): Promise<boolean> {
+  try {
+    await axios.patch(`${env.baseUrl}/tasks/reorder`, { items }, getHeaders());
+    return true;
+  } catch (err: any) {
+    toast.error(
+      err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Ошибка сохранения порядка",
+    );
+    return false;
   }
 }

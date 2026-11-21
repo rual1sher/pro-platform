@@ -63,7 +63,7 @@ export function ProfileComponent() {
   const initials = user.name ? user.name.substring(0, 1).toUpperCase() : "U";
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 p-3 sm:p-4">
       {/* User card */}
       <div className="bg-[var(--bg-surface)] border border-[var(--border-light)] rounded-xl p-5 flex items-center gap-4 shadow-xs">
         {user.avatar ? (

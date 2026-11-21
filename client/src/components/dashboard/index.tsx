@@ -79,7 +79,7 @@ export function DashboardComponent() {
 
   if (!activeOrg) {
     return (
-      <div className="py-20 text-center space-y-3">
+      <div className="py-20 text-center space-y-3 p-3 sm:p-4">
         <p className="text-[var(--text-secondary)] text-sm font-medium">
           У вас пока нет активной организации.
         </p>
@@ -92,11 +92,13 @@ export function DashboardComponent() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 space-y-3 bg-[var(--bg-surface)] rounded-2xl border border-[var(--border-light)]">
-        <div className="w-6 h-6 border-2 border-[var(--brand-primary)] border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-[var(--text-secondary)] text-xs font-normal">
-          Загрузка задач проекта...
-        </p>
+      <div className="p-3 sm:p-4">
+        <div className="flex flex-col items-center justify-center py-24 space-y-3 bg-[var(--bg-surface)] rounded-2xl border border-[var(--border-light)]">
+          <div className="w-6 h-6 border-2 border-[var(--brand-primary)] border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-[var(--text-secondary)] text-xs font-normal">
+            Загрузка задач проекта...
+          </p>
+        </div>
       </div>
     );
   }
@@ -104,7 +106,7 @@ export function DashboardComponent() {
   const firstName = user?.name?.trim().split(" ")[0] || "коллега";
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 p-3 sm:p-4">
       {/* 1. Header with greeting and primary actions */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-[var(--border-light)]">
         <div>

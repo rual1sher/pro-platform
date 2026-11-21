@@ -11,7 +11,8 @@ interface ColumnProps {
 
 export function Column({ children, id, title, count }: ColumnProps) {
   const { ref, isDropTarget } = useDroppable({
-    id,
+    id: `column-${id}`,
+    collisionPriority: 1,
   });
 
   return (

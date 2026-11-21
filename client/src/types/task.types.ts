@@ -17,11 +17,13 @@ export interface ITaskResponce {
   priority?: string;
   order: string;
   status?: string;
+  position?: number;
   date: string;
   dueDate?: string;
   user_id?: number;
   assigneeId?: number;
   organizationId: number;
+  creatorId?: number;
   assignee?: {
     id: number;
     name: string;
@@ -44,6 +46,7 @@ export interface ITaskRequest {
   priority?: string;
   order?: string;
   status?: string;
+  position?: number;
   date?: string;
   dueDate?: string;
   user_id?: number;

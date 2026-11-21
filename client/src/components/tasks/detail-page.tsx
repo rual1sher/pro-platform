@@ -10,6 +10,7 @@ import {
   Edit2,
   Flag,
   Link2,
+  Lock,
   MessageSquare,
   RotateCcw,
   Send,
@@ -29,7 +30,7 @@ import {
   removeMessage,
 } from "../../service/message.service";
 import { getOrganizationMembers } from "../../service/organization.service";
-import { remove, update } from "../../service/task.service";
+import { remove, update, updateStatus } from "../../service/task.service";
 import { useAuth } from "../../store/auth.store";
 import { useMessages } from "../../store/message.store";
 import { useTask } from "../../store/task.store";
@@ -156,7 +157,7 @@ function getDueStatus(dueDateString?: string, isDone?: boolean) {
 export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
   const { tasks, members, setMembers, updateTaskInStore, removeTaskFromStore } =
     useTask();
-  const { user, organizations } = useAuth();
+  const { user, organizations, activeOrg } = useAuth();
   const { messagesByTask, setTaskMessages, addTaskMessage, removeTaskMessage } =
     useMessages();
 
@@ -271,23 +272,48 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
 
   const isDone = String(liveTask.order ?? liveTask.status) === "2";
 
+  // RBAC checks
+  const isOwner =
+    activeOrg?.role === "OWNER" ||
+    activeOrg?.role === "ADMIN" ||
+    liveTask.creatorId === user?.id;
+  const isAssignee = (liveTask.assigneeId ?? liveTask.user_id) === user?.id;
+  const canChangeStatus = isOwner || isAssignee;
+  const canFullEdit = isOwner;
+
   const handleToggleStatus = async () => {
+    if (!canChangeStatus) {
+      toast.warning("Вы не можете менять статус чужой задачи");
+      return;
+    }
     const nextStatus = isDone ? "1" : "2";
     updateTaskInStore(liveTask.id, { order: nextStatus, status: nextStatus });
-    await update(liveTask.id, { order: nextStatus, status: nextStatus });
+    await updateStatus(liveTask.id, nextStatus);
   };
 
   const handleStatusChange = async (newStatus: string) => {
+    if (!canChangeStatus) {
+      toast.warning("Вы не можете менять статус чужой задачи");
+      return;
+    }
     updateTaskInStore(liveTask.id, { order: newStatus, status: newStatus });
-    await update(liveTask.id, { order: newStatus, status: newStatus });
+    await updateStatus(liveTask.id, newStatus);
   };
 
   const handlePriorityChange = async (newPriority: string) => {
+    if (!canFullEdit) {
+      toast.warning("Только владелец может изменять приоритет задачи");
+      return;
+    }
     updateTaskInStore(liveTask.id, { priority: newPriority, preority: newPriority });
     await update(liveTask.id, { priority: newPriority, preority: newPriority });
   };
 
   const handleAssigneeChange = async (val: string) => {
+    if (!canFullEdit) {
+      toast.warning("Только владелец может назначать исполнителя");
+      return;
+    }
     const newAssigneeId = val === "none" ? null : Number(val);
     const payload = {
       assigneeId: newAssigneeId as any,
@@ -405,7 +431,7 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
     );
 
   return (
-    <div className="max-w-6xl mx-auto space-y-5">
+    <div className="space-y-5 p-3 sm:p-4">
       {/* 1. Header Bar: Navigation, Badges, and Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--border-light)]">
         <div className="flex items-center gap-2.5 flex-wrap">
@@ -447,27 +473,31 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
             <span>{copied ? "Скопировано!" : "Копировать ссылку"}</span>
           </Button>
 
-          <Button
-            variant="dark"
-            size="sm"
-            onClick={() => setEditOpen(true)}
-            className="gap-1.5 text-xs h-8 px-2.5 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-            title="Редактировать задачу"
-          >
-            <Edit2 size={13} />
-            <span>Редактировать</span>
-          </Button>
+          {canFullEdit && (
+            <Button
+              variant="dark"
+              size="sm"
+              onClick={() => setEditOpen(true)}
+              className="gap-1.5 text-xs h-8 px-2.5 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              title="Редактировать параметры задачи (Владелец)"
+            >
+              <Edit2 size={13} />
+              <span>Редактировать</span>
+            </Button>
+          )}
 
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setDeleteConfirmOpen(true)}
-            className="gap-1.5 text-xs h-8 px-2.5 rounded-lg text-[var(--status-error)] hover:bg-[var(--status-error)]/10"
-            title="Удалить задачу"
-          >
-            <Trash2 size={13} />
-            <span>Удалить</span>
-          </Button>
+          {canFullEdit && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setDeleteConfirmOpen(true)}
+              className="gap-1.5 text-xs h-8 px-2.5 rounded-lg text-[var(--status-error)] hover:bg-[var(--status-error)]/10"
+              title="Удалить задачу (Владелец)"
+            >
+              <Trash2 size={13} />
+              <span>Удалить</span>
+            </Button>
+          )}
         </div>
       </div>
 
@@ -514,42 +544,46 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
                     <h1 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] tracking-tight leading-snug break-words">
                       {liveTask.title}
                     </h1>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setIsEditingTitle(true)}
-                      className="opacity-0 group-hover:opacity-100 p-1.5 h-auto rounded-md text-[var(--text-secondary)] hover:text-[var(--brand-primary)] transition-opacity shrink-0 mt-0.5"
-                      title="Переименовать задачу"
-                    >
-                      <Edit2 size={13} />
-                    </Button>
+                    {canFullEdit && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setIsEditingTitle(true)}
+                        className="opacity-0 group-hover:opacity-100 p-1.5 h-auto rounded-md text-[var(--text-secondary)] hover:text-[var(--brand-primary)] transition-opacity shrink-0 mt-0.5"
+                        title="Переименовать задачу (Владелец)"
+                      >
+                        <Edit2 size={13} />
+                      </Button>
+                    )}
                   </div>
                 )}
               </div>
 
-              <div className="shrink-0">
-                {isDone ? (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleToggleStatus}
-                    className="gap-2 text-xs font-semibold rounded-lg text-[var(--status-success)] border-[var(--status-success)]/40 hover:bg-[var(--status-success)]/10"
-                  >
-                    <RotateCcw size={13} />
-                    <span>Возобновить задачу</span>
-                  </Button>
-                ) : (
-                  <Button
-                    variant="success"
-                    size="sm"
-                    onClick={handleToggleStatus}
-                    className="gap-2 text-xs font-semibold rounded-lg"
-                  >
-                    <CheckCircle2 size={14} />
-                    <span>Завершить задачу</span>
-                  </Button>
-                )}
-              </div>
+              {canChangeStatus && (
+                <div className="shrink-0">
+                  {isDone ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleToggleStatus}
+                      className="gap-2 text-xs font-semibold rounded-lg text-[var(--status-success)] border-[var(--status-success)]/40 hover:bg-[var(--status-success)]/10"
+                    >
+                      <RotateCcw size={13} />
+                      <span>Возобновить задачу</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="success"
+                      size="sm"
+                      onClick={handleToggleStatus}
+                      className="gap-2 text-xs font-semibold rounded-lg"
+                    >
+                      <CheckCircle2 size={14} />
+                      <span>Завершить задачу</span>
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Description Block */}
@@ -558,7 +592,7 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
                 <span className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                   Описание
                 </span>
-                {!isEditingDesc && (
+                {!isEditingDesc && canFullEdit && (
                   <Button
                     variant="ghost"
                     size="sm"
@@ -608,10 +642,18 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
                 </div>
               ) : (
                 <div
-                  onClick={() => setIsEditingDesc(true)}
-                  className="cursor-pointer text-xs italic text-[var(--text-disabled)] rounded-lg p-4 bg-[var(--bg-overlay)]/40 border border-dashed border-[var(--border-light)] hover:border-[var(--brand-primary)]/40 hover:bg-[var(--bg-overlay)] transition-colors"
+                  onClick={() => {
+                    if (canFullEdit) setIsEditingDesc(true);
+                  }}
+                  className={`text-xs italic text-[var(--text-disabled)] rounded-lg p-4 bg-[var(--bg-overlay)]/40 border border-dashed border-[var(--border-light)] ${
+                    canFullEdit
+                      ? "cursor-pointer hover:border-[var(--brand-primary)]/40 hover:bg-[var(--bg-overlay)]"
+                      : ""
+                  } transition-colors`}
                 >
-                  Описание не указано. Нажмите здесь, чтобы добавить подробности задачи...
+                  {canFullEdit
+                    ? "Описание не указано. Нажмите здесь, чтобы добавить подробности задачи..."
+                    : "Описание не указано"}
                 </div>
               )}
             </div>
@@ -772,14 +814,36 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
               </span>
             </div>
 
+            {/* Permission banner */}
+            {!isOwner && isAssignee && (
+              <div className="p-2.5 rounded-lg bg-[var(--status-info)]/10 border border-[var(--status-info)]/20 text-xs text-[var(--status-info)] flex items-center gap-2">
+                <CheckCircle2 size={13} className="shrink-0" />
+                <span>
+                  Вы исполнитель: можете менять статус и общаться в чате задачи.
+                </span>
+              </div>
+            )}
+            {!isOwner && !isAssignee && (
+              <div className="p-2.5 rounded-lg bg-[var(--bg-overlay)] border border-[var(--border-light)] text-xs text-[var(--text-secondary)] flex items-center gap-2">
+                <Lock size={13} className="text-[var(--text-disabled)] shrink-0" />
+                <span>Задача другого сотрудника (только просмотр и чат).</span>
+              </div>
+            )}
+
             {/* Status selector */}
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] font-medium">
                 <CheckCircle2 size={13} className="text-[var(--brand-primary)]" />
                 <span>Статус</span>
               </div>
-              <Select value={statusVal} onValueChange={handleStatusChange}>
-                <SelectTrigger className="h-9 py-1 px-2.5 text-xs rounded-lg bg-[var(--bg-overlay)] border-[var(--border-light)] hover:border-white/20">
+              <Select
+                value={statusVal}
+                onValueChange={handleStatusChange}
+                disabled={!canChangeStatus}
+              >
+                <SelectTrigger
+                  className={`h-9 py-1 px-2.5 text-xs rounded-lg bg-[var(--bg-overlay)] border-[var(--border-light)] ${canChangeStatus ? "hover:border-white/20" : "opacity-60 cursor-not-allowed"}`}
+                >
                   <SelectValue placeholder="Выберите статус" />
                 </SelectTrigger>
                 <SelectContent>
@@ -815,10 +879,16 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] font-medium">
                 <Flag size={13} className="text-[var(--brand-primary)]" />
-                <span>Приоритет</span>
+                <span>Приоритет {!canFullEdit && "(только владелец)"}</span>
               </div>
-              <Select value={currentPriority} onValueChange={handlePriorityChange}>
-                <SelectTrigger className="h-9 py-1 px-2.5 text-xs rounded-lg bg-[var(--bg-overlay)] border-[var(--border-light)] hover:border-white/20">
+              <Select
+                value={currentPriority}
+                onValueChange={handlePriorityChange}
+                disabled={!canFullEdit}
+              >
+                <SelectTrigger
+                  className={`h-9 py-1 px-2.5 text-xs rounded-lg bg-[var(--bg-overlay)] border-[var(--border-light)] ${canFullEdit ? "hover:border-white/20" : "opacity-60 cursor-not-allowed"}`}
+                >
                   <SelectValue placeholder="Выберите приоритет" />
                 </SelectTrigger>
                 <SelectContent>
@@ -848,10 +918,16 @@ export function TaskDetailComponent({ task, onBack }: TaskDetailProps) {
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] font-medium">
                 <User size={13} className="text-[var(--brand-primary)]" />
-                <span>Исполнитель</span>
+                <span>Исполнитель {!canFullEdit && "(только владелец)"}</span>
               </div>
-              <Select value={currentAssigneeVal} onValueChange={handleAssigneeChange}>
-                <SelectTrigger className="h-9 py-1 px-2.5 text-xs rounded-lg bg-[var(--bg-overlay)] border-[var(--border-light)] hover:border-white/20">
+              <Select
+                value={currentAssigneeVal}
+                onValueChange={handleAssigneeChange}
+                disabled={!canFullEdit}
+              >
+                <SelectTrigger
+                  className={`h-9 py-1 px-2.5 text-xs rounded-lg bg-[var(--bg-overlay)] border-[var(--border-light)] ${canFullEdit ? "hover:border-white/20" : "opacity-60 cursor-not-allowed"}`}
+                >
                   <SelectValue placeholder="Выберите исполнителя" />
                 </SelectTrigger>
                 <SelectContent>

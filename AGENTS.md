@@ -36,7 +36,7 @@ pro-platform/
 │
 ├── api/                      # Backend (Fastify 5 + Prisma 6 + SQLite)
 │   ├── prisma/
-│   │   ├── schema.prisma     # Prisma-модели (User, Organization, OrganizationMember, Task, Message)
+│   │   ├── schema.prisma     # Prisma-модели (User, Organization, OrganizationMember, Task с position, Message)
 │   │   ├── seed.ts           # Начальные тестовые данные
 │   │   └── dev.db            # Файл SQLite БД
 │   └── src/
@@ -48,7 +48,7 @@ pro-platform/
 │           ├── auth.ts       # /api/auth (register, login, me)
 │           ├── users.ts      # /api/users (список воркеров)
 │           ├── organizations.ts # /api/organizations (CRUD, members)
-│           ├── tasks.ts      # /api/tasks (CRUD, фильтрация)
+│           ├── tasks.ts      # /api/tasks (CRUD, статус, сортировка/reorder)
 │           └── messages.ts   # /api/tasks/:id/messages, /api/organizations/:id/chat, /api/messages/:id
 │
 └── client/                   # Frontend (React 19 + Vite 7 + Tailwind CSS v4)
@@ -259,10 +259,19 @@ import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 - `/api/auth` — `POST /register`, `POST /login`, `GET /me`
 - `/api/users` — `GET /` (список воркеров платформы для назначения)
 - `/api/organizations` — `GET /`, `POST /`, `GET /:id`, `GET /:id/members`, `POST /:id/members`, `DELETE /:id/members/:userId`
-- `/api/tasks` — `GET /` (query: `organizationId`, `assigneeId`, `status`, `search`), `POST /`, `GET /:id`, `PATCH /:id`, `DELETE /:id`
+- `/api/tasks` — `GET /` (query: `organizationId`, `assigneeId`, `status`, `search`), `POST /` (создание задачи любым участником команды), `GET /:id`, `PATCH /:id` (полное редактирование: ТОЛЬКО владелец/админ орг или автор), `PATCH /:id/status` (смена статуса: владелец/админ, автор или назначенный исполнитель), `PATCH /:id/reorder` и `PATCH /reorder` (смена позиции/order внутри колонки), `DELETE /:id` (удаление: ТОЛЬКО владелец/админ или автор)
 - `/api/tasks/:taskId/messages` — комментарии к конкретной задаче
 - `/api/organizations/:orgId/chat` — общий чат команды
 - `/api/messages/:id` — удаление сообщения
+
+**Правила разграничения прав задач (Task RBAC & Permissions):**
+
+1. **Создание задач**: Любой участник организации может создать задачу и назначить её на любого участника команды. Новая задача автоматически получает следующий порядковый номер `position` в колонке.
+2. **Полное редактирование (`PATCH /api/tasks/:id`)**: Редактировать название, описание, приоритет, дедлайн, исполнителя может **ТОЛЬКО** владелец (`OWNER`), администратор (`ADMIN`) организации или автор задачи (`creatorId === userId`). Для обычного сотрудника (даже если задача назначена на него) сервер возвращает `403 Forbidden`.
+3. **Смена статуса (`PATCH /api/tasks/:id/status`)**: Изменять статус ("Ожидает", "В работе", "Готово", "Отклонено") может владелец, администратор или **непосредственный исполнитель** (`assigneeId === userId`). Другие сотрудники (например, Марина для задачи Расула) не могут менять статус чужой задачи (получают `403 Forbidden`).
+4. **Сортировка/позиция внутри секции (`PATCH /api/tasks/:id/reorder`, `PATCH /api/tasks/reorder`)**: Изменять порядок (`position`) задач внутри колонки могут владелец, админ и исполнитель. На клиенте для чужих задач перетаскивание (DnD) и кнопки перемещения блокируются.
+5. **Чат и комментарии**: Все участники организации могут писать сообщения и читать обсуждения внутри любой задачи.
+6. **Удаление задач (`DELETE /api/tasks/:id`)**: Только владелец, админ или автор задачи.
 
 **Правило проверки прав (5.3):**
 Любой мутирующий роут (создание/изменение/удаление задачи, участника, сообщения) обязан проверить членство `request.user.id` в организации:

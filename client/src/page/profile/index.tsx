@@ -1,7 +1,6 @@
-import { Container } from "../../components/helper/container";
-import { ProfileComponent } from "../../components/profile";
-import { useAuthGuard } from "../../components/helper/use-auth-guard";
 import { AuthLoading } from "../../components/helper/auth-loading";
+import { useAuthGuard } from "../../components/helper/use-auth-guard";
+import { ProfileComponent } from "../../components/profile";
 
 export function ProfilePage() {
   const { checking } = useAuthGuard();
@@ -11,8 +10,8 @@ export function ProfilePage() {
   }
 
   return (
-    <Container className="p-4 sm:p-6">
+    <div className="w-full text-[var(--text-primary)] pb-12 pt-3">
       <ProfileComponent />
-    </Container>
+    </div>
   );
 }

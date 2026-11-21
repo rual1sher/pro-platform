@@ -1,8 +1,10 @@
 import { DragDropProvider } from "@dnd-kit/react";
 import { Building2, Filter, Search, Users, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import { getOrganizationMembers } from "../../service/organization.service";
-import { findAll, update } from "../../service/task.service";
+import { findAll, updateStatus, bulkReorder } from "../../service/task.service";
+import type { ITaskResponce } from "../../types";
 import { useAuth } from "../../store/auth.store";
 import { useTask } from "../../store/task.store";
 import { Button } from "../ui/button";
@@ -80,19 +82,187 @@ export function TasksComponent() {
     { id: "3", title: "Отклонено", color: "bg-[var(--status-error)]" },
   ];
 
-  // Drag and Drop status update
+  // Drag and Drop reordering and status update
   const handleDragEnd = async (e: any) => {
-    const id = Number(e.operation.source?.id) as number | undefined;
-    const newOrder = e.operation.target?.id as string | undefined;
+    if (e.canceled) return;
+    const sourceId = Number(e.operation.source?.id) as number | undefined;
+    const targetId = String(e.operation.target?.id || "");
 
-    if (id && newOrder && ["0", "1", "2", "3"].includes(newOrder)) {
-      updateTaskInStore(id, { order: newOrder, status: newOrder });
+    if (!sourceId || !targetId) return;
 
-      try {
-        await update(id, { order: newOrder, status: newOrder });
-      } catch (error) {
-        console.error("Ошибка сохранения позиции:", error);
+    const draggedTask = tasks.find((t) => t.id === sourceId);
+    if (!draggedTask) return;
+
+    // RBAC: Только владелец организации или сам исполнитель может менять статус / позицию
+    const isOwner =
+      activeOrg?.role === "OWNER" ||
+      activeOrg?.role === "ADMIN" ||
+      draggedTask.creatorId === user?.id;
+    const isAssignee = (draggedTask.assigneeId ?? draggedTask.user_id) === user?.id;
+
+    if (!isOwner && !isAssignee) {
+      toast.warning(
+        "Вы можете перемещать только свои задачи. Чужие задачи может перемещать только владелец.",
+      );
+      return;
+    }
+
+    const currentStatus = String(draggedTask.order ?? draggedTask.status ?? "0");
+
+    // Case 1: Бросили на другую задачу (занимают места друг друга)
+    if (targetId.startsWith("task-")) {
+      const targetTaskId = Number(targetId.replace("task-", ""));
+      if (targetTaskId === sourceId) return;
+
+      const targetTask = tasks.find((t) => t.id === targetTaskId);
+      if (!targetTask) return;
+
+      const targetStatus = String(targetTask.order ?? targetTask.status ?? "0");
+
+      if (currentStatus === targetStatus) {
+        // --- ДВИЖЕНИЕ ВНУТРИ ТОЙ ЖЕ СЕКЦИИ (SWAP / REORDER) ---
+        const columnTasks = getTasksByOrder(currentStatus);
+        const sourceIndex = columnTasks.findIndex((t) => t.id === sourceId);
+        const targetIndex = columnTasks.findIndex((t) => t.id === targetTaskId);
+
+        if (sourceIndex === -1 || targetIndex === -1 || sourceIndex === targetIndex)
+          return;
+
+        const reordered = [...columnTasks];
+        const [movedItem] = reordered.splice(sourceIndex, 1);
+        reordered.splice(targetIndex, 0, movedItem);
+
+        // Каждая задача занимает строго своё место: 1, 2, 3...
+        const updates = reordered.map((item, idx) => ({
+          id: item.id,
+          position: idx + 1,
+        }));
+
+        updates.forEach((u) => {
+          updateTaskInStore(u.id, { position: u.position });
+        });
+
+        try {
+          await bulkReorder(updates);
+        } catch (error) {
+          console.error("Ошибка сохранения позиций задач:", error);
+        }
+      } else {
+        // --- ПЕРЕМЕЩЕНИЕ В ДРУГУЮ СЕКЦИЮ НА МЕСТО ЗАДАЧИ ---
+        const targetColumnTasks = getTasksByOrder(targetStatus);
+        const targetIndex = targetColumnTasks.findIndex((t) => t.id === targetTaskId);
+        const insertIndex = targetIndex === -1 ? targetColumnTasks.length : targetIndex;
+
+        const updatedTargetList = [...targetColumnTasks];
+        updatedTargetList.splice(insertIndex, 0, {
+          ...draggedTask,
+          order: targetStatus,
+          status: targetStatus,
+        });
+
+        const targetUpdates = updatedTargetList.map((item, idx) => ({
+          id: item.id,
+          position: idx + 1,
+          ...(item.id === sourceId ? { status: targetStatus } : {}),
+        }));
+
+        updateTaskInStore(sourceId, {
+          order: targetStatus,
+          status: targetStatus,
+          position: insertIndex + 1,
+        });
+        targetUpdates.forEach((u) => {
+          updateTaskInStore(u.id, { position: u.position });
+        });
+
+        try {
+          await bulkReorder(targetUpdates);
+        } catch (error) {
+          console.error("Ошибка перемещения задачи в другую колонку:", error);
+        }
       }
+      return;
+    }
+
+    // Case 2: Бросили на контейнер колонки
+    const newStatus = targetId.startsWith("column-")
+      ? targetId.replace("column-", "")
+      : targetId;
+
+    if (["0", "1", "2", "3"].includes(newStatus)) {
+      if (newStatus === currentStatus) {
+        // Бросили в ту же колонку в свободную область -> в конец
+        const columnTasks = getTasksByOrder(currentStatus);
+        const sourceIndex = columnTasks.findIndex((t) => t.id === sourceId);
+        if (sourceIndex === -1 || sourceIndex === columnTasks.length - 1) return;
+
+        const reordered = [...columnTasks];
+        const [movedItem] = reordered.splice(sourceIndex, 1);
+        reordered.push(movedItem);
+
+        const updates = reordered.map((item, idx) => ({
+          id: item.id,
+          position: idx + 1,
+        }));
+
+        updates.forEach((u) => updateTaskInStore(u.id, { position: u.position }));
+
+        try {
+          await bulkReorder(updates);
+        } catch (error) {
+          console.error("Ошибка сохранения позиций задач:", error);
+        }
+      } else {
+        // Перемещение в другую колонку
+        const targetColumnTasks = getTasksByOrder(newStatus);
+        const nextPosition = targetColumnTasks.length + 1;
+
+        updateTaskInStore(sourceId, {
+          order: newStatus,
+          status: newStatus,
+          position: nextPosition,
+        });
+
+        try {
+          const updated = await updateStatus(sourceId, newStatus, nextPosition);
+          if (updated) {
+            updateTaskInStore(sourceId, updated);
+          }
+        } catch (error) {
+          console.error("Ошибка сохранения статуса задачи:", error);
+        }
+      }
+    }
+  };
+
+  // Reorder task within section (1, 2, 3...)
+  const handleMoveTask = async (
+    task: ITaskResponce,
+    direction: "up" | "down",
+    columnTasks: ITaskResponce[],
+  ) => {
+    const currentIndex = columnTasks.findIndex((t) => t.id === task.id);
+    if (currentIndex === -1) return;
+    const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex < 0 || targetIndex >= columnTasks.length) return;
+
+    const reordered = [...columnTasks];
+    const [movedItem] = reordered.splice(currentIndex, 1);
+    reordered.splice(targetIndex, 0, movedItem);
+
+    const updates = reordered.map((item, idx) => ({
+      id: item.id,
+      position: idx + 1,
+    }));
+
+    updates.forEach((u) => {
+      updateTaskInStore(u.id, { position: u.position });
+    });
+
+    try {
+      await bulkReorder(updates);
+    } catch (error) {
+      console.error("Ошибка смены позиции задачи:", error);
     }
   };
 
@@ -128,10 +298,11 @@ export function TasksComponent() {
     });
   }, [tasks, selectedWorkerFilter, selectedPriorityFilter, searchQuery]);
 
-  const getTasksByOrder = (order: string) => {
-    return filteredTasks.filter(
-      (task) => String(task.order ?? task.status ?? "0") === order,
-    );
+  // Tasks sorted by explicit position inside the section (1, 2, 3...)
+  const getTasksByOrder = (statusVal: string) => {
+    return filteredTasks
+      .filter((task) => String(task.order ?? task.status ?? "0") === statusVal)
+      .sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
   };
 
   const currentPeriod = useMemo(() => {
@@ -304,8 +475,16 @@ export function TasksComponent() {
                     title={column.title}
                     color={column.color}
                   >
-                    {columnTasks.map((t) => (
-                      <TaskItem task={t} key={t.id} />
+                    {columnTasks.map((t, idx) => (
+                      <TaskItem
+                        task={t}
+                        key={t.id}
+                        index={idx}
+                        isFirst={idx === 0}
+                        isLast={idx === columnTasks.length - 1}
+                        onMoveUp={() => handleMoveTask(t, "up", columnTasks)}
+                        onMoveDown={() => handleMoveTask(t, "down", columnTasks)}
+                      />
                     ))}
                   </Column>
                 );
